@@ -1221,10 +1221,13 @@
             display: flex;
             cursor: grab;
             user-select: none;
+            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
         }
 
         .clients-track.dragging {
             cursor: grabbing;
+            touch-action: none;
         }
 
         .clients-logos {
@@ -3268,21 +3271,26 @@
         });
 
         // Touch events for mobile
-        clientsTrack.addEventListener('touchstart', (e) => {
+        let touchStartX = 0;
+        let touchDragOffset = 0;
+        
+        clientsTrack.addEventListener('touchstart', function(e) {
             isDragging = true;
             clientsTrack.classList.add('dragging');
-            startX = e.touches[0].pageX;
-            dragOffset = currentX;
-        }, { passive: true });
+            touchStartX = e.touches[0].clientX;
+            touchDragOffset = currentX;
+        }, { passive: false });
 
-        clientsTrack.addEventListener('touchmove', (e) => {
+        clientsTrack.addEventListener('touchmove', function(e) {
             if (!isDragging) return;
-            const walk = e.touches[0].pageX - startX;
-            currentX = dragOffset + walk;
+            e.preventDefault();
+            const touchX = e.touches[0].clientX;
+            const walk = touchX - touchStartX;
+            currentX = touchDragOffset + walk;
             clientsTrack.style.transform = `translateX(${currentX}px)`;
-        }, { passive: true });
+        }, { passive: false });
 
-        clientsTrack.addEventListener('touchend', () => {
+        clientsTrack.addEventListener('touchend', function() {
             if (!isDragging) return;
             isDragging = false;
             clientsTrack.classList.remove('dragging');
