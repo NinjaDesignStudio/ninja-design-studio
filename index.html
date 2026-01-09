@@ -1219,18 +1219,12 @@
 
         .clients-track {
             display: flex;
-            animation: marquee 15s linear infinite;
             cursor: grab;
             user-select: none;
         }
 
-        .clients-track:hover {
-            animation-play-state: paused;
-        }
-
         .clients-track.dragging {
             cursor: grabbing;
-            animation-play-state: paused;
         }
 
         .clients-logos {
@@ -3204,46 +3198,73 @@
         // DRAGGABLE LOGO SCROLLER
         // =============================================
         const clientsTrack = document.querySelector('.clients-track');
+        const clientsLogos = document.querySelector('.clients-logos');
         let isDragging = false;
         let startX;
-        let scrollLeft;
-        let currentTranslate = 0;
-        let animationPaused = false;
+        let currentX = 0;
+        let dragOffset = 0;
+        let autoScrollPaused = false;
+        let trackWidth;
 
-        // Get current translateX from animation
-        function getCurrentTranslate() {
-            const style = window.getComputedStyle(clientsTrack);
-            const matrix = new DOMMatrixReadOnly(style.transform);
-            return matrix.m41;
+        // Calculate track width
+        function updateTrackWidth() {
+            trackWidth = clientsLogos.offsetWidth;
         }
+        updateTrackWidth();
+        window.addEventListener('resize', updateTrackWidth);
+
+        // Disable CSS animation - we'll use JS instead
+        clientsTrack.style.animation = 'none';
+
+        // Auto-scroll with JavaScript
+        let lastTime = performance.now();
+        const scrollSpeed = 50; // pixels per second
+
+        function autoScroll(currentTime) {
+            if (!isDragging && !autoScrollPaused) {
+                const delta = (currentTime - lastTime) / 1000;
+                currentX -= scrollSpeed * delta;
+                
+                // Loop back when scrolled past the first set
+                if (currentX <= -trackWidth) {
+                    currentX += trackWidth;
+                }
+                
+                clientsTrack.style.transform = `translateX(${currentX}px)`;
+            }
+            lastTime = currentTime;
+            requestAnimationFrame(autoScroll);
+        }
+        requestAnimationFrame(autoScroll);
 
         // Mouse events
         clientsTrack.addEventListener('mousedown', (e) => {
             isDragging = true;
             clientsTrack.classList.add('dragging');
             startX = e.pageX;
-            currentTranslate = getCurrentTranslate();
-            clientsTrack.style.animation = 'none';
-            clientsTrack.style.transform = `translateX(${currentTranslate}px)`;
+            dragOffset = currentX;
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
             e.preventDefault();
-            const x = e.pageX;
-            const walk = (x - startX);
-            clientsTrack.style.transform = `translateX(${currentTranslate + walk}px)`;
+            const walk = e.pageX - startX;
+            currentX = dragOffset + walk;
+            clientsTrack.style.transform = `translateX(${currentX}px)`;
         });
 
         document.addEventListener('mouseup', () => {
             if (!isDragging) return;
             isDragging = false;
             clientsTrack.classList.remove('dragging');
-            // Resume animation after a short delay
-            setTimeout(() => {
-                clientsTrack.style.animation = '';
-                clientsTrack.style.transform = '';
-            }, 100);
+            
+            // Normalize position to keep it in bounds
+            while (currentX <= -trackWidth) {
+                currentX += trackWidth;
+            }
+            while (currentX > 0) {
+                currentX -= trackWidth;
+            }
         });
 
         // Touch events for mobile
@@ -3251,27 +3272,28 @@
             isDragging = true;
             clientsTrack.classList.add('dragging');
             startX = e.touches[0].pageX;
-            currentTranslate = getCurrentTranslate();
-            clientsTrack.style.animation = 'none';
-            clientsTrack.style.transform = `translateX(${currentTranslate}px)`;
+            dragOffset = currentX;
         }, { passive: true });
 
         clientsTrack.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
-            const x = e.touches[0].pageX;
-            const walk = (x - startX);
-            clientsTrack.style.transform = `translateX(${currentTranslate + walk}px)`;
+            const walk = e.touches[0].pageX - startX;
+            currentX = dragOffset + walk;
+            clientsTrack.style.transform = `translateX(${currentX}px)`;
         }, { passive: true });
 
         clientsTrack.addEventListener('touchend', () => {
             if (!isDragging) return;
             isDragging = false;
             clientsTrack.classList.remove('dragging');
-            // Resume animation after a short delay
-            setTimeout(() => {
-                clientsTrack.style.animation = '';
-                clientsTrack.style.transform = '';
-            }, 100);
+            
+            // Normalize position to keep it in bounds
+            while (currentX <= -trackWidth) {
+                currentX += trackWidth;
+            }
+            while (currentX > 0) {
+                currentX -= trackWidth;
+            }
         });
 
         // =============================================
