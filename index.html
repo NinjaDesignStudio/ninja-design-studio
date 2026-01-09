@@ -856,10 +856,10 @@
         }
 
         .glow-white {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05) 40%, transparent 70%);
-            filter: blur(30px);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2) 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+            filter: blur(20px);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -895,6 +895,57 @@
             bottom: 20%;
             left: 25%;
             animation: breathe 5s ease-in-out infinite 0.8s;
+        }
+
+        /* Space particles */
+        .space-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .space-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: particleFall linear infinite;
+        }
+
+        .space-particle.pink { background: rgba(255, 0, 110, 0.7); box-shadow: 0 0 4px rgba(255, 0, 110, 0.5); }
+        .space-particle.cyan { background: rgba(0, 245, 255, 0.7); box-shadow: 0 0 4px rgba(0, 245, 255, 0.5); }
+        .space-particle.white { background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 3px rgba(255, 255, 255, 0.5); }
+
+        .sp1 { width: 3px; height: 3px; left: 15%; animation-duration: 4s; animation-delay: 0s; }
+        .sp2 { width: 2px; height: 2px; left: 25%; animation-duration: 5s; animation-delay: 1s; }
+        .sp3 { width: 4px; height: 4px; left: 35%; animation-duration: 3.5s; animation-delay: 0.5s; }
+        .sp4 { width: 2px; height: 2px; left: 45%; animation-duration: 6s; animation-delay: 2s; }
+        .sp5 { width: 3px; height: 3px; left: 55%; animation-duration: 4.5s; animation-delay: 0.8s; }
+        .sp6 { width: 2px; height: 2px; left: 65%; animation-duration: 5.5s; animation-delay: 1.5s; }
+        .sp7 { width: 3px; height: 3px; left: 75%; animation-duration: 4s; animation-delay: 0.3s; }
+        .sp8 { width: 2px; height: 2px; left: 85%; animation-duration: 5s; animation-delay: 2.5s; }
+        .sp9 { width: 4px; height: 4px; left: 20%; animation-duration: 3s; animation-delay: 1.2s; }
+        .sp10 { width: 2px; height: 2px; left: 70%; animation-duration: 4.8s; animation-delay: 0.7s; }
+        .sp11 { width: 3px; height: 3px; left: 40%; animation-duration: 5.2s; animation-delay: 1.8s; }
+        .sp12 { width: 2px; height: 2px; left: 80%; animation-duration: 3.8s; animation-delay: 0.2s; }
+
+        @keyframes particleFall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(550px) rotate(180deg);
+                opacity: 0;
+            }
         }
 
         /* =============================================
@@ -2296,13 +2347,26 @@
             .float-cap { width: 50px; right: 8%; bottom: 20%; }
             
             .glow-white {
-                width: 280px;
-                height: 280px;
+                width: 320px;
+                height: 320px;
             }
             
             .glow-pink, .glow-cyan, .glow-purple {
                 width: 120px;
                 height: 120px;
+            }
+
+            @keyframes particleFall {
+                0% {
+                    transform: translateY(-20px);
+                    opacity: 0;
+                }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% {
+                    transform: translateY(380px);
+                    opacity: 0;
+                }
             }
 
             .stats-grid,
@@ -2432,6 +2496,22 @@
 
             <div class="hero-visual">
                 <div class="floating-scene">
+                    <!-- Space particles -->
+                    <div class="space-particles">
+                        <div class="space-particle sp1 white"></div>
+                        <div class="space-particle sp2 pink"></div>
+                        <div class="space-particle sp3 white"></div>
+                        <div class="space-particle sp4 cyan"></div>
+                        <div class="space-particle sp5 white"></div>
+                        <div class="space-particle sp6 pink"></div>
+                        <div class="space-particle sp7 white"></div>
+                        <div class="space-particle sp8 cyan"></div>
+                        <div class="space-particle sp9 pink"></div>
+                        <div class="space-particle sp10 white"></div>
+                        <div class="space-particle sp11 cyan"></div>
+                        <div class="space-particle sp12 white"></div>
+                    </div>
+                    
                     <!-- Glow effects -->
                     <div class="scene-glow glow-white"></div>
                     <div class="scene-glow glow-pink"></div>
