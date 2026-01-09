@@ -1220,9 +1220,16 @@
         .clients-track {
             display: flex;
             animation: marquee 15s linear infinite;
+            cursor: grab;
+            user-select: none;
         }
 
         .clients-track:hover {
+            animation-play-state: paused;
+        }
+
+        .clients-track.dragging {
+            cursor: grabbing;
             animation-play-state: paused;
         }
 
@@ -1242,6 +1249,7 @@
             transition: all 0.3s;
             filter: grayscale(100%);
             flex-shrink: 0;
+            pointer-events: none;
         }
 
         .client-logo:hover {
@@ -3190,6 +3198,80 @@
                 obj.style.marginLeft = `${x * speed}px`;
                 obj.style.marginTop = `${y * speed}px`;
             });
+        });
+
+        // =============================================
+        // DRAGGABLE LOGO SCROLLER
+        // =============================================
+        const clientsTrack = document.querySelector('.clients-track');
+        let isDragging = false;
+        let startX;
+        let scrollLeft;
+        let currentTranslate = 0;
+        let animationPaused = false;
+
+        // Get current translateX from animation
+        function getCurrentTranslate() {
+            const style = window.getComputedStyle(clientsTrack);
+            const matrix = new DOMMatrixReadOnly(style.transform);
+            return matrix.m41;
+        }
+
+        // Mouse events
+        clientsTrack.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            clientsTrack.classList.add('dragging');
+            startX = e.pageX;
+            currentTranslate = getCurrentTranslate();
+            clientsTrack.style.animation = 'none';
+            clientsTrack.style.transform = `translateX(${currentTranslate}px)`;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX;
+            const walk = (x - startX);
+            clientsTrack.style.transform = `translateX(${currentTranslate + walk}px)`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            clientsTrack.classList.remove('dragging');
+            // Resume animation after a short delay
+            setTimeout(() => {
+                clientsTrack.style.animation = '';
+                clientsTrack.style.transform = '';
+            }, 100);
+        });
+
+        // Touch events for mobile
+        clientsTrack.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            clientsTrack.classList.add('dragging');
+            startX = e.touches[0].pageX;
+            currentTranslate = getCurrentTranslate();
+            clientsTrack.style.animation = 'none';
+            clientsTrack.style.transform = `translateX(${currentTranslate}px)`;
+        }, { passive: true });
+
+        clientsTrack.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const x = e.touches[0].pageX;
+            const walk = (x - startX);
+            clientsTrack.style.transform = `translateX(${currentTranslate + walk}px)`;
+        }, { passive: true });
+
+        clientsTrack.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            clientsTrack.classList.remove('dragging');
+            // Resume animation after a short delay
+            setTimeout(() => {
+                clientsTrack.style.animation = '';
+                clientsTrack.style.transform = '';
+            }, 100);
         });
 
         // =============================================
