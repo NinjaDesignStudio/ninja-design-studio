@@ -1088,7 +1088,7 @@
 
         .clients-track {
             display: flex;
-            animation: marquee 30s linear infinite;
+            animation: marquee 15s linear infinite;
         }
 
         .clients-track:hover {
@@ -2236,6 +2236,26 @@
                 text-align: center;
             }
 
+            .footer-socials {
+                justify-content: center;
+                display: flex !important;
+            }
+
+            .social-link {
+                width: 44px;
+                height: 44px;
+            }
+
+            .video-container {
+                min-height: auto;
+                height: auto;
+                aspect-ratio: auto;
+            }
+
+            .video-container > div {
+                padding: 2rem 1.5rem !important;
+            }
+
             .back-to-top {
                 bottom: 1.5rem;
                 right: 1.5rem;
@@ -2388,13 +2408,13 @@
                 </div>
             </div>
 
-            <div class="video-container reveal-right" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(0,245,255,0.1)); border: 1px solid rgba(255,255,255,0.1);">
+            <div class="video-container reveal-right" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(0,245,255,0.1)); border: 1px solid rgba(255,255,255,0.1); aspect-ratio: auto; height: auto;">
                 <div class="video-corner video-corner-tl"></div>
                 <div class="video-corner video-corner-tr"></div>
                 <div class="video-corner video-corner-bl"></div>
                 <div class="video-corner video-corner-br"></div>
                 
-                <div style="text-align: center; padding: 3rem;">
+                <div style="text-align: center; padding: 3rem 2rem;">
                     <div style="margin-bottom: 1rem;"><img src="images/nds-logo.jpg" alt="NDS Logo" style="width: 100px; height: 100px; object-fit: contain; border-radius: 16px;"></div>
                     <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ff006e, #00f5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Ready to level up?</div>
                     <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.95rem;">Let's create something extraordinary together.</p>
@@ -3075,53 +3095,57 @@
         });
 
         // =============================================
-        // CUSTOM CURSOR
+        // CUSTOM CURSOR (only on non-touch devices)
         // =============================================
-        const cursor = document.createElement('div');
-        cursor.style.cssText = `
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--neon-pink);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease, opacity 0.3s, border-color 0.3s;
-            mix-blend-mode: difference;
-            opacity: 0;
-        `;
-        document.body.appendChild(cursor);
-
-        let cursorVisible = false;
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
-            
-            if (!cursorVisible) {
-                cursor.style.opacity = '1';
-                cursorVisible = true;
-            }
-        });
-
-        document.addEventListener('mouseleave', () => {
-            cursor.style.opacity = '0';
-            cursorVisible = false;
-        });
-
-        // Scale cursor on interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .service-card, .work-item, .testimonial-card, .faq-question');
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(1.5)';
-                cursor.style.borderColor = 'var(--neon-cyan)';
+        if (!isTouchDevice) {
+            const cursor = document.createElement('div');
+            cursor.style.cssText = `
+                position: fixed;
+                width: 20px;
+                height: 20px;
+                border: 2px solid var(--neon-pink);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.15s ease, opacity 0.3s, border-color 0.3s;
+                mix-blend-mode: difference;
+                opacity: 0;
+            `;
+            document.body.appendChild(cursor);
+
+            let cursorVisible = false;
+
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX - 10 + 'px';
+                cursor.style.top = e.clientY - 10 + 'px';
+                
+                if (!cursorVisible) {
+                    cursor.style.opacity = '1';
+                    cursorVisible = true;
+                }
             });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursor.style.borderColor = 'var(--neon-pink)';
+
+            document.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '0';
+                cursorVisible = false;
             });
-        });
+
+            // Scale cursor on interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .service-card, .work-item, .testimonial-card, .faq-question');
+            
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(1.5)';
+                    cursor.style.borderColor = 'var(--neon-cyan)';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.borderColor = 'var(--neon-pink)';
+                });
+            });
+        }
 
         // =============================================
         // PROJECT MODAL
