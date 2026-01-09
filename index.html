@@ -855,10 +855,21 @@
             z-index: 1;
         }
 
+        .glow-white {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05) 40%, transparent 70%);
+            filter: blur(30px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
         .glow-pink {
             width: 300px;
             height: 300px;
-            background: radial-gradient(circle, rgba(255, 0, 110, 0.3), transparent 70%);
+            background: radial-gradient(circle, rgba(255, 0, 110, 0.2), transparent 70%);
             filter: blur(60px);
             top: 50%;
             left: 50%;
@@ -869,7 +880,7 @@
         .glow-cyan {
             width: 250px;
             height: 250px;
-            background: radial-gradient(circle, rgba(0, 245, 255, 0.25), transparent 70%);
+            background: radial-gradient(circle, rgba(0, 245, 255, 0.15), transparent 70%);
             filter: blur(50px);
             top: 30%;
             right: 20%;
@@ -879,7 +890,7 @@
         .glow-purple {
             width: 200px;
             height: 200px;
-            background: radial-gradient(circle, rgba(191, 0, 255, 0.2), transparent 70%);
+            background: radial-gradient(circle, rgba(191, 0, 255, 0.15), transparent 70%);
             filter: blur(40px);
             bottom: 20%;
             left: 25%;
@@ -2273,18 +2284,25 @@
                 font-size: clamp(2.25rem, 8vw, 3rem);
             }
 
-            .hero-visual { height: 350px; }
+            .hero-visual { height: 380px; }
 
-            .floating-character { width: 280px; }
-            .float-katana { width: 100px; right: -10%; top: 35%; }
-            .float-drink { width: 60px; left: -5%; top: 10%; }
-            .float-cyber-head { width: 90px; left: -5%; bottom: 5%; }
-            .float-cat { width: 80px; left: -10%; bottom: 25%; }
-            .float-cap { width: 55px; right: -5%; bottom: 10%; }
+            .floating-character { width: 320px; }
+            
+            /* Tighter, more organized positioning on mobile */
+            .float-katana { width: 90px; right: 5%; top: 15%; }
+            .float-drink { width: 55px; left: 5%; top: 5%; }
+            .float-cyber-head { width: 80px; left: 0%; bottom: 15%; }
+            .float-cat { width: 70px; left: 2%; top: 40%; }
+            .float-cap { width: 50px; right: 8%; bottom: 20%; }
+            
+            .glow-white {
+                width: 280px;
+                height: 280px;
+            }
             
             .glow-pink, .glow-cyan, .glow-purple {
-                width: 150px;
-                height: 150px;
+                width: 120px;
+                height: 120px;
             }
 
             .stats-grid,
@@ -2415,6 +2433,7 @@
             <div class="hero-visual">
                 <div class="floating-scene">
                     <!-- Glow effects -->
+                    <div class="scene-glow glow-white"></div>
                     <div class="scene-glow glow-pink"></div>
                     <div class="scene-glow glow-cyan"></div>
                     <div class="scene-glow glow-purple"></div>
