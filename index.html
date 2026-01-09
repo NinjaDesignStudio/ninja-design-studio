@@ -730,7 +730,7 @@
             animation: fadeInUp 0.6s 0.3s var(--ease-out) both;
         }
 
-        /* Hero Visual */
+        /* Hero Visual - Floating Character */
         .hero-visual {
             position: relative;
             display: flex;
@@ -738,84 +738,153 @@
             justify-content: center;
             height: 550px;
             animation: fadeIn 0.8s 0.2s var(--ease-out) both;
+            overflow: visible;
         }
 
-        .neon-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid transparent;
-        }
-
-        .ring-1 {
-            width: 420px;
-            height: 420px;
-            background: linear-gradient(var(--darker), var(--darker)) padding-box,
-                        linear-gradient(135deg, var(--neon-pink), transparent, var(--neon-cyan)) border-box;
-            animation: rotateSlow 20s linear infinite;
-        }
-
-        .ring-2 {
-            width: 350px;
-            height: 350px;
-            background: linear-gradient(var(--darker), var(--darker)) padding-box,
-                        linear-gradient(135deg, var(--neon-cyan), transparent, var(--neon-purple)) border-box;
-            animation: rotateSlow 15s linear infinite reverse;
-        }
-
-        .ring-3 {
-            width: 280px;
-            height: 280px;
-            border: 1px dashed rgba(255, 0, 110, 0.25);
-            animation: rotateSlow 25s linear infinite;
-        }
-
-        .ninja-glow {
-            position: absolute;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(255, 0, 110, 0.4), transparent 70%);
-            filter: blur(50px);
-            animation: breathe 3s ease-in-out infinite;
-        }
-
-        .ninja-glow-2 {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(0, 245, 255, 0.35), transparent 70%);
-            filter: blur(40px);
-            transform: translate(20px, -20px);
-            animation: breathe 3s ease-in-out infinite 1s;
-        }
-
-        .ninja-graphic {
+        .floating-scene {
             position: relative;
-            z-index: 5;
-            width: 220px;
-            height: 220px;
-            animation: float 5s ease-in-out infinite;
-            transition: transform 0.1s ease-out;
-        }
-
-        .ninja-svg {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 0 40px rgba(255, 0, 110, 0.5)) drop-shadow(0 0 20px rgba(0, 245, 255, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .hero-particle {
+        .floating-character {
+            position: relative;
+            z-index: 10;
+            width: 450px;
+            height: auto;
+            animation: floatMain 4s ease-in-out infinite;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+        }
+
+        .floating-object {
+            position: absolute;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .floating-object img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+        }
+
+        /* Individual floating objects with different animations */
+        .float-katana {
+            width: 180px;
+            right: -5%;
+            top: 30%;
+            animation: floatObject1 5s ease-in-out infinite;
+            z-index: 15;
+        }
+
+        .float-drink {
+            width: 100px;
+            left: 0%;
+            top: 5%;
+            animation: floatObject2 4.5s ease-in-out infinite 0.5s;
+        }
+
+        .float-cyber-head {
+            width: 160px;
+            left: 5%;
+            bottom: 10%;
+            animation: floatObject3 5.5s ease-in-out infinite 1s;
+        }
+
+        .float-cat {
+            width: 120px;
+            left: -5%;
+            bottom: 30%;
+            animation: floatObject4 4s ease-in-out infinite 0.3s;
+            z-index: 15;
+        }
+
+        .float-cap {
+            width: 90px;
+            right: 5%;
+            bottom: 15%;
+            animation: floatObject5 6s ease-in-out infinite 0.8s;
+        }
+
+        /* Floating animations at different speeds and ranges */
+        @keyframes floatMain {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-20px) rotate(0deg); }
+        }
+
+        @keyframes floatObject1 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(2deg); }
+            50% { transform: translateY(-25px) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(-2deg); }
+        }
+
+        @keyframes floatObject2 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(5deg); }
+            66% { transform: translateY(-15px) rotate(-3deg); }
+        }
+
+        @keyframes floatObject3 {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-35px) rotate(-5deg) scale(1.02); }
+        }
+
+        @keyframes floatObject4 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            40% { transform: translateY(-20px) rotate(8deg); }
+            80% { transform: translateY(-10px) rotate(-4deg); }
+        }
+
+        @keyframes floatObject5 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-12px) rotate(-5deg); }
+            50% { transform: translateY(-28px) rotate(3deg); }
+            75% { transform: translateY(-18px) rotate(-2deg); }
+        }
+
+        /* Glow effects for the scene */
+        .scene-glow {
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
-            transition: transform 0.1s ease-out;
+            z-index: 1;
         }
 
-        .p1 { width: 10px; height: 10px; background: var(--neon-pink); top: 15%; left: 20%; animation: particleDrift 6s ease-in-out infinite; box-shadow: 0 0 15px var(--neon-pink); }
-        .p2 { width: 6px; height: 6px; background: var(--neon-cyan); top: 25%; right: 15%; animation: particleDrift 5s ease-in-out infinite 1s; box-shadow: 0 0 10px var(--neon-cyan); }
-        .p3 { width: 8px; height: 8px; background: var(--neon-purple); bottom: 30%; left: 15%; animation: particleDrift 7s ease-in-out infinite 2s; box-shadow: 0 0 12px var(--neon-purple); }
-        .p4 { width: 5px; height: 5px; background: var(--neon-cyan); bottom: 20%; right: 25%; animation: particleDrift 4s ease-in-out infinite 0.5s; box-shadow: 0 0 8px var(--neon-cyan); }
-        .p5 { width: 12px; height: 12px; border: 2px solid var(--neon-pink); background: transparent; top: 40%; left: 5%; animation: rotateSlow 8s linear infinite; }
-        .p6 { width: 16px; height: 16px; border: 1px solid var(--neon-cyan); background: transparent; bottom: 40%; right: 10%; animation: rotateSlow 10s linear infinite reverse; border-radius: 4px; }
+        .glow-pink {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 0, 110, 0.3), transparent 70%);
+            filter: blur(60px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        .glow-cyan {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(0, 245, 255, 0.25), transparent 70%);
+            filter: blur(50px);
+            top: 30%;
+            right: 20%;
+            animation: breathe 4s ease-in-out infinite 1.5s;
+        }
+
+        .glow-purple {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(191, 0, 255, 0.2), transparent 70%);
+            filter: blur(40px);
+            bottom: 20%;
+            left: 25%;
+            animation: breathe 5s ease-in-out infinite 0.8s;
+        }
 
         /* =============================================
            VIDEO INTRO SECTION
@@ -2139,10 +2208,12 @@
             .hero-buttons { justify-content: center; }
             .hero-visual { order: 1; height: 400px; }
 
-            .ring-1 { width: 320px; height: 320px; }
-            .ring-2 { width: 260px; height: 260px; }
-            .ring-3 { width: 200px; height: 200px; }
-            .ninja-graphic { width: 160px; height: 160px; }
+            .floating-character { width: 350px; }
+            .float-katana { width: 140px; right: -8%; }
+            .float-drink { width: 80px; left: -2%; }
+            .float-cyber-head { width: 120px; left: 0%; }
+            .float-cat { width: 100px; left: -8%; }
+            .float-cap { width: 70px; right: 0%; }
 
             .video-intro .container {
                 grid-template-columns: 1fr;
@@ -2202,13 +2273,19 @@
                 font-size: clamp(2.25rem, 8vw, 3rem);
             }
 
-            .hero-visual { height: 300px; }
+            .hero-visual { height: 350px; }
 
-            .ring-1 { width: 250px; height: 250px; }
-            .ring-2 { width: 200px; height: 200px; }
-            .ring-3 { display: none; }
-            .ninja-graphic { width: 130px; height: 130px; }
-            .hero-particle { display: none; }
+            .floating-character { width: 280px; }
+            .float-katana { width: 100px; right: -10%; top: 35%; }
+            .float-drink { width: 60px; left: -5%; top: 10%; }
+            .float-cyber-head { width: 90px; left: -5%; bottom: 5%; }
+            .float-cat { width: 80px; left: -10%; bottom: 25%; }
+            .float-cap { width: 55px; right: -5%; bottom: 10%; }
+            
+            .glow-pink, .glow-cyan, .glow-purple {
+                width: 150px;
+                height: 150px;
+            }
 
             .stats-grid,
             .services-grid,
@@ -2336,48 +2413,33 @@
             </div>
 
             <div class="hero-visual">
-                <div class="hero-particle p1"></div>
-                <div class="hero-particle p2"></div>
-                <div class="hero-particle p3"></div>
-                <div class="hero-particle p4"></div>
-                <div class="hero-particle p5"></div>
-                <div class="hero-particle p6"></div>
-
-                <div class="neon-ring ring-1"></div>
-                <div class="neon-ring ring-2"></div>
-                <div class="neon-ring ring-3"></div>
-
-                <div class="ninja-glow"></div>
-                <div class="ninja-glow-2"></div>
-
-                <div class="ninja-graphic">
-                    <svg class="ninja-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="ninjaPink" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#ff006e"/>
-                                <stop offset="100%" stop-color="#bf00ff"/>
-                            </linearGradient>
-                            <linearGradient id="ninjaCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#00f5ff"/>
-                                <stop offset="100%" stop-color="#00a8ff"/>
-                            </linearGradient>
-                            <filter id="glow">
-                                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                                <feMerge>
-                                    <feMergeNode in="coloredBlur"/>
-                                    <feMergeNode in="SourceGraphic"/>
-                                </feMerge>
-                            </filter>
-                        </defs>
-                        <circle cx="100" cy="100" r="70" fill="#0a0a0f" stroke="url(#ninjaPink)" stroke-width="2"/>
-                        <ellipse cx="75" cy="95" rx="11" ry="7" fill="url(#ninjaCyan)" filter="url(#glow)"/>
-                        <ellipse cx="125" cy="95" rx="11" ry="7" fill="url(#ninjaCyan)" filter="url(#glow)"/>
-                        <circle cx="78" cy="93" r="2.5" fill="#fff"/>
-                        <circle cx="128" cy="93" r="2.5" fill="#fff"/>
-                        <path d="M35 85 Q100 72 165 85" stroke="url(#ninjaPink)" stroke-width="7" fill="none" stroke-linecap="round"/>
-                        <path d="M160 87 Q175 95 170 115" stroke="url(#ninjaPink)" stroke-width="4" fill="none" stroke-linecap="round"/>
-                        <path d="M164 89 Q182 98 175 125" stroke="url(#ninjaPink)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.6"/>
-                    </svg>
+                <div class="floating-scene">
+                    <!-- Glow effects -->
+                    <div class="scene-glow glow-pink"></div>
+                    <div class="scene-glow glow-cyan"></div>
+                    <div class="scene-glow glow-purple"></div>
+                    
+                    <!-- Floating objects -->
+                    <div class="floating-object float-drink">
+                        <img src="images/hero/drink.png" alt="Floating drink">
+                    </div>
+                    <div class="floating-object float-cat">
+                        <img src="images/hero/cat.png" alt="Floating cat">
+                    </div>
+                    <div class="floating-object float-cyber-head">
+                        <img src="images/hero/cyber-head.png" alt="Floating cyber head">
+                    </div>
+                    
+                    <!-- Main character -->
+                    <img src="images/hero/character.png" alt="Ninja Character" class="floating-character">
+                    
+                    <!-- More floating objects (in front) -->
+                    <div class="floating-object float-katana">
+                        <img src="images/hero/katana.png" alt="Floating katana">
+                    </div>
+                    <div class="floating-object float-cap">
+                        <img src="images/hero/cap.png" alt="Floating cap">
+                    </div>
                 </div>
             </div>
         </div>
@@ -3011,20 +3073,23 @@
         // =============================================
         // PARALLAX MOUSE EFFECT
         // =============================================
-        const ninjaGraphic = document.querySelector('.ninja-graphic');
-        const particles = document.querySelectorAll('.hero-particle');
+        const floatingCharacter = document.querySelector('.floating-character');
+        const floatingObjects = document.querySelectorAll('.floating-object');
 
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 2;
             const y = (e.clientY / window.innerHeight - 0.5) * 2;
 
-            if (ninjaGraphic) {
-                ninjaGraphic.style.transform = `translate(${x * 15}px, ${y * 15}px)`;
+            if (floatingCharacter) {
+                floatingCharacter.style.marginLeft = `${x * 20}px`;
+                floatingCharacter.style.marginTop = `${y * 15}px`;
             }
 
-            particles.forEach((p, i) => {
-                const speed = (i + 1) * 6;
-                p.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            floatingObjects.forEach((obj, i) => {
+                const speed = (i + 1) * 8;
+                const currentTransform = getComputedStyle(obj).transform;
+                obj.style.marginLeft = `${x * speed}px`;
+                obj.style.marginTop = `${y * speed}px`;
             });
         });
 
