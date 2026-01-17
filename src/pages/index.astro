@@ -7,6 +7,7 @@ import TestimonialCard from '../components/TestimonialCard.astro';
 import FAQItem from '../components/FAQItem.astro';
 import ContactForm from '../components/ContactForm.astro';
 import ProjectModal from '../components/ProjectModal.astro';
+import { displayStats } from '../lib/stats';
 
 const services = [
     { icon: '🤖', iconClass: 'icon-ai', title: 'AI & ML Visuals', description: 'Visual identities for AI startups and machine learning platforms that communicate innovation.' },
@@ -42,12 +43,6 @@ const clients = [
     'avalanche', 'binamon', 'rugdoc', 'hkac', 'kadena', 'ezo', 'pinksale', 'vsystems'
 ];
 
-const stats = [
-    { number: '100', label: 'Projects Delivered' },
-    { number: '$50M+', label: 'Raised by Clients' },
-    { number: '5', label: 'Years in Web3' },
-    { number: '40', label: 'Brands Built' },
-];
 ---
 
 <BaseLayout title="Web3 Design Partners">
@@ -102,7 +97,7 @@ const stats = [
     <section class="stats">
         <div class="container">
             <div class="stats-grid">
-                {stats.map((stat, i) => (
+                {displayStats.map((stat, i) => (
                     <div class={`stat-item reveal stagger-${i + 1}`}>
                         <div class="stat-number">{stat.number}</div>
                         <div class="stat-label">{stat.label}</div>
