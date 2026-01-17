@@ -199,6 +199,35 @@ const fullOgImage = ogImage?.startsWith('http') ? ogImage : new URL(ogImage || '
     backToTop?.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // Custom cursor (non-touch only)
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (!isTouchDevice) {
+      const cursor = document.createElement('div');
+      cursor.className = 'custom-cursor';
+      document.body.appendChild(cursor);
+
+      let cursorVisible = false;
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX - 10 + 'px';
+        cursor.style.top = e.clientY - 10 + 'px';
+        if (!cursorVisible) {
+          cursor.style.opacity = '1';
+          cursorVisible = true;
+        }
+      });
+
+      document.addEventListener('mouseleave', () => {
+        cursor.style.opacity = '0';
+        cursorVisible = false;
+      });
+
+      const interactiveElements = document.querySelectorAll('a, button, .service-card, .work-item, .testimonial-card, .faq-question, .faq-item, .why-card, .featured-card, .pricing-card');
+      interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
+    }
   </script>
 </body>
 </html>
@@ -207,9 +236,30 @@ const fullOgImage = ogImage?.startsWith('http') ? ogImage : new URL(ogImage || '
   @import '../styles/global.css';
 
   /* ============================================
+     Custom Cursor
+     ============================================ */
+  .custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--neon-pink);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.3s, border-color 0.3s;
+    mix-blend-mode: difference;
+    opacity: 0;
+  }
+
+  .custom-cursor.hover {
+    transform: scale(1.5);
+    border-color: var(--neon-cyan);
+  }
+
+  /* ============================================
      SERVICE PAGE - Base Styles
      ============================================ */
-  
+
   .service-page {
     background: var(--darker);
     color: var(--white);
