@@ -152,7 +152,7 @@ const capabilities = [
       </div>
 
       <div class="intro-stats gsap-stagger">
-        {stats.slice(0, 4).map((stat) => (
+        {displayStats.slice(0, 4).map((stat) => (
           <div class="stat-card">
             <span class="stat-number gsap-counter" data-target={stat.number.replace(/\D/g, '')} data-suffix={stat.number.replace(/\d/g, '')}>
               {stat.number}
