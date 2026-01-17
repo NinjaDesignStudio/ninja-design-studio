@@ -117,8 +117,8 @@ export const services: Service[] = [
       'Telegram sticker packs',
       'Marketing campaigns',
     ],
-    startingPrice: '$1K/mo',
-    priceRange: '$1K - $3K/mo',
+    startingPrice: '$1K',
+    priceRange: '$1K - $3K',
     timeline: 'Ongoing',
   },
 ];
