@@ -1,12 +1,613 @@
 ---
-// Page Loader Component
+/**
+ * PageLoader - Award-winning ninja-themed loading animation
+ *
+ * Features:
+ * - Animated shuriken with spinning blades
+ * - Glitch text effect
+ * - Particle system
+ * - Circular progress indicator
+ * - Dramatic slice reveal exit
+ * - Cyberpunk aesthetic
+ */
 ---
 
-<div class="page-loader" id="pageLoader">
-    <div class="loader-logo">
-        <img src="/images/nds-logo.jpg" alt="NDS Logo">
+<div class="ninja-loader" id="pageLoader" aria-hidden="true">
+  <!-- Animated Background -->
+  <div class="loader-bg">
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+  </div>
+
+  <!-- Floating Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Main Content -->
+  <div class="loader-content">
+    <!-- Shuriken Logo -->
+    <div class="shuriken-container">
+      <svg class="shuriken" viewBox="0 0 100 100" fill="none">
+        <!-- Outer ring -->
+        <circle class="shuriken-ring" cx="50" cy="50" r="48" stroke-width="1" />
+
+        <!-- Progress circle -->
+        <circle
+          class="shuriken-progress"
+          cx="50" cy="50" r="48"
+          stroke-width="2"
+          stroke-dasharray="301.59"
+          stroke-dashoffset="301.59"
+          id="shurikenProgress"
+        />
+
+        <!-- Shuriken blades -->
+        <g class="shuriken-blades">
+          <path d="M50 2 L58 42 L50 50 L42 42 Z" class="blade" />
+          <path d="M98 50 L58 58 L50 50 L58 42 Z" class="blade" />
+          <path d="M50 98 L42 58 L50 50 L58 58 Z" class="blade" />
+          <path d="M2 50 L42 42 L50 50 L42 58 Z" class="blade" />
+        </g>
+
+        <!-- Center circle -->
+        <circle class="shuriken-center" cx="50" cy="50" r="8" />
+        <circle class="shuriken-core" cx="50" cy="50" r="4" />
+      </svg>
+
+      <!-- Energy rings -->
+      <div class="energy-ring energy-ring-1"></div>
+      <div class="energy-ring energy-ring-2"></div>
+      <div class="energy-ring energy-ring-3"></div>
     </div>
-    <div class="loader-bar">
-        <div class="loader-progress"></div>
+
+    <!-- Glitch Text -->
+    <div class="loader-text">
+      <div class="text-ninja" data-text="NINJA">
+        <span class="char" style="--i:0">N</span>
+        <span class="char" style="--i:1">I</span>
+        <span class="char" style="--i:2">N</span>
+        <span class="char" style="--i:3">J</span>
+        <span class="char" style="--i:4">A</span>
+      </div>
+      <div class="text-studio">DESIGN STUDIO</div>
     </div>
+
+    <!-- Loading Status -->
+    <div class="loader-status">
+      <span class="status-text">INITIALIZING</span>
+      <span class="status-percent" id="loaderPercent">0</span>
+      <span class="status-symbol">%</span>
+    </div>
+  </div>
+
+  <!-- Slice Reveal Overlay -->
+  <div class="slice-reveal">
+    <div class="slice slice-1"></div>
+    <div class="slice slice-2"></div>
+    <div class="slice slice-3"></div>
+    <div class="slice slice-4"></div>
+    <div class="slice slice-5"></div>
+  </div>
 </div>
+
+<style>
+  .ninja-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #050508;
+  }
+
+  /* ===== Background Effects ===== */
+  .loader-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .bg-grid {
+    position: absolute;
+    inset: -50%;
+    background-image:
+      linear-gradient(rgba(255, 0, 110, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 0, 110, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    transform: perspective(500px) rotateX(60deg);
+    transform-origin: center center;
+  }
+
+  @keyframes gridMove {
+    0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+    100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+  }
+
+  .bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+
+  .bg-glow-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 0, 110, 0.4) 0%, transparent 70%);
+    top: -100px;
+    left: -100px;
+  }
+
+  .bg-glow-2 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0, 245, 255, 0.3) 0%, transparent 70%);
+    bottom: -50px;
+    right: -50px;
+    animation-delay: -2s;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+  }
+
+  /* ===== Particles ===== */
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 3s ease-in-out infinite;
+  }
+
+  .particle:nth-child(even) {
+    background: var(--neon-cyan);
+  }
+
+  @keyframes particleFloat {
+    0% {
+      opacity: 0;
+      transform: translateY(100vh) scale(0);
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100px) scale(1);
+    }
+  }
+
+  /* ===== Loader Content ===== */
+  .loader-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  /* ===== Shuriken ===== */
+  .shuriken-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+
+  .shuriken {
+    width: 100%;
+    height: 100%;
+    animation: shurikenSpin 8s linear infinite;
+  }
+
+  @keyframes shurikenSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .shuriken-ring {
+    stroke: rgba(255, 255, 255, 0.1);
+    fill: none;
+  }
+
+  .shuriken-progress {
+    stroke: url(#progressGradient);
+    stroke: var(--neon-pink);
+    fill: none;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 110, 0.5));
+  }
+
+  .blade {
+    fill: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+  }
+
+  .shuriken-center {
+    fill: #1a1a2e;
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 1;
+  }
+
+  .shuriken-core {
+    fill: var(--neon-pink);
+    animation: corePulse 1s ease-in-out infinite;
+  }
+
+  @keyframes corePulse {
+    0%, 100% {
+      fill: var(--neon-pink);
+      filter: drop-shadow(0 0 5px rgba(255, 0, 110, 0.8));
+    }
+    50% {
+      fill: var(--neon-cyan);
+      filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
+    }
+  }
+
+  /* Energy Rings */
+  .energy-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid transparent;
+    opacity: 0;
+  }
+
+  .energy-ring-1 {
+    width: 160px;
+    height: 160px;
+    border-color: rgba(255, 0, 110, 0.5);
+    animation: ringExpand 2s ease-out infinite;
+  }
+
+  .energy-ring-2 {
+    width: 160px;
+    height: 160px;
+    border-color: rgba(0, 245, 255, 0.5);
+    animation: ringExpand 2s ease-out infinite 0.5s;
+  }
+
+  .energy-ring-3 {
+    width: 160px;
+    height: 160px;
+    border-color: rgba(191, 0, 255, 0.5);
+    animation: ringExpand 2s ease-out infinite 1s;
+  }
+
+  @keyframes ringExpand {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2);
+      opacity: 0;
+    }
+  }
+
+  /* ===== Glitch Text ===== */
+  .loader-text {
+    text-align: center;
+  }
+
+  .text-ninja {
+    position: relative;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: white;
+  }
+
+  .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px) rotateX(-90deg);
+    animation: charReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--i) * 0.1s + 0.5s);
+  }
+
+  @keyframes charReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0) rotateX(0);
+    }
+  }
+
+  .text-ninja::before,
+  .text-ninja::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+  }
+
+  .text-ninja::before {
+    color: var(--neon-cyan);
+    animation: glitch1 3s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  }
+
+  .text-ninja::after {
+    color: var(--neon-pink);
+    animation: glitch2 3s infinite;
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  }
+
+  @keyframes glitch1 {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-5px, 2px); }
+    94% { transform: translate(5px, -2px); }
+    96% { transform: translate(-3px, 1px); }
+    98% { transform: translate(3px, -1px); }
+  }
+
+  @keyframes glitch2 {
+    0%, 90%, 100% { transform: translate(0); }
+    91% { transform: translate(5px, -2px); }
+    93% { transform: translate(-5px, 2px); }
+    95% { transform: translate(3px, -1px); }
+    97% { transform: translate(-3px, 1px); }
+  }
+
+  .text-studio {
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards 1s;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* ===== Loading Status ===== */
+  .loader-status {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards 1.2s;
+  }
+
+  .status-text {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .status-percent {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    min-width: 3ch;
+    text-align: right;
+  }
+
+  .status-symbol {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ===== Slice Reveal Exit ===== */
+  .slice-reveal {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slice {
+    flex: 1;
+    background: #050508;
+    transform: scaleX(0);
+  }
+
+  .slice-1 { transform-origin: left; }
+  .slice-2 { transform-origin: right; }
+  .slice-3 { transform-origin: left; }
+  .slice-4 { transform-origin: right; }
+  .slice-5 { transform-origin: left; }
+
+  /* ===== Exit Animation ===== */
+  .ninja-loader.exit .loader-content {
+    animation: contentExit 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  @keyframes contentExit {
+    to {
+      opacity: 0;
+      transform: scale(0.8);
+      filter: blur(10px);
+    }
+  }
+
+  .ninja-loader.exit .slice-1 {
+    animation: sliceIn 0.15s ease-out forwards 0.2s,
+               sliceOut 0.15s ease-in forwards 0.5s;
+  }
+  .ninja-loader.exit .slice-2 {
+    animation: sliceIn 0.15s ease-out forwards 0.25s,
+               sliceOut 0.15s ease-in forwards 0.55s;
+  }
+  .ninja-loader.exit .slice-3 {
+    animation: sliceIn 0.15s ease-out forwards 0.3s,
+               sliceOut 0.15s ease-in forwards 0.6s;
+  }
+  .ninja-loader.exit .slice-4 {
+    animation: sliceIn 0.15s ease-out forwards 0.35s,
+               sliceOut 0.15s ease-in forwards 0.65s;
+  }
+  .ninja-loader.exit .slice-5 {
+    animation: sliceIn 0.15s ease-out forwards 0.4s,
+               sliceOut 0.15s ease-in forwards 0.7s;
+  }
+
+  @keyframes sliceIn {
+    to { transform: scaleX(1); }
+  }
+
+  @keyframes sliceOut {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+  }
+
+  .ninja-loader.exit .loader-bg {
+    animation: bgExit 0.3s ease forwards 0.85s;
+  }
+
+  @keyframes bgExit {
+    to {
+      opacity: 0;
+    }
+  }
+
+  .ninja-loader.hidden {
+    display: none;
+  }
+
+  /* ===== Reduced Motion ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .shuriken,
+    .bg-grid,
+    .energy-ring,
+    .particle {
+      animation: none;
+    }
+
+    .char {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    .text-ninja::before,
+    .text-ninja::after {
+      animation: none;
+      opacity: 0;
+    }
+
+    .ninja-loader.exit {
+      animation: simpleFade 0.5s ease forwards;
+    }
+
+    @keyframes simpleFade {
+      to { opacity: 0; }
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById('pageLoader');
+    const progressCircle = document.getElementById('shurikenProgress');
+    const percentText = document.getElementById('loaderPercent');
+    const particlesContainer = document.getElementById('particles');
+
+    if (!loader) return;
+
+    // Create particles
+    const particleCount = 20;
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 3}s`;
+      particle.style.animationDuration = `${2 + Math.random() * 2}s`;
+      particlesContainer?.appendChild(particle);
+    }
+
+    // Progress tracking
+    const circumference = 2 * Math.PI * 48; // radius = 48
+    let progress = 0;
+    const startTime = Date.now();
+    const minDisplayTime = 2500;
+
+    function updateProgress(value: number) {
+      progress = Math.min(value, 100);
+
+      // Update circle
+      if (progressCircle) {
+        const offset = circumference - (progress / 100) * circumference;
+        progressCircle.style.strokeDashoffset = String(offset);
+      }
+
+      // Update percentage text with counting animation
+      if (percentText) {
+        percentText.textContent = String(Math.round(progress));
+      }
+    }
+
+    // Simulate loading with easing
+    function easeOutQuart(x: number): number {
+      return 1 - Math.pow(1 - x, 4);
+    }
+
+    let animationProgress = 0;
+    const progressInterval = setInterval(() => {
+      animationProgress += 0.02;
+      const easedProgress = easeOutQuart(Math.min(animationProgress, 0.95)) * 100;
+      updateProgress(easedProgress);
+
+      if (animationProgress >= 0.95) {
+        clearInterval(progressInterval);
+      }
+    }, 50);
+
+    // Hide loader
+    function hideLoader() {
+      clearInterval(progressInterval);
+      updateProgress(100);
+
+      const elapsed = Date.now() - startTime;
+      const remainingTime = Math.max(0, minDisplayTime - elapsed);
+
+      setTimeout(() => {
+        loader.classList.add('exit');
+
+        setTimeout(() => {
+          loader.classList.add('hidden');
+          document.body.classList.remove('loading');
+        }, 1000);
+      }, remainingTime + 200);
+    }
+
+    window.addEventListener('load', hideLoader);
+
+    // Fallback
+    setTimeout(hideLoader, 6000);
+  });
+</script>
