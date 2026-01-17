@@ -12,7 +12,7 @@ import { mainNavigation, isCTA, type NavCTA, type NavLink } from '../lib/navigat
     <div class="nav-container">
         <a href="/" class="nav-logo">
             <img src="/images/nds-logo.jpg" alt="Ninja Design Studio" class="logo-img">
-            <span class="logo-text">NINJA</span>
+            <span class="logo-text">Ninja Design <span>Studio</span></span>
         </a>
         
         <!-- Desktop Navigation -->
@@ -115,11 +115,16 @@ import { mainNavigation, isCTA, type NavCTA, type NavLink } from '../lib/navigat
     
     .logo-text {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.5rem;
-        font-weight: 800;
-        letter-spacing: 0.1em;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
         color: white;
         transition: color 0.3s;
+    }
+
+    .logo-text span {
+        font-weight: 400;
+        opacity: 0.7;
     }
     
     .nav-links {
@@ -273,11 +278,11 @@ import { mainNavigation, isCTA, type NavCTA, type NavLink } from '../lib/navigat
         .nav-container {
             padding: 0 1rem;
         }
-        
+
         .logo-text {
-            font-size: 1.25rem;
+            font-size: 1rem;
         }
-        
+
         .logo-img {
             width: 40px;
             height: 40px;
