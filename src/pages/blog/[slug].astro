@@ -15,6 +15,7 @@ import SchemaMarkup from '../../components/SchemaMarkup.astro';
 import ShareButtons from '../../components/blog/ShareButtons.astro';
 import RelatedPosts from '../../components/blog/RelatedPosts.astro';
 import Newsletter from '../../components/Newsletter.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 import { getCollection } from 'astro:content';
 import { getReadingTime, formatBlogDate } from '../../lib/blog';
 
@@ -27,7 +28,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 
 // Get reading time from raw content
 const readingTime = getReadingTime(post.body);
@@ -117,27 +118,35 @@ const articleSchema = {
 
   <!-- Post Content -->
   <section class="post-content-section">
-    <div class="post-container">
-      <article class="post-content prose">
-        <Content />
-      </article>
+    <div class="post-layout">
+      <!-- Table of Contents Sidebar -->
+      <aside class="toc-sidebar">
+        <TableOfContents headings={headings} />
+      </aside>
 
-      <!-- Tags -->
-      {post.data.tags && post.data.tags.length > 0 && (
-        <div class="post-tags">
-          <span class="tags-label">Tags:</span>
-          <div class="tags-list">
-            {post.data.tags.map((tag: string) => (
-              <span class="tag">{tag}</span>
-            ))}
+      <!-- Main Content -->
+      <div class="post-container">
+        <article class="post-content prose">
+          <Content />
+        </article>
+
+        <!-- Tags -->
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="post-tags">
+            <span class="tags-label">Tags:</span>
+            <div class="tags-list">
+              {post.data.tags.map((tag: string) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <!-- Bottom Share -->
-      <div class="post-share-bottom">
-        <p class="share-prompt">Found this helpful? Share it with your network:</p>
-        <ShareButtons title={post.data.title} url={postUrl} showLabels={true} />
+        <!-- Bottom Share -->
+        <div class="post-share-bottom">
+          <p class="share-prompt">Found this helpful? Share it with your network:</p>
+          <ShareButtons title={post.data.title} url={postUrl} showLabels={true} />
+        </div>
       </div>
     </div>
   </section>
@@ -336,9 +345,32 @@ const articleSchema = {
     padding: 4rem 2rem;
   }
 
-  .post-container {
-    max-width: 750px;
+  .post-layout {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 750px) 250px;
+    gap: 3rem;
+    max-width: 1300px;
     margin: 0 auto;
+  }
+
+  .toc-sidebar {
+    order: 1;
+  }
+
+  .post-container {
+    order: 0;
+    max-width: 750px;
+  }
+
+  @media (max-width: 1200px) {
+    .post-layout {
+      grid-template-columns: 1fr;
+      max-width: 750px;
+    }
+
+    .toc-sidebar {
+      display: none;
+    }
   }
 
   /* Prose styles for markdown content */
