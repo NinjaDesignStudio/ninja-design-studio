@@ -179,14 +179,7 @@
    CLIENTS SECTION
    ============================================= */
 .clients {
-    background:
-        repeating-linear-gradient(
-            135deg,
-            var(--charcoal) 0px,
-            var(--charcoal) 25px,
-            var(--charcoal-light) 25px,
-            var(--charcoal-light) 50px
-        );
+    background: var(--charcoal);
     padding: 3rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     overflow: hidden;
