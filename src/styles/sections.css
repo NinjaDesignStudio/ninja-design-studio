@@ -179,9 +179,9 @@
    CLIENTS SECTION
    ============================================= */
 .clients {
-    background: var(--white);
+    background: var(--charcoal);
     padding: 3rem 0;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     overflow: hidden;
 }
 
@@ -190,8 +190,7 @@
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: var(--dark);
-    opacity: 0.4;
+    color: var(--white);
     margin-bottom: 1.5rem;
     font-weight: 600;
 }
@@ -221,23 +220,23 @@
     width: auto;
     max-width: 120px;
     object-fit: contain;
-    opacity: 0.6;
+    opacity: 1;
     transition: all 0.3s;
-    filter: grayscale(100%);
+    filter: grayscale(100%) brightness(10);
     flex-shrink: 0;
     pointer-events: none;
 }
 
 .client-logo:hover {
     opacity: 1;
-    filter: grayscale(0%);
+    filter: grayscale(0%) brightness(1.5);
 }
 
 /* =============================================
    SERVICES SECTION
    ============================================= */
 .services {
-    background: var(--off-white);
+    background: var(--slate);
     padding: var(--section-padding);
     position: relative;
     overflow: hidden;
@@ -272,13 +271,13 @@
 }
 
 .service-card {
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 20px;
     padding: 2rem;
     position: relative;
     overflow: hidden;
     transition: all 0.3s var(--ease-out);
-    border: 1px solid var(--light-gray);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     cursor: pointer;
 }
 
@@ -306,7 +305,9 @@
 
 .service-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 0, 110, 0.3);
 }
 
 .service-card:hover::before {
@@ -345,7 +346,7 @@
 .service-title {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--white);
     margin-bottom: 0.5rem;
     letter-spacing: -0.02em;
     position: relative;
@@ -354,7 +355,7 @@
 
 .service-desc {
     font-size: 0.9rem;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.6;
     line-height: 1.6;
     margin-bottom: 1.25rem;
@@ -513,7 +514,7 @@
    TESTIMONIALS SECTION
    ============================================= */
 .testimonials {
-    background: var(--off-white);
+    background: linear-gradient(180deg, var(--charcoal) 0%, var(--darker) 100%);
     padding: var(--section-padding);
     position: relative;
     overflow: hidden;
@@ -526,17 +527,19 @@
 }
 
 .testimonial-card {
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 20px;
     padding: 2rem;
     position: relative;
-    border: 1px solid var(--light-gray);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.3s var(--ease-out);
 }
 
 .testimonial-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 245, 255, 0.2);
 }
 
 .testimonial-quote {
@@ -552,7 +555,7 @@
 .testimonial-text {
     font-size: 1rem;
     line-height: 1.7;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.8;
     margin-bottom: 1.5rem;
 }
@@ -579,13 +582,13 @@
 .testimonial-info h4 {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--white);
     margin-bottom: 0.1rem;
 }
 
 .testimonial-info p {
     font-size: 0.8rem;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.5;
 }
 
@@ -593,7 +596,7 @@
    PROCESS SECTION
    ============================================= */
 .process {
-    background: var(--white);
+    background: var(--dark);
     padding: var(--section-padding);
 }
 
@@ -616,7 +619,7 @@
     right: -1rem;
     width: calc(100% - 70px);
     height: 2px;
-    background: linear-gradient(90deg, var(--light-gray), transparent);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
 }
 
 .process-step:last-child::after {
@@ -627,14 +630,15 @@
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background: var(--off-white);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-mono);
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--white);
     margin: 0 auto 1.25rem;
     position: relative;
     z-index: 1;
@@ -652,12 +656,12 @@
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    color: var(--dark);
+    color: var(--white);
 }
 
 .process-desc {
     font-size: 0.85rem;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.6;
     line-height: 1.6;
 }

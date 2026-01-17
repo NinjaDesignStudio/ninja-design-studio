@@ -7,6 +7,9 @@
     --light-gray: #e8ebf2;
     --dark: #0a0a0f;
     --darker: #050508;
+    --charcoal: #16161e;
+    --charcoal-light: #1c1c26;
+    --slate: #12121a;
     --neon-pink: #ff006e;
     --neon-cyan: #00f5ff;
     --neon-purple: #bf00ff;
@@ -44,10 +47,38 @@ html {
 
 body {
     font-family: var(--font-main);
-    background: var(--white);
-    color: var(--dark);
+    background: var(--darker);
+    color: var(--white);
     overflow-x: hidden;
     line-height: 1.6;
+}
+
+/* Dark Background Variants */
+.bg-charcoal {
+    background: var(--charcoal);
+}
+
+.bg-charcoal-stripe {
+    background:
+        repeating-linear-gradient(
+            135deg,
+            var(--charcoal) 0px,
+            var(--charcoal) 20px,
+            var(--charcoal-light) 20px,
+            var(--charcoal-light) 40px
+        );
+}
+
+.bg-slate {
+    background: var(--slate);
+}
+
+.bg-slate-gradient {
+    background: linear-gradient(180deg, var(--slate) 0%, var(--charcoal) 100%);
+}
+
+.bg-dark-subtle {
+    background: linear-gradient(135deg, var(--darker) 0%, var(--charcoal) 50%, var(--darker) 100%);
 }
 
 body.loading {
@@ -187,13 +218,13 @@ a {
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
     letter-spacing: -0.03em;
-    color: var(--dark);
+    color: var(--white);
     margin-bottom: 0.75rem;
 }
 
 .section-subtitle {
     font-size: 1.05rem;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.6;
     max-width: 550px;
     margin: 0 auto;
