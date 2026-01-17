@@ -100,8 +100,8 @@ const formattedDate = date?.toLocaleDateString('en-US', {
   </a>
 ) : (
   <!-- Full variant: Standard blog card -->
-  <a href={href} class:list={['blog-card blog-card--full group', className]}>
-    <div class="card-image">
+  <a href={href} class:list={['blog-card blog-card--full group', className]} data-tilt data-tilt-intensity="5" data-gradient-border>
+    <div class="card-image" data-image-reveal>
       {image ? (
         <img src={image} alt={title} loading="lazy" />
       ) : (

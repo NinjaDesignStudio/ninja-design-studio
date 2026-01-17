@@ -7,8 +7,8 @@ interface Props {
 const { question, answer } = Astro.props;
 ---
 
-<div class="faq-item">
-    <button class="faq-question">
+<div class="faq-item" data-scroll-fade data-gradient-border>
+    <button class="faq-question" data-ripple>
         <h3>{question}</h3>
         <div class="faq-icon"><span>+</span></div>
     </button>

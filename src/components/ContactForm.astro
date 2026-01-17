@@ -13,21 +13,21 @@ const { accessKey = "710fa7dd-697e-454e-b5c8-8eb29c58f4a2" } = Astro.props;
     <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
     
     <div class="form-grid">
-        <div class="form-group">
+        <div class="form-group" data-scroll-fade data-delay="1">
             <label for="name">Your Name</label>
-            <input type="text" id="name" name="name" placeholder="John Doe" required>
+            <input type="text" id="name" name="name" placeholder="John Doe" required data-enhanced-input>
         </div>
-        <div class="form-group">
+        <div class="form-group" data-scroll-fade data-delay="2">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="john@project.com" required>
+            <input type="email" id="email" name="email" placeholder="john@project.com" required data-enhanced-input>
         </div>
-        <div class="form-group">
+        <div class="form-group" data-scroll-fade data-delay="3">
             <label for="project">Project Name</label>
-            <input type="text" id="project" name="project" placeholder="Your Project">
+            <input type="text" id="project" name="project" placeholder="Your Project" data-enhanced-input>
         </div>
-        <div class="form-group">
+        <div class="form-group" data-scroll-fade data-delay="4">
             <label for="budget">Budget Range</label>
-            <select id="budget" name="budget">
+            <select id="budget" name="budget" data-enhanced-input>
                 <option value="">Select budget</option>
                 <option value="under-10k">Under $10K</option>
                 <option value="10k-25k">$10K - $25K</option>
@@ -36,12 +36,12 @@ const { accessKey = "710fa7dd-697e-454e-b5c8-8eb29c58f4a2" } = Astro.props;
                 <option value="not-sure">Not sure yet</option>
             </select>
         </div>
-        <div class="form-group full-width">
+        <div class="form-group full-width" data-scroll-fade data-delay="5">
             <label for="message">Tell us about your project</label>
-            <textarea id="message" name="message" placeholder="What are you building? What do you need? What's your timeline?" rows="4"></textarea>
+            <textarea id="message" name="message" placeholder="What are you building? What do you need? What's your timeline?" rows="4" data-enhanced-input></textarea>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary form-submit">Send Inquiry →</button>
+    <button type="submit" class="btn btn-primary form-submit" data-magnetic-strong data-ripple data-hover-glow>Send Inquiry →</button>
     <div id="formResult" class="form-result" style="display: none;"></div>
 </form>
 

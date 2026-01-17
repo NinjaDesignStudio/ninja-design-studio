@@ -10,14 +10,16 @@ interface Props {
 const { text, authorInitials, authorName, authorTitle, stagger = 1 } = Astro.props;
 ---
 
-<div class={`testimonial-card reveal stagger-${stagger}`}>
-    <div class="testimonial-quote">"</div>
-    <p class="testimonial-text">{text}</p>
-    <div class="testimonial-author">
-        <div class="testimonial-avatar">{authorInitials}</div>
-        <div class="testimonial-info">
-            <h4>{authorName}</h4>
-            <p>{authorTitle}</p>
+<div class={`testimonial-card reveal stagger-${stagger}`} data-tilt data-tilt-intensity="5" data-gradient-border>
+    <div class="tilt-inner">
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">{text}</p>
+        <div class="testimonial-author">
+            <div class="testimonial-avatar">{authorInitials}</div>
+            <div class="testimonial-info">
+                <h4>{authorName}</h4>
+                <p>{authorTitle}</p>
+            </div>
         </div>
     </div>
 </div>

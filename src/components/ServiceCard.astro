@@ -11,9 +11,11 @@ interface Props {
 const { icon, iconClass, title, description, link, stagger = 1 } = Astro.props;
 ---
 
-<div class={`service-card reveal stagger-${stagger}`}>
-    <div class={`service-icon ${iconClass}`}>{icon}</div>
-    <h3 class="service-title">{title}</h3>
-    <p class="service-desc">{description}</p>
-    {link && <a href={link} class="service-link">Learn more →</a>}
+<div class={`service-card reveal stagger-${stagger}`} data-tilt data-tilt-intensity="8" data-gradient-border>
+    <div class="tilt-inner">
+        <div class={`service-icon ${iconClass}`}>{icon}</div>
+        <h3 class="service-title">{title}</h3>
+        <p class="service-desc">{description}</p>
+        {link && <a href={link} class="service-link" data-magnetic>Learn more →</a>}
+    </div>
 </div>

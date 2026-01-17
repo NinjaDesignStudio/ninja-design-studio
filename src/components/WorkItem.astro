@@ -12,17 +12,20 @@ interface Props {
 const { id, tag, title, description, gradientClass, stagger = 1, image } = Astro.props;
 ---
 
-<div 
-    class={`work-item ${gradientClass} reveal stagger-${stagger}`} 
+<div
+    class={`work-item ${gradientClass} reveal stagger-${stagger}`}
     data-project-id={id}
+    data-tilt
+    data-tilt-intensity="6"
+    data-gradient-border
     onclick={`openProjectModal('${id}')`}
 >
-    <div class="work-item-bg" style={image ? `background-image: url('${image}'); background-size: cover;` : undefined}></div>
+    <div class="work-item-bg" data-image-reveal style={image ? `background-image: url('${image}'); background-size: cover;` : undefined}></div>
     <div class="work-item-overlay"></div>
     <div class="work-item-content">
         <span class="work-item-tag">{tag}</span>
         <h3 class="work-item-title">{title}</h3>
         <p class="work-item-desc">{description}</p>
-        <span class="work-item-link">View Project →</span>
+        <span class="work-item-link" data-magnetic>View Project →</span>
     </div>
 </div>

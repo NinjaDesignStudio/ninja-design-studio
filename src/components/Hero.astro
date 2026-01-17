@@ -23,21 +23,21 @@ const {
 <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
-    <div class="hero-orb orb-1"></div>
-    <div class="hero-orb orb-2"></div>
-    <div class="hero-orb orb-3"></div>
+    <div class="hero-orb orb-1" data-parallax="0.05"></div>
+    <div class="hero-orb orb-2" data-parallax="-0.03"></div>
+    <div class="hero-orb orb-3" data-parallax="0.04"></div>
 
     <div class="hero-content">
         <div class="hero-text">
-            <div class="hero-badge">{badge}</div>
-            <h1 class="hero-title">
+            <div class="hero-badge" data-scroll-fade>{badge}</div>
+            <h1 class="hero-title" data-char-reveal>
                 {title}<br>
                 {gradientText && <span class="gradient">{gradientText}</span>}
             </h1>
-            <p class="hero-subtitle">{subtitle}</p>
-            <div class="hero-buttons">
-                <a href={primaryCta.href} class="btn btn-primary">{primaryCta.text}</a>
-                <a href={secondaryCta.href} class="btn btn-secondary">{secondaryCta.text}</a>
+            <p class="hero-subtitle" data-scroll-fade>{subtitle}</p>
+            <div class="hero-buttons" data-scroll-fade>
+                <a href={primaryCta.href} class="btn btn-primary" data-magnetic data-ripple data-hover-glow>{primaryCta.text}</a>
+                <a href={secondaryCta.href} class="btn btn-secondary" data-magnetic data-ripple data-hover-glow="cyan">{secondaryCta.text}</a>
             </div>
         </div>
 
@@ -67,24 +67,24 @@ const {
                     <div class="scene-glow glow-purple"></div>
                     
                     <!-- Floating objects -->
-                    <div class="floating-object float-drink">
+                    <div class="floating-object float-drink" data-parallax="0.08">
                         <img src="/images/hero/drink.png" alt="Floating drink">
                     </div>
-                    <div class="floating-object float-cat">
+                    <div class="floating-object float-cat" data-parallax="-0.06">
                         <img src="/images/hero/cat.png" alt="Floating cat">
                     </div>
-                    <div class="floating-object float-cyber-head">
+                    <div class="floating-object float-cyber-head" data-parallax="0.1">
                         <img src="/images/hero/cyber-head.png" alt="Floating cyber head">
                     </div>
-                    
+
                     <!-- Main character -->
-                    <img src="/images/hero/character.png" alt="Ninja Character" class="floating-character">
-                    
+                    <img src="/images/hero/character.png" alt="Ninja Character" class="floating-character" data-parallax="0.02">
+
                     <!-- More floating objects (in front) -->
-                    <div class="floating-object float-katana">
+                    <div class="floating-object float-katana" data-parallax="-0.07">
                         <img src="/images/hero/katana.png" alt="Floating katana">
                     </div>
-                    <div class="floating-object float-cap">
+                    <div class="floating-object float-cap" data-parallax="0.05">
                         <img src="/images/hero/cap.png" alt="Floating cap">
                     </div>
                 </div>

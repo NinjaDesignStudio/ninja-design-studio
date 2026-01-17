@@ -101,7 +101,7 @@ const classes = [
 ---
 
 {href ? (
-  <a href={href} class={classes} {...rest}>
+  <a href={href} class={classes} data-magnetic data-ripple data-hover-glow {...rest}>
     <slot />
     {showArrow && (
       <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -110,7 +110,7 @@ const classes = [
     )}
   </a>
 ) : (
-  <button type={type} disabled={disabled} class={classes} {...rest}>
+  <button type={type} disabled={disabled} class={classes} data-magnetic data-ripple data-hover-glow {...rest}>
     <slot />
     {showArrow && (
       <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

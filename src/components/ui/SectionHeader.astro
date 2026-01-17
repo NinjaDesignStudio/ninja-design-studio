@@ -61,21 +61,21 @@ const maxWidths = {
 
 <header class:list={['section-header mb-12 md:mb-16', alignments[align], maxWidths[align], className]}>
   {eyebrow && (
-    <span class="section-eyebrow inline-block mb-4 text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-pink-500">
+    <span class="section-eyebrow inline-block mb-4 text-xs md:text-sm font-semibold uppercase tracking-[0.2em] text-pink-500" data-scroll-fade>
       {eyebrow}
     </span>
   )}
-  
+
   <h2 class:list={[
     'section-title font-bold leading-tight',
     sizes[size],
     gradient ? 'bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent' : 'text-white'
-  ]}>
+  ]} data-text-reveal>
     {title}
   </h2>
-  
+
   {subtitle && (
-    <p class="section-subtitle mt-4 md:mt-6 text-lg md:text-xl text-white/60 leading-relaxed">
+    <p class="section-subtitle mt-4 md:mt-6 text-lg md:text-xl text-white/60 leading-relaxed" data-scroll-fade>
       {subtitle}
     </p>
   )}
