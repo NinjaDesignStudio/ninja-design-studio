@@ -1,0 +1,345 @@
+---
+/**
+ * ProcessTimeline - Visualize the design process
+ * 
+ * Shows project phases with descriptions in a timeline format.
+ * Supports both horizontal and vertical layouts.
+ * 
+ * @example
+ * <ProcessTimeline
+ *   steps={[
+ *     { phase: 'Discovery', description: 'Research and strategy', duration: '1 week' },
+ *     { phase: 'Design', description: 'Visual exploration', duration: '2 weeks' },
+ *     { phase: 'Refinement', description: 'Iteration and polish', duration: '1 week' },
+ *     { phase: 'Delivery', description: 'Final handoff', duration: '3 days' },
+ *   ]}
+ * />
+ */
+interface Step {
+  /** Phase name */
+  phase: string;
+  /** Description of what happened in this phase */
+  description: string;
+  /** Duration of this phase */
+  duration?: string;
+  /** Key activities or outputs */
+  activities?: string[];
+}
+
+interface Props {
+  /** Process steps */
+  steps: Step[];
+  /** Section title */
+  title?: string;
+  /** Layout direction */
+  layout?: 'horizontal' | 'vertical';
+  /** Show step numbers */
+  showNumbers?: boolean;
+}
+
+const {
+  steps,
+  title = 'Our Process',
+  layout = 'vertical',
+  showNumbers = true,
+} = Astro.props;
+---
+
+<section class:list={['process-timeline', `process-timeline--${layout}`]}>
+  {title && (
+    <div class="process-timeline__header">
+      <span class="case-eyebrow">Process</span>
+      <h2 class="process-timeline__title">{title}</h2>
+    </div>
+  )}
+
+  <div class="process-timeline__steps">
+    {steps.map((step, index) => (
+      <div class="timeline-step reveal" style={`--delay: ${index * 0.15}s`}>
+        {/* Connector line */}
+        {index < steps.length - 1 && <div class="timeline-step__connector"></div>}
+        
+        {/* Step number/indicator */}
+        <div class="timeline-step__indicator">
+          {showNumbers ? (
+            <span class="step-number">{String(index + 1).padStart(2, '0')}</span>
+          ) : (
+            <span class="step-dot"></span>
+          )}
+        </div>
+
+        {/* Step content */}
+        <div class="timeline-step__content">
+          <div class="timeline-step__header">
+            <h3 class="timeline-step__phase">{step.phase}</h3>
+            {step.duration && (
+              <span class="timeline-step__duration">{step.duration}</span>
+            )}
+          </div>
+          <p class="timeline-step__description">{step.description}</p>
+          
+          {step.activities && step.activities.length > 0 && (
+            <ul class="timeline-step__activities">
+              {step.activities.map((activity) => (
+                <li>{activity}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .process-timeline {
+    padding: 4rem 0;
+  }
+
+  .process-timeline__header {
+    margin-bottom: 3rem;
+  }
+
+  .case-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .process-timeline__title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+  }
+
+  /* Vertical Layout (Default) */
+  .process-timeline--vertical .process-timeline__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .process-timeline--vertical .timeline-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    padding-bottom: 3rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.5s var(--ease-out);
+    transition-delay: var(--delay, 0s);
+  }
+
+  .process-timeline--vertical .timeline-step.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .process-timeline--vertical .timeline-step:last-child {
+    padding-bottom: 0;
+  }
+
+  .process-timeline--vertical .timeline-step__connector {
+    position: absolute;
+    left: 39px;
+    top: 50px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      var(--neon-pink),
+      rgba(255, 0, 110, 0.2)
+    );
+  }
+
+  .process-timeline--vertical .timeline-step:last-child .timeline-step__connector {
+    display: none;
+  }
+
+  /* Step Indicator */
+  .timeline-step__indicator {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 0.25rem;
+  }
+
+  .step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-pink);
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 30px rgba(255, 0, 110, 0.3);
+  }
+
+  .step-dot {
+    width: 16px;
+    height: 16px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Step Content */
+  .timeline-step__content {
+    padding-top: 0.25rem;
+  }
+
+  .timeline-step__header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .timeline-step__phase {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+  }
+
+  .timeline-step__duration {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neon-cyan);
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 100px;
+  }
+
+  .timeline-step__description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+  }
+
+  .timeline-step__activities {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .timeline-step__activities li {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0.35rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+  }
+
+  /* Horizontal Layout */
+  .process-timeline--horizontal .process-timeline__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .process-timeline--horizontal .timeline-step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s var(--ease-out);
+    transition-delay: var(--delay, 0s);
+  }
+
+  .process-timeline--horizontal .timeline-step.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .process-timeline--horizontal .timeline-step:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 0, 110, 0.2);
+  }
+
+  .process-timeline--horizontal .timeline-step__connector {
+    display: none;
+  }
+
+  .process-timeline--horizontal .timeline-step__indicator {
+    justify-content: flex-start;
+  }
+
+  .process-timeline--horizontal .step-number {
+    width: 40px;
+    height: 40px;
+    font-size: 0.75rem;
+  }
+
+  .process-timeline--horizontal .timeline-step__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .process-timeline--horizontal .timeline-step__phase {
+    font-size: 1.1rem;
+  }
+
+  .process-timeline--horizontal .timeline-step__description {
+    font-size: 0.9rem;
+  }
+
+  .process-timeline--horizontal .timeline-step__activities {
+    display: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .process-timeline--vertical .timeline-step {
+      grid-template-columns: 60px 1fr;
+      gap: 1.25rem;
+    }
+
+    .process-timeline--vertical .timeline-step__connector {
+      left: 29px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      font-size: 0.75rem;
+    }
+
+    .timeline-step__phase {
+      font-size: 1.1rem;
+    }
+
+    .timeline-step__description {
+      font-size: 0.95rem;
+    }
+  }
+</style>

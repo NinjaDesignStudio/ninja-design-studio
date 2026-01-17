@@ -1,148 +1,188 @@
-# 🥷 Ninja Design Studio
+# Ninja Design Studio - Astro Website
 
-Your Web3 design studio website, ready to deploy to Cloudflare Pages.
+A multi-page website built with [Astro](https://astro.build) for Ninja Design Studio.
 
----
-
-## 🚀 Quick Deploy (5 minutes)
-
-### Step 1: Set Up Contact Form (2 minutes)
-
-Before deploying, get your free Web3Forms access key:
-
-1. Go to [web3forms.com](https://web3forms.com)
-2. Enter your email address
-3. Check your inbox and copy the **Access Key**
-4. Open `index.html` and find this line (around line 2540):
-   ```html
-   <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
-   ```
-5. Replace `YOUR_ACCESS_KEY_HERE` with your actual access key
-
-### Step 2: Deploy to Cloudflare Pages (3 minutes)
-
-**Option A: Direct Upload (Easiest)**
-
-1. Go to [dash.cloudflare.com](https://dash.cloudflare.com)
-2. Click **Workers & Pages** in the sidebar
-3. Click **Create** → **Pages** tab → **Upload assets**
-4. Name your project (e.g., `ninja-design-studio`)
-5. Drag and drop the entire `ninja-design-studio` folder
-6. Click **Deploy**
-
-✅ Done! You'll get a URL like `ninja-design-studio.pages.dev`
-
-**Option B: Connect to GitHub (Better for ongoing updates)**
-
-1. Create a new GitHub repository
-2. Upload these files to the repo
-3. In Cloudflare Dashboard → **Workers & Pages** → **Create**
-4. Click **Pages** → **Connect to Git**
-5. Select your repository
-6. Build settings: Leave everything blank (it's just static HTML)
-7. Click **Save and Deploy**
-
----
-
-## 📁 File Structure
+## 🚀 Project Structure
 
 ```
 ninja-design-studio/
-├── index.html      # Your website (HTML, CSS, JS all-in-one)
-├── _headers        # Security headers for Cloudflare
-└── README.md       # This file
+├── public/
+│   └── images/           # Static images (copy from your repo)
+│       ├── hero/         # Hero character images
+│       ├── clients/      # Client logos
+│       ├── nds-logo.jpg
+│       ├── tailsbnb.jpg
+│       ├── ezo.jpg
+│       ├── moon-wanderlust.jpg
+│       ├── avalanche.jpg
+│       └── og-image.jpg
+├── src/
+│   ├── components/       # Reusable Astro components
+│   │   ├── Header.astro
+│   │   ├── Footer.astro
+│   │   ├── Hero.astro
+│   │   ├── ServiceCard.astro
+│   │   ├── WorkItem.astro
+│   │   ├── TestimonialCard.astro
+│   │   ├── FAQItem.astro
+│   │   ├── ContactForm.astro
+│   │   ├── ProjectModal.astro
+│   │   ├── PageLoader.astro
+│   │   └── BackToTop.astro
+│   ├── content/
+│   │   └── blog/         # Markdown blog posts
+│   ├── layouts/
+│   │   └── BaseLayout.astro
+│   ├── pages/
+│   │   ├── index.astro   # Home page
+│   │   ├── services.astro
+│   │   ├── work.astro
+│   │   ├── about.astro
+│   │   ├── contact.astro
+│   │   └── blog/
+│   │       ├── index.astro
+│   │       └── [slug].astro  # Dynamic blog posts
+│   └── styles/
+│       ├── global.css
+│       ├── hero.css
+│       ├── sections.css
+│       └── pages.css
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
 ```
 
+## 📦 Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Copy your images:**
+   Copy your existing images folder from your current repo into `public/images/`:
+   ```
+   public/images/
+   ├── hero/
+   │   ├── cap.png
+   │   ├── cat.png
+   │   ├── character.png
+   │   ├── cyber-head.png
+   │   ├── drink.png
+   │   └── katana.png
+   ├── clients/
+   │   ├── avalanche.png
+   │   ├── binamon.png
+   │   ├── ezo.png
+   │   ├── hkac.png
+   │   ├── kaddex.png
+   │   ├── kadena.png
+   │   ├── narutosushi.png
+   │   ├── pinksale.png
+   │   ├── pokemoon.png
+   │   ├── rugdoc.png
+   │   └── vsystems.png
+   ├── nds-logo.jpg
+   ├── tailsbnb.jpg
+   ├── ezo.jpg
+   ├── moon-wanderlust.jpg
+   ├── avalanche.jpg
+   └── og-image.jpg
+   ```
+
+3. **Run development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+5. **Preview production build:**
+   ```bash
+   npm run preview
+   ```
+
+## 📝 Adding Blog Posts
+
+Create new markdown files in `src/content/blog/`:
+
+```markdown
+---
+title: "Your Post Title"
+excerpt: "A brief description for the blog listing page."
+date: "2025-01-15"
+category: "Design"
+image: "/images/blog/your-image.jpg"  # optional
+author: "Ninja Design Studio"
 ---
 
-## 🔗 Adding Your Custom Domain
+Your markdown content here...
+```
 
-Once your site is live on `*.pages.dev`:
+## 🎨 Customization
 
-1. In Cloudflare Dashboard, go to your Pages project
-2. Click **Custom domains** tab
-3. Click **Set up a custom domain**
-4. Enter your domain (e.g., `ninjadesignstudio.com`)
-5. Follow the DNS instructions
-
-If your domain is already on Cloudflare, it auto-configures. Otherwise, you'll need to update DNS at your registrar.
-
----
-
-## ✏️ Making Updates
-
-**If using Direct Upload:**
-- Make changes to `index.html`
-- Go to your Pages project → **Deployments** → **Upload new version**
-
-**If using GitHub:**
-- Push changes to your repo
-- Cloudflare auto-deploys within seconds
-
----
-
-## 📧 Contact Form Details
-
-The form uses [Web3Forms](https://web3forms.com) which:
-- ✅ Free (250 submissions/month)
-- ✅ No backend required
-- ✅ Spam protection included
-- ✅ Sends emails to your inbox
-
-Form submissions will be emailed to whatever address you used to create your Web3Forms access key.
-
----
-
-## 🎨 Customization Tips
-
-### Change Colors
-Find the CSS variables at the top of `index.html` (around line 40):
+### Colors (in `src/styles/global.css`)
 ```css
---neon-pink: #ff006e;
---neon-cyan: #00f5ff;
---neon-purple: #bf00ff;
+:root {
+    --neon-pink: #ff006e;
+    --neon-cyan: #00f5ff;
+    --neon-purple: #bf00ff;
+    --dark: #0a0a0f;
+    --darker: #050508;
+}
 ```
 
-### Change Content
-All text content is in the HTML. Search for sections like:
-- `<!-- Hero -->` - Main headline
-- `<!-- Services -->` - Your service offerings
-- `<!-- Work -->` - Portfolio items
-- `<!-- Footer -->` - Contact info and links
+### Contact Form
+The contact form uses [Web3Forms](https://web3forms.com/). Update the access key in `src/components/ContactForm.astro` if needed.
 
-### Add Images
-1. Create an `images` folder
-2. Add your images
-3. Reference them in HTML: `<img src="images/your-image.jpg">`
+## 🚀 Deployment
+
+### Netlify / Vercel
+Just connect your GitHub repo - both platforms auto-detect Astro projects.
+
+### Manual
+```bash
+npm run build
+# Upload the `dist/` folder to your hosting
+```
+
+## 📄 Pages
+
+| Page | URL | Description |
+|------|-----|-------------|
+| Home | `/` | Main landing page with hero, services, work, testimonials |
+| Services | `/services` | Full services listing with pricing tiers |
+| Work | `/work` | Portfolio/case studies |
+| About | `/about` | Studio story and values |
+| Contact | `/contact` | Contact form and info |
+| Blog | `/blog` | Blog listing |
+| Blog Post | `/blog/[slug]` | Individual blog posts |
+
+## 🔧 Tech Stack
+
+- **Astro** - Static site generator
+- **CSS** - Custom CSS with CSS variables
+- **Web3Forms** - Form handling
+- **Fonts** - Outfit + Space Mono (Google Fonts)
+
+## 📱 Features
+
+- ✅ Fully responsive design
+- ✅ Page loading animation
+- ✅ Scroll reveal animations
+- ✅ Custom cursor (desktop only)
+- ✅ Mobile menu
+- ✅ Project modals
+- ✅ FAQ accordions
+- ✅ Contact form with validation
+- ✅ Blog with Markdown support
+- ✅ SEO optimized with Open Graph tags
+- ✅ Scroll progress indicator
+- ✅ Back to top button
 
 ---
 
-## 🆘 Troubleshooting
-
-**Form not working?**
-- Make sure you replaced `YOUR_ACCESS_KEY_HERE` with your actual key
-- Check your spam folder for the confirmation email from Web3Forms
-
-**Site not loading?**
-- Clear your browser cache
-- Check Cloudflare Pages dashboard for deployment errors
-
-**Custom domain not working?**
-- DNS changes can take up to 48 hours (usually 5-30 minutes)
-- Verify DNS records are correctly set
-
----
-
-## 📊 Free Features You Get
-
-With Cloudflare Pages free tier:
-- ✅ Unlimited bandwidth
-- ✅ Global CDN (330+ locations)
-- ✅ Free SSL certificate
-- ✅ DDoS protection
-- ✅ 500 builds/month
-- ✅ Unlimited preview deployments
-
----
-
-Made with 🖤 for Web3 builders
+Built with ❤️ by Ninja Design Studio

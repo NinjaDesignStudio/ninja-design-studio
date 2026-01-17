@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import WorkItem from '../components/WorkItem.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import FAQItem from '../components/FAQItem.astro';
+import ContactForm from '../components/ContactForm.astro';
+import ProjectModal from '../components/ProjectModal.astro';
+
+const services = [
+    { icon: '🤖', iconClass: 'icon-ai', title: 'AI & ML Visuals', description: 'Visual identities for AI startups and machine learning platforms that communicate innovation.' },
+    { icon: '✦', iconClass: 'icon-brand', title: 'Brand Identity', description: 'Complete brand systems including logos, typography, and comprehensive style guides.' },
+    { icon: '◈', iconClass: 'icon-web', title: 'Web & UI/UX', description: 'High-performance websites with stunning interfaces that convert visitors into customers.' },
+    { icon: '▶', iconClass: 'icon-video', title: 'Video & Motion', description: 'Animated logos, explainer videos, and motion graphics that capture attention.' },
+    { icon: '⬡', iconClass: 'icon-blockchain', title: 'Blockchain & Web3', description: 'Enterprise-grade design for DeFi platforms and professional crypto projects.' },
+    { icon: '🌐', iconClass: 'icon-3d', title: 'Website Creation', description: 'Custom websites built for speed and performance, plus ongoing maintenance to keep everything running smoothly.' },
+];
+
+const projects = [
+    { id: 'project1', tag: 'Pet Services', title: 'TailsBnB', description: 'Pet sitting website for Vancouver couple', gradientClass: 'work-1' },
+    { id: 'project2', tag: 'FinTech', title: 'EZO Platform', description: 'All-in-one crypto payment ecosystem', gradientClass: 'work-2' },
+    { id: 'project3', tag: 'Travel', title: 'Moon Wanderlust', description: 'Backpacker camping community platform', gradientClass: 'work-3' },
+    { id: 'project4', tag: 'Blockchain', title: 'Avalanche Ecosystem', description: 'Brand refresh and marketing website', gradientClass: 'work-4' },
+];
+
+const testimonials = [
+    { text: "Ninja Design Studio transformed our brand completely. Their understanding of Web3 design and graphics is unmatched! Our audience loved what they did for us and they helped our company get noticed.", authorInitials: 'JD', authorName: 'Rug Doctor', authorTitle: 'CEO, RugDoc' },
+    { text: "Ninja Design Studio delivered our complete brand identity and website in just weeks. Professional, fast, and they really get what works in crypto. We loved their graphics, pitchdecks, websites, videos, and more.", authorInitials: 'SK', authorName: 'Charles-André Bergeron', authorTitle: 'Founder, Ezo Finance' },
+    { text: "We've worked with many design agencies, but Ninja Design Studio is different. They went above and beyond for us, and helped our project sell out completely. We recommend EVERYONE to use them for their projects!", authorInitials: 'MR', authorName: 'Mike Rodriguez', authorTitle: 'Co-founder, NFT Platform' },
+];
+
+const faqs = [
+    { question: "What's your typical timeline for a project?", answer: "It depends on the scope. Brand identity systems typically take 2-4 weeks, websites 2-6 weeks, and pitch decks 1-2 weeks. We can work faster for urgent deadlines—just let us know your timeline when you reach out." },
+    { question: "Do you work with early-stage projects?", answer: "Yes, we work with projects at all stages—from pre-seed startups to established protocols. The key is having clarity on your goals and a budget that matches your ambitions. We're happy to discuss scope options that fit your situation." },
+    { question: "Do you accept token payments?", answer: "We primarily work in USDC/USDT and fiat, but we're open to discussing token arrangements for the right projects. This is typically structured as a hybrid payment model." },
+    { question: "Can you work with our existing developers?", answer: "Absolutely. We provide detailed design specs, component documentation, and developer handoff files. We're also happy to collaborate directly with your dev team during implementation to ensure pixel-perfect results." },
+    { question: "What makes you different from other design agencies?", answer: "We only do Web3. We've been in this space through multiple cycles and understand the culture, technology, and what users expect. No explaining what a DEX is. No generic corporate templates. Just design that works for crypto." },
+];
+
+const clients = [
+    'avalanche', 'binamon', 'rugdoc', 'hkac', 'kadena', 'ezo', 'pinksale', 'vsystems'
+];
+
+const stats = [
+    { number: '100', label: 'Projects Delivered' },
+    { number: '$50M+', label: 'Raised by Clients' },
+    { number: '5', label: 'Years in Web3' },
+    { number: '40', label: 'Brands Built' },
+];
+---
+
+<BaseLayout title="Web3 Design Partners">
+    <Hero 
+        title="Design that"
+        gradientText="moves business"
+        subtitle="We craft stunning visuals for AI companies, blockchain enterprises, and forward-thinking brands that demand excellence."
+    />
+
+    <!-- Video Intro Section -->
+    <section class="video-intro">
+        <div class="container">
+            <div class="video-text reveal-left">
+                <span class="section-tag">Why Choose Us</span>
+                <h2>We bring your vision to life</h2>
+                <p>Ninja Design Studio transforms ideas into stunning visual experiences that captivate audiences and drive real results for your business.</p>
+                <div class="video-features">
+                    <div class="video-feature">
+                        <div class="video-feature-icon">✓</div>
+                        <span>Pixel-perfect execution</span>
+                    </div>
+                    <div class="video-feature">
+                        <div class="video-feature-icon">✓</div>
+                        <span>Fast turnaround times</span>
+                    </div>
+                    <div class="video-feature">
+                        <div class="video-feature-icon">✓</div>
+                        <span>Ongoing support included</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-container reveal-right" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(0,245,255,0.1)); border: 1px solid rgba(255,255,255,0.1); aspect-ratio: auto; height: auto;">
+                <div class="video-corner video-corner-tl"></div>
+                <div class="video-corner video-corner-tr"></div>
+                <div class="video-corner video-corner-bl"></div>
+                <div class="video-corner video-corner-br"></div>
+                
+                <div style="text-align: center; padding: 3rem 2rem;">
+                    <div style="margin-bottom: 1rem;">
+                        <img src="/images/nds-logo.jpg" alt="NDS Logo" style="width: 100px; height: 100px; object-fit: contain; border-radius: 16px;">
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ff006e, #00f5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Ready to level up?</div>
+                    <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.95rem;">Let's create something extraordinary together.</p>
+                    <a href="/contact" class="btn btn-primary" style="display: inline-block; padding: 0.8rem 2rem;">Start Your Project →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                {stats.map((stat, i) => (
+                    <div class={`stat-item reveal stagger-${i + 1}`}>
+                        <div class="stat-number">{stat.number}</div>
+                        <div class="stat-label">{stat.label}</div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Marquee -->
+    <section class="clients">
+        <p class="clients-label">Trusted by innovative companies</p>
+        <div class="clients-track">
+            <div class="clients-logos">
+                {clients.map(client => (
+                    <img src={`/images/clients/${client}.png`} alt={client} class="client-logo">
+                ))}
+            </div>
+            <div class="clients-logos">
+                {clients.map(client => (
+                    <img src={`/images/clients/${client}.png`} alt={client} class="client-logo">
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="services-decor services-decor-1"></div>
+        <div class="services-decor services-decor-2"></div>
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">What We Do</span>
+                <h2 class="section-title">Services built for the future</h2>
+                <p class="section-subtitle">From AI-powered brands to enterprise blockchain, we design experiences that stand out.</p>
+            </div>
+            <div class="services-grid">
+                {services.map((service, i) => (
+                    <ServiceCard {...service} stagger={i + 1} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Section -->
+    <section class="work" id="work">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Selected Work</span>
+                <h2 class="section-title">Projects we're proud of</h2>
+                <p class="section-subtitle">A showcase of our best work across various industries.</p>
+            </div>
+            <div class="work-grid">
+                {projects.map((project, i) => (
+                    <WorkItem {...project} stagger={i + 1} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Testimonials</span>
+                <h2 class="section-title">What our clients say</h2>
+                <p class="section-subtitle">Don't just take our word for it.</p>
+            </div>
+            <div class="testimonials-grid">
+                {testimonials.map((testimonial, i) => (
+                    <TestimonialCard {...testimonial} stagger={i + 1} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="process">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Our Process</span>
+                <h2 class="section-title">How we bring ideas to life</h2>
+                <p class="section-subtitle">A streamlined approach that ensures quality at every step.</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step reveal stagger-1">
+                    <div class="process-number">01</div>
+                    <h3 class="process-title">Discovery</h3>
+                    <p class="process-desc">Deep dive into your brand and goals.</p>
+                </div>
+                <div class="process-step reveal stagger-2">
+                    <div class="process-number">02</div>
+                    <h3 class="process-title">Strategy</h3>
+                    <p class="process-desc">Develop creative direction and approach.</p>
+                </div>
+                <div class="process-step reveal stagger-3">
+                    <div class="process-number">03</div>
+                    <h3 class="process-title">Design</h3>
+                    <p class="process-desc">Craft stunning visuals with precision.</p>
+                </div>
+                <div class="process-step reveal stagger-4">
+                    <div class="process-number">04</div>
+                    <h3 class="process-title">Delivery</h3>
+                    <p class="process-desc">Polished assets ready to launch.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Common questions</h2>
+                <p class="section-subtitle">Everything you need to know about working with us.</p>
+            </div>
+            <div class="faq-list">
+                {faqs.map(faq => (
+                    <FAQItem question={faq.question} answer={faq.answer} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Contact Section -->
+    <section class="cta" id="contact">
+        <div class="cta-bg"></div>
+        <div class="cta-lines">
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+        </div>
+        <div class="container">
+            <div class="cta-content reveal">
+                <h2 class="cta-title">Ready to stand out?</h2>
+                <p class="cta-subtitle">Tell us about your project and let's create something extraordinary together.</p>
+                <ContactForm />
+            </div>
+        </div>
+    </section>
+
+    <ProjectModal />
+</BaseLayout>
+
+<script>
+    // Clients marquee animation
+    const track = document.querySelector('.clients-track') as HTMLElement;
+    if (track) {
+        let position = 0;
+        const speed = 0.5;
+        
+        function animate() {
+            position -= speed;
+            const firstLogos = track.querySelector('.clients-logos') as HTMLElement;
+            if (firstLogos && Math.abs(position) >= firstLogos.offsetWidth) {
+                position = 0;
+            }
+            track.style.transform = `translateX(${position}px)`;
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    }
+</script>

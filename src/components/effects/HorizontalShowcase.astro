@@ -1,0 +1,447 @@
+---
+/**
+ * HorizontalShowcase - Horizontal scroll project gallery
+ * 
+ * A scroll-jacked horizontal gallery for showcasing work.
+ * Projects scroll horizontally as user scrolls vertically.
+ * 
+ * Requires SmoothScroll component for GSAP ScrollTrigger.
+ * 
+ * @example
+ * <HorizontalShowcase projects={[...]} />
+ */
+import { projects } from '../../lib/projects';
+
+interface Props {
+  /** Title above the showcase */
+  title?: string;
+  /** Subtitle/description */
+  subtitle?: string;
+  /** Number of projects to show */
+  limit?: number;
+}
+
+const {
+  title = "Selected Work",
+  subtitle = "Projects that pushed boundaries",
+  limit = 6,
+} = Astro.props;
+
+const featuredProjects = projects.slice(0, limit);
+---
+
+<section class="horizontal-showcase gsap-horizontal">
+  <div class="showcase-header gsap-reveal">
+    <span class="showcase-eyebrow">Portfolio</span>
+    <h2 class="showcase-title">{title}</h2>
+    <p class="showcase-subtitle">{subtitle}</p>
+  </div>
+
+  <div class="showcase-wrapper gsap-horizontal-wrapper">
+    <!-- Intro Card -->
+    <div class="showcase-intro">
+      <div class="intro-content">
+        <span class="intro-number">01—0{featuredProjects.length}</span>
+        <h3>Scroll to explore</h3>
+        <div class="scroll-indicator">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Cards -->
+    {featuredProjects.map((project, index) => (
+      <a 
+        href={`/work/${project.slug}`} 
+        class="showcase-card"
+        data-cursor="view"
+      >
+        <div class="card-image">
+          <img 
+            src={project.thumbnail || '/images/placeholder-project.jpg'} 
+            alt={project.title}
+            loading="lazy"
+          />
+          <div class="card-overlay"></div>
+        </div>
+        <div class="card-content">
+          <span class="card-index">0{index + 1}</span>
+          <div class="card-info">
+            <span class="card-category">{project.category}</span>
+            <h3 class="card-title">{project.title}</h3>
+            <p class="card-description">{project.shortDescription}</p>
+          </div>
+          <div class="card-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </div>
+        </div>
+      </a>
+    ))}
+
+    <!-- End Card -->
+    <div class="showcase-end">
+      <div class="end-content">
+        <h3>Want to see more?</h3>
+        <a href="/work" class="end-link magnetic">
+          <span>View All Work</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="showcase-progress">
+    <div class="progress-track">
+      <div class="progress-fill" id="showcaseProgress"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .horizontal-showcase {
+    position: relative;
+    background: var(--darker);
+    overflow: hidden;
+  }
+
+  /* Header */
+  .showcase-header {
+    padding: 6rem 2rem 3rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .showcase-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1rem;
+  }
+
+  .showcase-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .showcase-subtitle {
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+  }
+
+  /* Horizontal Wrapper */
+  .showcase-wrapper {
+    display: flex;
+    padding: 2rem 0 4rem;
+  }
+
+  /* Intro Card */
+  .showcase-intro {
+    flex-shrink: 0;
+    width: 50vw;
+    min-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .intro-content {
+    text-align: center;
+  }
+
+  .intro-number {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.4);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .intro-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .scroll-indicator {
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    animation: pulse-arrow 2s ease infinite;
+  }
+
+  .scroll-indicator svg {
+    width: 24px;
+    height: 24px;
+    color: var(--neon-cyan);
+  }
+
+  @keyframes pulse-arrow {
+    0%, 100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(10px);
+      opacity: 0.5;
+    }
+  }
+
+  /* Project Cards */
+  .showcase-card {
+    flex-shrink: 0;
+    width: 70vw;
+    max-width: 800px;
+    margin-right: 3rem;
+    position: relative;
+    text-decoration: none;
+    display: block;
+    border-radius: 24px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .showcase-card:hover {
+    transform: scale(0.98);
+  }
+
+  .card-image {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .showcase-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  }
+
+  .card-content {
+    position: absolute;
+    inset: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-index {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: auto;
+  }
+
+  .card-info {
+    margin-top: auto;
+  }
+
+  .card-category {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neon-pink);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .card-description {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    max-width: 400px;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translate(-10px, 10px);
+    transition: all 0.4s ease;
+  }
+
+  .card-arrow svg {
+    width: 20px;
+    height: 20px;
+    color: var(--white);
+  }
+
+  .showcase-card:hover .card-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    background: var(--neon-pink);
+    border-color: var(--neon-pink);
+  }
+
+  /* End Card */
+  .showcase-end {
+    flex-shrink: 0;
+    width: 50vw;
+    min-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .end-content {
+    text-align: center;
+  }
+
+  .end-content h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1.5rem;
+  }
+
+  .end-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: var(--gradient-pink);
+    border-radius: 100px;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .end-link:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(255, 0, 110, 0.3);
+  }
+
+  .end-link svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Progress */
+  .showcase-progress {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+  }
+
+  .progress-track {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+    border-radius: 2px;
+  }
+
+  /* Responsive - Disable horizontal scroll on mobile */
+  @media (max-width: 1024px) {
+    .horizontal-showcase {
+      /* Convert to vertical scroll */
+    }
+
+    .showcase-wrapper {
+      flex-direction: column;
+      padding: 0 1.5rem 4rem;
+    }
+
+    .showcase-intro,
+    .showcase-end {
+      width: 100%;
+      min-width: unset;
+      padding: 2rem 0;
+    }
+
+    .showcase-card {
+      width: 100%;
+      max-width: none;
+      margin-right: 0;
+      margin-bottom: 2rem;
+    }
+
+    .showcase-progress {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Update progress bar based on horizontal scroll
+  document.addEventListener('DOMContentLoaded', () => {
+    const progressFill = document.getElementById('showcaseProgress');
+    const section = document.querySelector('.horizontal-showcase');
+    
+    if (!progressFill || !section || window.innerWidth <= 1024) return;
+
+    // Wait for GSAP ScrollTrigger
+    const checkScrollTrigger = setInterval(() => {
+      if (window.ScrollTrigger) {
+        clearInterval(checkScrollTrigger);
+        
+        window.ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: 'bottom bottom',
+          onUpdate: (self) => {
+            progressFill.style.width = `${self.progress * 100}%`;
+          },
+        });
+      }
+    }, 100);
+  });
+</script>

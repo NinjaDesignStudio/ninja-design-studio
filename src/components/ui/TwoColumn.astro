@@ -1,0 +1,63 @@
+---
+/**
+ * TwoColumn - Two-column grid layout for text + media sections
+ * 
+ * @example
+ * <TwoColumn reverse>
+ *   <Fragment slot="content">
+ *     <h2>Title</h2>
+ *     <p>Description</p>
+ *   </Fragment>
+ *   <Fragment slot="media">
+ *     <img src="image.jpg" alt="Description" />
+ *   </Fragment>
+ * </TwoColumn>
+ */
+
+interface Props {
+  /** Reverse column order (media first on desktop) */
+  reverse?: boolean;
+  /** Vertical alignment */
+  align?: 'start' | 'center' | 'end';
+  /** Gap between columns */
+  gap?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  reverse = false,
+  align = 'center',
+  gap = 'lg',
+  class: className = '',
+} = Astro.props;
+
+const alignments: Record<NonNullable<Props['align']>, string> = {
+  start: 'items-start',
+  center: 'items-center',
+  end: 'items-end',
+};
+
+const gaps: Record<NonNullable<Props['gap']>, string> = {
+  sm: 'gap-6',
+  md: 'gap-8 lg:gap-12',
+  lg: 'gap-12 lg:gap-16',
+  xl: 'gap-16 lg:gap-24',
+};
+
+const classes = [
+  'grid lg:grid-cols-2',
+  alignments[align],
+  gaps[gap],
+  className,
+].filter(Boolean).join(' ');
+---
+
+<div class={classes}>
+  <div class:list={[reverse ? 'lg:order-2' : '', 'space-y-6']}>
+    <slot name="content" />
+  </div>
+  <div class:list={[reverse ? 'lg:order-1' : '']}>
+    <slot name="media" />
+  </div>
+</div>

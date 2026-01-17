@@ -1,0 +1,239 @@
+---
+/**
+ * NextProject - Navigation to next case study
+ * 
+ * A visually prominent CTA to view the next project in the portfolio.
+ * Typically placed at the end of a case study.
+ * 
+ * @example
+ * <NextProject
+ *   title="Uniswap V4 Design System"
+ *   subtitle="Next Project"
+ *   href="/work/uniswap-v4"
+ *   image="/images/work/uniswap-thumb.jpg"
+ *   category="Brand Identity"
+ * />
+ */
+interface Props {
+  /** Project title */
+  title: string;
+  /** Label text */
+  subtitle?: string;
+  /** Link to the project */
+  href: string;
+  /** Preview image */
+  image?: string;
+  /** Project category */
+  category?: string;
+  /** Include "View All Work" link */
+  showAllWork?: boolean;
+}
+
+const {
+  title,
+  subtitle = 'Next Project',
+  href,
+  image,
+  category,
+  showAllWork = true,
+} = Astro.props;
+---
+
+<nav class="next-project" aria-label="Navigate to next project">
+  <a href={href} class="next-project__link">
+    {/* Background Image */}
+    {image && (
+      <div class="next-project__bg">
+        <img src={image} alt="" aria-hidden="true" />
+        <div class="next-project__overlay"></div>
+      </div>
+    )}
+
+    {/* Content */}
+    <div class="next-project__content">
+      <span class="next-project__subtitle">{subtitle}</span>
+      <h3 class="next-project__title">
+        {title}
+        <svg class="next-project__arrow" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </h3>
+      {category && <span class="next-project__category">{category}</span>}
+    </div>
+  </a>
+
+  {/* View All Work Link */}
+  {showAllWork && (
+    <div class="next-project__all">
+      <a href="/work" class="all-work-link">
+        <span>View All Work</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </a>
+    </div>
+  )}
+</nav>
+
+<style>
+  .next-project {
+    position: relative;
+    background: var(--darker);
+    overflow: hidden;
+  }
+
+  .next-project__link {
+    position: relative;
+    display: block;
+    min-height: 400px;
+    text-decoration: none;
+    color: var(--white);
+    overflow: hidden;
+  }
+
+  /* Background Image */
+  .next-project__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .next-project__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease-out), filter 0.6s;
+    filter: grayscale(50%) brightness(0.5);
+  }
+
+  .next-project__link:hover .next-project__bg img {
+    transform: scale(1.05);
+    filter: grayscale(0%) brightness(0.4);
+  }
+
+  .next-project__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(5, 5, 8, 0.9) 0%,
+      rgba(5, 5, 8, 0.7) 50%,
+      rgba(5, 5, 8, 0.8) 100%
+    );
+  }
+
+  /* Content */
+  .next-project__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 400px;
+    padding: 4rem 2rem;
+  }
+
+  .next-project__subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .next-project__title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: color 0.3s;
+  }
+
+  .next-project__link:hover .next-project__title {
+    color: var(--neon-cyan);
+  }
+
+  .next-project__arrow {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s var(--ease-out);
+  }
+
+  .next-project__link:hover .next-project__arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .next-project__category {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* View All Work */
+  .next-project__all {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .all-work-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    transition: all 0.3s var(--ease-out);
+  }
+
+  .all-work-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--neon-cyan);
+  }
+
+  .all-work-link svg {
+    opacity: 0.6;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .next-project__link {
+      min-height: 300px;
+    }
+
+    .next-project__content {
+      min-height: 300px;
+      padding: 3rem 1.5rem;
+    }
+
+    .next-project__title {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .next-project__arrow {
+      display: none;
+    }
+  }
+</style>

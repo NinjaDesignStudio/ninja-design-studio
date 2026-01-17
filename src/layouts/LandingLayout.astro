@@ -1,0 +1,165 @@
+---
+/**
+ * LandingLayout - For conversion-focused landing pages
+ * 
+ * Uses MinimalHeader and MinimalFooter to reduce distractions
+ * and keep focus on the conversion goal.
+ * 
+ * @example
+ * <LandingLayout 
+ *   title="Get Your Free Brand Audit"
+ *   ctaText="Get Started"
+ *   ctaHref="/contact"
+ * >
+ *   <section>Landing page content...</section>
+ * </LandingLayout>
+ */
+import MinimalHeader from '../components/MinimalHeader.astro';
+import MinimalFooter from '../components/MinimalFooter.astro';
+import BackToTop from '../components/BackToTop.astro';
+
+interface Props {
+  /** Page title */
+  title: string;
+  /** Meta description */
+  description?: string;
+  /** Header CTA text */
+  ctaText?: string;
+  /** Header CTA link */
+  ctaHref?: string;
+  /** Show back link instead of logo */
+  showBackLink?: boolean;
+  /** Back link href */
+  backHref?: string;
+  /** Back link text */
+  backText?: string;
+  /** Theme */
+  theme?: 'dark' | 'light';
+  /** OG image */
+  ogImage?: string;
+  /** Noindex the page */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "Premium design services for Web3 and blockchain projects.",
+  ctaText,
+  ctaHref = '/contact',
+  showBackLink = false,
+  backHref = '/',
+  backText = 'Back',
+  theme = 'dark',
+  ogImage,
+  noindex = true,
+} = Astro.props;
+
+const siteUrl = Astro.site?.origin || "https://ninjadesignstudio.com";
+const currentUrl = new URL(Astro.url.pathname, siteUrl).href;
+const fullOgImage = ogImage?.startsWith('http') ? ogImage : new URL(ogImage || '/images/og-image.jpg', siteUrl).href;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title>{title} | Ninja Design Studio</title>
+  <meta name="title" content={`${title} | Ninja Design Studio`}>
+  <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href={currentUrl}>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={currentUrl}>
+  <meta property="og:title" content={`${title} | Ninja Design Studio`}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={fullOgImage}>
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={`${title} | Ninja Design Studio`}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={fullOgImage}>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="/images/nds-logo.jpg">
+  <link rel="apple-touch-icon" href="/images/nds-logo.jpg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <slot name="head" />
+</head>
+
+<body class:list={['landing-page', `landing-page--${theme}`]}>
+  <!-- Minimal Header -->
+  <MinimalHeader 
+    ctaText={ctaText}
+    ctaHref={ctaHref}
+    showBackLink={showBackLink}
+    backHref={backHref}
+    backText={backText}
+    theme={theme}
+  />
+  
+  <!-- Main Content -->
+  <main>
+    <slot />
+  </main>
+  
+  <!-- Minimal Footer -->
+  <slot name="footer">
+    <MinimalFooter 
+      theme={theme}
+      showLinks={true}
+      showSocials={true}
+    />
+  </slot>
+  
+  <BackToTop />
+  
+  <slot name="scripts" />
+  
+  <script>
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop?.classList.toggle('visible', window.pageYOffset > 500);
+    });
+    backToTop?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+
+  .landing-page {
+    min-height: 100vh;
+  }
+
+  .landing-page--dark {
+    background: var(--darker);
+    color: var(--white);
+  }
+
+  .landing-page--light {
+    background: var(--white);
+    color: var(--dark);
+  }
+
+  /* Add padding for fixed header */
+  .landing-page main {
+    padding-top: 70px;
+  }
+</style>

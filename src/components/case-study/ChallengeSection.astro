@@ -1,0 +1,373 @@
+---
+/**
+ * ChallengeSection - Problem/Challenge/Solution layout
+ * 
+ * A structured way to present the project challenge and approach.
+ * Great for the "The Challenge" section of case studies.
+ * 
+ * @example
+ * <ChallengeSection
+ *   challenge="The existing brand felt outdated and didn't reflect the protocol's innovation."
+ *   problems={[
+ *     'Inconsistent visual identity across platforms',
+ *     'Complex UI patterns confusing users',
+ *     'Low trust signals for institutional clients',
+ *   ]}
+ *   approach="We started with deep stakeholder research..."
+ * />
+ */
+interface Props {
+  /** Main challenge description */
+  challenge?: string;
+  /** List of specific problems */
+  problems?: string[];
+  /** Our approach/solution overview */
+  approach?: string;
+  /** Section title */
+  title?: string;
+  /** Layout variant */
+  variant?: 'default' | 'split' | 'stacked';
+}
+
+const {
+  challenge,
+  problems = [],
+  approach,
+  title = 'The Challenge',
+  variant = 'default',
+} = Astro.props;
+---
+
+<section class:list={['challenge-section', `challenge-section--${variant}`]}>
+  <div class="challenge-section__container">
+    {/* Header */}
+    <div class="challenge-section__header reveal">
+      <span class="case-eyebrow">Challenge</span>
+      <h2 class="challenge-section__title">{title}</h2>
+    </div>
+
+    {variant === 'split' ? (
+      <!-- Split Layout -->
+      <div class="challenge-section__split">
+        <div class="challenge-section__left reveal-left">
+          {challenge && (
+            <p class="challenge-section__description lead">{challenge}</p>
+          )}
+          {problems.length > 0 && (
+            <div class="challenge-section__problems">
+              <h4 class="problems-title">Key Issues</h4>
+              <ul class="problems-list">
+                {problems.map((problem) => (
+                  <li>{problem}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+        <div class="challenge-section__right reveal-right">
+          {approach && (
+            <div class="challenge-section__approach">
+              <h4 class="approach-title">Our Approach</h4>
+              <p>{approach}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    ) : variant === 'stacked' ? (
+      <!-- Stacked Layout -->
+      <div class="challenge-section__stacked">
+        {challenge && (
+          <div class="challenge-block reveal">
+            <p class="lead">{challenge}</p>
+          </div>
+        )}
+        
+        {problems.length > 0 && (
+          <div class="problems-block reveal">
+            <h4 class="problems-title">The Problems</h4>
+            <div class="problems-grid">
+              {problems.map((problem, index) => (
+                <div class="problem-card" style={`--delay: ${index * 0.1}s`}>
+                  <span class="problem-number">{String(index + 1).padStart(2, '0')}</span>
+                  <p>{problem}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {approach && (
+          <div class="approach-block reveal">
+            <h4 class="approach-title">The Approach</h4>
+            <p>{approach}</p>
+          </div>
+        )}
+      </div>
+    ) : (
+      <!-- Default Layout -->
+      <div class="challenge-section__default">
+        {challenge && (
+          <p class="challenge-section__description lead reveal">{challenge}</p>
+        )}
+
+        {problems.length > 0 && (
+          <div class="challenge-section__problems reveal">
+            <ul class="problems-list problems-list--cards">
+              {problems.map((problem, index) => (
+                <li style={`--delay: ${index * 0.1}s`}>{problem}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {approach && (
+          <div class="challenge-section__approach reveal">
+            <h4 class="approach-title">Our Approach</h4>
+            <p>{approach}</p>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .challenge-section {
+    padding: 5rem 0;
+  }
+
+  .challenge-section__container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Header */
+  .challenge-section__header {
+    margin-bottom: 3rem;
+  }
+
+  .case-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .challenge-section__title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+  }
+
+  /* Lead Description */
+  .challenge-section__description {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2.5rem;
+  }
+
+  .lead {
+    font-size: 1.375rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Problems List */
+  .problems-title,
+  .approach-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--neon-cyan);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .problems-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .problems-list li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .problems-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    background: var(--neon-pink);
+    border-radius: 2px;
+    transform: rotate(45deg);
+  }
+
+  /* Card-style problems list */
+  .problems-list--cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .problems-list--cards li {
+    padding: 1.25rem 1.5rem 1.25rem 3rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    margin: 0;
+    transition: all 0.3s var(--ease-out);
+    transition-delay: var(--delay, 0s);
+  }
+
+  .problems-list--cards li:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 0, 110, 0.2);
+    transform: translateX(4px);
+  }
+
+  .problems-list--cards li::before {
+    left: 1.25rem;
+    top: 1.5rem;
+  }
+
+  /* Approach */
+  .challenge-section__approach {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(0, 245, 255, 0.05);
+    border-left: 3px solid var(--neon-cyan);
+    border-radius: 0 12px 12px 0;
+  }
+
+  .challenge-section__approach p {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+  }
+
+  /* Split Layout */
+  .challenge-section--split .challenge-section__split {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .challenge-section--split .challenge-section__left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .challenge-section--split .challenge-section__description {
+    margin-bottom: 0;
+  }
+
+  .challenge-section--split .challenge-section__approach {
+    margin-top: 0;
+  }
+
+  /* Stacked Layout */
+  .challenge-section--stacked .challenge-section__stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .challenge-section--stacked .challenge-block {
+    max-width: 800px;
+  }
+
+  .challenge-section--stacked .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .problem-card {
+    position: relative;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    transition: all 0.3s var(--ease-out);
+    transition-delay: var(--delay, 0s);
+  }
+
+  .problem-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 0, 110, 0.2);
+    transform: translateY(-4px);
+  }
+
+  .problem-number {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--neon-pink);
+    margin-bottom: 0.75rem;
+  }
+
+  .problem-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+  }
+
+  .challenge-section--stacked .approach-block {
+    max-width: 800px;
+  }
+
+  .approach-block p {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .challenge-section--split .challenge-section__split {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .challenge-section {
+      padding: 3rem 0;
+    }
+
+    .challenge-section__container {
+      padding: 0 1.5rem;
+    }
+
+    .challenge-section__description,
+    .lead {
+      font-size: 1.0625rem;
+    }
+
+    .challenge-section--stacked .problems-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

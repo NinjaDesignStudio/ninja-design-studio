@@ -1,0 +1,167 @@
+---
+/**
+ * GradientMesh - Animated gradient mesh background
+ * 
+ * Creates a living, breathing gradient background with multiple
+ * animated color blobs. Award-winning visual effect.
+ * 
+ * @example
+ * <GradientMesh />
+ * 
+ * @example Custom colors
+ * <GradientMesh colors={['#ff006e', '#00f5ff', '#8338ec']} />
+ */
+
+interface Props {
+  /** Gradient colors */
+  colors?: string[];
+  /** Animation speed in seconds */
+  speed?: number;
+  /** Blur amount */
+  blur?: number;
+  /** Overall opacity */
+  opacity?: number;
+  /** Fixed position (for hero backgrounds) */
+  fixed?: boolean;
+}
+
+const {
+  colors = ['#ff006e', '#00f5ff', '#8338ec', '#ff006e'],
+  speed = 20,
+  blur = 100,
+  opacity = 0.4,
+  fixed = false,
+} = Astro.props;
+---
+
+<div 
+  class="gradient-mesh" 
+  class:list={[{ fixed }]}
+  style={`--mesh-blur: ${blur}px; --mesh-opacity: ${opacity}; --mesh-speed: ${speed}s;`}
+  aria-hidden="true"
+>
+  {colors.map((color, i) => (
+    <div 
+      class="gradient-blob" 
+      style={`--blob-color: ${color}; --blob-delay: ${i * (speed / colors.length)}s; --blob-index: ${i};`}
+    />
+  ))}
+</div>
+
+<style>
+  .gradient-mesh {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    opacity: var(--mesh-opacity);
+    filter: blur(var(--mesh-blur));
+  }
+
+  .gradient-mesh.fixed {
+    position: fixed;
+    z-index: -1;
+  }
+
+  .gradient-blob {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle at center, var(--blob-color) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: blob-float var(--mesh-speed) ease-in-out infinite;
+    animation-delay: calc(var(--blob-delay) * -1);
+  }
+
+  /* Position blobs in different corners */
+  .gradient-blob:nth-child(1) {
+    top: -10%;
+    left: -10%;
+    animation-name: blob-float-1;
+  }
+
+  .gradient-blob:nth-child(2) {
+    top: -10%;
+    right: -10%;
+    animation-name: blob-float-2;
+  }
+
+  .gradient-blob:nth-child(3) {
+    bottom: -10%;
+    left: -10%;
+    animation-name: blob-float-3;
+  }
+
+  .gradient-blob:nth-child(4) {
+    bottom: -10%;
+    right: -10%;
+    animation-name: blob-float-4;
+  }
+
+  @keyframes blob-float-1 {
+    0%, 100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    25% {
+      transform: translate(30%, 20%) scale(1.1);
+    }
+    50% {
+      transform: translate(20%, 40%) scale(0.9);
+    }
+    75% {
+      transform: translate(-10%, 20%) scale(1.05);
+    }
+  }
+
+  @keyframes blob-float-2 {
+    0%, 100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    25% {
+      transform: translate(-30%, 30%) scale(1.15);
+    }
+    50% {
+      transform: translate(-20%, 10%) scale(0.95);
+    }
+    75% {
+      transform: translate(10%, 25%) scale(1);
+    }
+  }
+
+  @keyframes blob-float-3 {
+    0%, 100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    25% {
+      transform: translate(25%, -25%) scale(0.9);
+    }
+    50% {
+      transform: translate(40%, -10%) scale(1.1);
+    }
+    75% {
+      transform: translate(15%, -30%) scale(1);
+    }
+  }
+
+  @keyframes blob-float-4 {
+    0%, 100% {
+      transform: translate(0%, 0%) scale(1);
+    }
+    25% {
+      transform: translate(-20%, -30%) scale(1.1);
+    }
+    50% {
+      transform: translate(-35%, -15%) scale(0.95);
+    }
+    75% {
+      transform: translate(-10%, -25%) scale(1.05);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .gradient-blob {
+      animation: none;
+    }
+  }
+</style>

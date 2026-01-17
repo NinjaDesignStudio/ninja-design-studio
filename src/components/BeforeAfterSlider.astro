@@ -1,0 +1,355 @@
+---
+/**
+ * BeforeAfterSlider - Image comparison slider
+ * 
+ * Interactive slider to compare before/after images.
+ * Perfect for case studies showing design transformations.
+ * 
+ * @example
+ * <BeforeAfterSlider
+ *   beforeImage="/images/old-design.jpg"
+ *   afterImage="/images/new-design.jpg"
+ *   beforeLabel="Before"
+ *   afterLabel="After"
+ * />
+ */
+
+interface Props {
+  /** Before image URL */
+  beforeImage: string;
+  /** After image URL */
+  afterImage: string;
+  /** Before label text */
+  beforeLabel?: string;
+  /** After label text */
+  afterLabel?: string;
+  /** Alt text for before image */
+  beforeAlt?: string;
+  /** Alt text for after image */
+  afterAlt?: string;
+  /** Initial slider position (0-100) */
+  initialPosition?: number;
+  /** Aspect ratio (e.g., "16/9", "4/3", "1/1") */
+  aspectRatio?: string;
+}
+
+const {
+  beforeImage,
+  afterImage,
+  beforeLabel = "Before",
+  afterLabel = "After",
+  beforeAlt = "Before image",
+  afterAlt = "After image",
+  initialPosition = 50,
+  aspectRatio = "16/9",
+} = Astro.props;
+
+// Generate unique ID for this instance
+const sliderId = `ba-slider-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div 
+  class="ba-slider" 
+  id={sliderId}
+  style={`--initial-position: ${initialPosition}%; --aspect-ratio: ${aspectRatio};`}
+>
+  <!-- After Image (Background) -->
+  <div class="ba-after">
+    <img src={afterImage} alt={afterAlt} loading="lazy" draggable="false" />
+    <span class="ba-label ba-label--after">{afterLabel}</span>
+  </div>
+
+  <!-- Before Image (Clipped) -->
+  <div class="ba-before" style={`width: ${initialPosition}%;`}>
+    <img src={beforeImage} alt={beforeAlt} loading="lazy" draggable="false" />
+    <span class="ba-label ba-label--before">{beforeLabel}</span>
+  </div>
+
+  <!-- Slider Handle -->
+  <div class="ba-handle" style={`left: ${initialPosition}%;`}>
+    <div class="ba-handle-line"></div>
+    <div class="ba-handle-circle">
+      <svg class="ba-arrow ba-arrow--left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      <svg class="ba-arrow ba-arrow--right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Range Input (for accessibility) -->
+  <input 
+    type="range" 
+    min="0" 
+    max="100" 
+    value={initialPosition}
+    class="ba-range"
+    aria-label="Before and after comparison slider"
+  />
+</div>
+
+<style>
+  .ba-slider {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--aspect-ratio);
+    overflow: hidden;
+    border-radius: 20px;
+    cursor: col-resize;
+    user-select: none;
+    background: var(--darker);
+  }
+
+  /* Images */
+  .ba-after,
+  .ba-before {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .ba-before {
+    z-index: 2;
+    width: var(--initial-position);
+  }
+
+  .ba-slider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .ba-before img {
+    /* Ensure the before image matches the container width, not the clipped area */
+    width: auto;
+    min-width: 100%;
+  }
+
+  /* Labels */
+  .ba-label {
+    position: absolute;
+    bottom: 1.25rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .ba-label--before {
+    left: 1.25rem;
+  }
+
+  .ba-label--after {
+    right: 1.25rem;
+  }
+
+  /* Handle */
+  .ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--initial-position);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .ba-handle-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .ba-handle-circle {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+  }
+
+  .ba-slider:hover .ba-handle-circle,
+  .ba-slider:active .ba-handle-circle {
+    transform: scale(1.1);
+  }
+
+  .ba-arrow {
+    width: 16px;
+    height: 16px;
+    color: var(--darker);
+  }
+
+  .ba-arrow--left {
+    margin-right: 2px;
+  }
+
+  .ba-arrow--right {
+    margin-left: 2px;
+  }
+
+  /* Hidden range input for accessibility */
+  .ba-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: col-resize;
+    z-index: 10;
+    margin: 0;
+  }
+
+  /* Focus state for accessibility */
+  .ba-range:focus-visible + .ba-handle .ba-handle-circle {
+    outline: 3px solid var(--neon-cyan);
+    outline-offset: 2px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .ba-slider {
+      border-radius: 16px;
+    }
+
+    .ba-handle-circle {
+      width: 40px;
+      height: 40px;
+    }
+
+    .ba-arrow {
+      width: 14px;
+      height: 14px;
+    }
+
+    .ba-label {
+      font-size: 0.65rem;
+      padding: 0.375rem 0.75rem;
+      bottom: 1rem;
+    }
+
+    .ba-label--before {
+      left: 1rem;
+    }
+
+    .ba-label--after {
+      right: 1rem;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .ba-handle-circle {
+      transition: none;
+    }
+  }
+</style>
+
+<script define:vars={{ sliderId }}>
+  const slider = document.getElementById(sliderId);
+  if (slider) {
+    const beforeEl = slider.querySelector('.ba-before') as HTMLElement;
+    const handleEl = slider.querySelector('.ba-handle') as HTMLElement;
+    const rangeInput = slider.querySelector('.ba-range') as HTMLInputElement;
+    const beforeImg = beforeEl?.querySelector('img') as HTMLImageElement;
+
+    let isDragging = false;
+    let sliderRect: DOMRect;
+
+    // Calculate slider bounds
+    function updateBounds() {
+      sliderRect = slider.getBoundingClientRect();
+      // Update before image width to match container
+      if (beforeImg) {
+        beforeImg.style.width = `${sliderRect.width}px`;
+      }
+    }
+
+    // Update slider position
+    function updatePosition(clientX: number) {
+      if (!sliderRect) updateBounds();
+      
+      const x = clientX - sliderRect.left;
+      let percent = (x / sliderRect.width) * 100;
+      
+      // Clamp between 0 and 100
+      percent = Math.max(0, Math.min(100, percent));
+      
+      // Update elements
+      if (beforeEl) beforeEl.style.width = `${percent}%`;
+      if (handleEl) handleEl.style.left = `${percent}%`;
+      if (rangeInput) rangeInput.value = String(percent);
+    }
+
+    // Mouse events
+    slider.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      updateBounds();
+      updatePosition(e.clientX);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      updatePosition(e.clientX);
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    // Touch events
+    slider.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      updateBounds();
+      updatePosition(e.touches[0].clientX);
+    });
+
+    slider.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      updatePosition(e.touches[0].clientX);
+    });
+
+    slider.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Range input (keyboard accessibility)
+    rangeInput?.addEventListener('input', () => {
+      const percent = parseFloat(rangeInput.value);
+      if (beforeEl) beforeEl.style.width = `${percent}%`;
+      if (handleEl) handleEl.style.left = `${percent}%`;
+    });
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      updateBounds();
+    });
+
+    // Initial setup
+    updateBounds();
+  }
+</script>

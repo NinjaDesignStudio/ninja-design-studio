@@ -1,0 +1,84 @@
+---
+/**
+ * Card - Reusable card container with variants
+ * 
+ * @example
+ * <Card variant="elevated">
+ *   <h3>Title</h3>
+ *   <p>Content</p>
+ * </Card>
+ * 
+ * <Card variant="glass" href="/link">
+ *   Clickable card
+ * </Card>
+ */
+
+interface Props {
+  /** Visual variant */
+  variant?: 'default' | 'elevated' | 'glass' | 'outline' | 'dark';
+  /** Padding size */
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  /** Link URL (makes card clickable) */
+  href?: string;
+  /** Hover effect */
+  hover?: boolean;
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  padding = 'md',
+  href,
+  hover = true,
+  class: className = '',
+} = Astro.props;
+
+const variants = {
+  default: 'bg-dark-800 border border-white/5',
+  elevated: 'bg-dark-800 shadow-xl shadow-black/20',
+  glass: 'bg-white/5 backdrop-blur-xl border border-white/10',
+  outline: 'bg-transparent border border-white/20',
+  dark: 'bg-darker border border-white/5',
+};
+
+const paddings = {
+  none: '',
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
+};
+
+const hoverStyles = hover ? `
+  transition-all duration-300
+  hover:-translate-y-1
+  hover:border-pink-500/30
+  hover:shadow-lg hover:shadow-pink-500/10
+` : '';
+
+const classes = [
+  'rounded-2xl overflow-hidden',
+  variants[variant],
+  paddings[padding],
+  href && 'block cursor-pointer group',
+  hover && hoverStyles,
+  className,
+].filter(Boolean).join(' ');
+
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class={classes} href={href}>
+  <slot />
+</Tag>
+
+<style>
+  /* Additional card styles using CSS custom properties */
+  .bg-dark-800 {
+    background: rgba(15, 15, 20, 0.8);
+  }
+  
+  .bg-darker {
+    background: var(--darker, #050508);
+  }
+</style>

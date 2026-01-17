@@ -1,0 +1,53 @@
+---
+/**
+ * Header - Main site navigation
+ * 
+ * Uses centralized navigation config from lib/navigation.ts
+ * For dark hero pages, use HeaderTransparent.astro instead.
+ */
+import { mainNavigation, isCTA, type NavCTA, type NavLink } from '../lib/navigation';
+---
+
+<nav class="nav" id="nav">
+    <a href="/" class="logo">
+        <div class="logo-icon">
+            <img src="/images/nds-logo.jpg" alt="NDS Logo">
+        </div>
+        <span class="logo-text">Ninja Design <span>Studio</span></span>
+    </a>
+    
+    <ul class="nav-links">
+        {mainNavigation.map((item) => {
+            if (isCTA(item)) return null;
+            const link = item as NavLink;
+            return (
+                <li><a href={link.href}>{link.label}</a></li>
+            );
+        })}
+    </ul>
+    
+    {mainNavigation.filter(isCTA).map((item) => {
+        const cta = item as NavCTA;
+        return (
+            <a href={cta.href} class="nav-cta">{cta.label}</a>
+        );
+    })}
+    
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+    {mainNavigation.map((item) => {
+        if (isCTA(item)) {
+            const cta = item as NavCTA;
+            return <a href={cta.href} class="mobile-cta">{cta.label}</a>;
+        }
+        const link = item as NavLink;
+        return <a href={link.href}>{link.label}</a>;
+    })}
+</div>

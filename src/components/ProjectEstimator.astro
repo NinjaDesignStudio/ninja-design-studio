@@ -1,0 +1,714 @@
+---
+/**
+ * ProjectEstimator - Interactive pricing calculator
+ * 
+ * Helps potential clients estimate project costs and pre-qualifies leads.
+ * Shows pricing transparency while gathering project requirements.
+ * 
+ * @example
+ * <ProjectEstimator />
+ * 
+ * @example In a page
+ * <ProjectEstimator 
+ *   title="Get Your Estimate" 
+ *   ctaText="Book a Call"
+ *   ctaHref="/contact"
+ * />
+ */
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const {
+  title = "Project Estimator",
+  subtitle = "Get a ballpark estimate for your project in under 2 minutes",
+  ctaText = "Discuss Your Project",
+  ctaHref = "/contact",
+} = Astro.props;
+
+// Service options with base prices
+const services = [
+  { id: 'brand', label: 'Brand Identity', base: 8000, icon: '🎨' },
+  { id: 'website', label: 'Website Design', base: 10000, icon: '🌐' },
+  { id: 'ui-ux', label: 'Product UI/UX', base: 12000, icon: '📱' },
+  { id: 'pitch-deck', label: 'Pitch Deck', base: 5000, icon: '📊' },
+  { id: 'nft', label: 'NFT Collection', base: 8000, icon: '🖼️' },
+];
+
+// Complexity multipliers
+const complexities = [
+  { id: 'simple', label: 'Simple', description: 'Clean, minimal, focused', multiplier: 1.0 },
+  { id: 'standard', label: 'Standard', description: 'Multiple pages/features', multiplier: 1.5 },
+  { id: 'complex', label: 'Complex', description: 'Custom, feature-rich', multiplier: 2.0 },
+];
+
+// Timeline options
+const timelines = [
+  { id: 'relaxed', label: 'Relaxed', description: '4-6 weeks', multiplier: 1.0 },
+  { id: 'standard', label: 'Standard', description: '2-4 weeks', multiplier: 1.15 },
+  { id: 'rush', label: 'Rush', description: '1-2 weeks', multiplier: 1.35 },
+];
+
+// Add-ons
+const addons = [
+  { id: 'animation', label: 'Motion & Animation', price: 2500 },
+  { id: 'copywriting', label: 'Copywriting', price: 2000 },
+  { id: 'illustration', label: 'Custom Illustrations', price: 3000 },
+  { id: 'development', label: 'Development', price: 5000 },
+  { id: 'social', label: 'Social Media Kit', price: 1500 },
+];
+---
+
+<div class="estimator" id="projectEstimator">
+  <div class="estimator-header">
+    <h2 class="estimator-title">{title}</h2>
+    <p class="estimator-subtitle">{subtitle}</p>
+  </div>
+
+  <div class="estimator-body">
+    <!-- Step 1: Services -->
+    <div class="estimator-step" data-step="1">
+      <div class="step-header">
+        <span class="step-number">01</span>
+        <h3>What do you need?</h3>
+        <p class="step-hint">Select all that apply</p>
+      </div>
+      <div class="services-grid">
+        {services.map((service) => (
+          <label class="service-option" data-service={service.id} data-base={service.base}>
+            <input type="checkbox" name="services" value={service.id} />
+            <span class="option-content">
+              <span class="option-icon">{service.icon}</span>
+              <span class="option-label">{service.label}</span>
+              <span class="option-price">from ${(service.base / 1000).toFixed(0)}K</span>
+            </span>
+            <span class="option-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <!-- Step 2: Complexity -->
+    <div class="estimator-step" data-step="2">
+      <div class="step-header">
+        <span class="step-number">02</span>
+        <h3>Project complexity</h3>
+        <p class="step-hint">How extensive is your project?</p>
+      </div>
+      <div class="complexity-options">
+        {complexities.map((level, i) => (
+          <label class="complexity-option" data-multiplier={level.multiplier}>
+            <input type="radio" name="complexity" value={level.id} checked={i === 1} />
+            <span class="option-content">
+              <span class="option-label">{level.label}</span>
+              <span class="option-desc">{level.description}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <!-- Step 3: Timeline -->
+    <div class="estimator-step" data-step="3">
+      <div class="step-header">
+        <span class="step-number">03</span>
+        <h3>Timeline</h3>
+        <p class="step-hint">When do you need it?</p>
+      </div>
+      <div class="timeline-options">
+        {timelines.map((time, i) => (
+          <label class="timeline-option" data-multiplier={time.multiplier}>
+            <input type="radio" name="timeline" value={time.id} checked={i === 1} />
+            <span class="option-content">
+              <span class="option-label">{time.label}</span>
+              <span class="option-desc">{time.description}</span>
+              {time.multiplier > 1 && (
+                <span class="option-badge">+{((time.multiplier - 1) * 100).toFixed(0)}%</span>
+              )}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <!-- Step 4: Add-ons -->
+    <div class="estimator-step" data-step="4">
+      <div class="step-header">
+        <span class="step-number">04</span>
+        <h3>Add-ons</h3>
+        <p class="step-hint">Optional extras</p>
+      </div>
+      <div class="addons-grid">
+        {addons.map((addon) => (
+          <label class="addon-option" data-price={addon.price}>
+            <input type="checkbox" name="addons" value={addon.id} />
+            <span class="option-content">
+              <span class="option-label">{addon.label}</span>
+              <span class="option-price">+${(addon.price / 1000).toFixed(1)}K</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Estimate Display -->
+  <div class="estimator-result">
+    <div class="result-content">
+      <div class="result-label">Estimated Investment</div>
+      <div class="result-price">
+        <span class="price-currency">$</span>
+        <span class="price-min" id="priceMin">0</span>
+        <span class="price-separator">–</span>
+        <span class="price-currency">$</span>
+        <span class="price-max" id="priceMax">0</span>
+      </div>
+      <p class="result-note">
+        Final pricing depends on specific requirements. 
+        <br/>Let's discuss your project for an accurate quote.
+      </p>
+    </div>
+    <div class="result-cta">
+      <a href={ctaHref} class="btn btn-primary btn-lg" id="estimatorCta">
+        {ctaText}
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+      <button class="btn btn-ghost" id="resetEstimator">
+        Start Over
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .estimator {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .estimator-header {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .estimator-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .estimator-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .estimator-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* Steps */
+  .estimator-step {
+    /* Individual step */
+  }
+
+  .step-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .step-number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--neon-pink);
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 0, 110, 0.1);
+    border-radius: 6px;
+  }
+
+  .step-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--white);
+    margin: 0;
+  }
+
+  .step-hint {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+    margin-left: auto;
+  }
+
+  /* Services Grid */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .service-option {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .service-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .service-option .option-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .service-option:hover .option-content {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .service-option input:checked + .option-content {
+    background: rgba(255, 0, 110, 0.08);
+    border-color: var(--neon-pink);
+  }
+
+  .option-icon {
+    font-size: 1.75rem;
+  }
+
+  .option-label {
+    font-weight: 600;
+    color: var(--white);
+    font-size: 0.9rem;
+  }
+
+  .option-price {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .option-check {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--neon-pink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s ease;
+  }
+
+  .option-check svg {
+    width: 12px;
+    height: 12px;
+    color: white;
+  }
+
+  .service-option input:checked ~ .option-check {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Complexity & Timeline Options */
+  .complexity-options,
+  .timeline-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .complexity-option,
+  .timeline-option {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .complexity-option input,
+  .timeline-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .complexity-option .option-content,
+  .timeline-option .option-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1.25rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .complexity-option:hover .option-content,
+  .timeline-option:hover .option-content {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .complexity-option input:checked + .option-content,
+  .timeline-option input:checked + .option-content {
+    background: rgba(0, 245, 255, 0.05);
+    border-color: var(--neon-cyan);
+  }
+
+  .option-desc {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .option-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    padding: 0.125rem 0.5rem;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 100px;
+    margin-top: 0.25rem;
+  }
+
+  /* Add-ons */
+  .addons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .addon-option {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .addon-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .addon-option .option-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .addon-option:hover .option-content {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .addon-option input:checked + .option-content {
+    background: rgba(255, 0, 110, 0.05);
+    border-color: var(--neon-pink);
+  }
+
+  .addon-option .option-label {
+    font-size: 0.875rem;
+  }
+
+  .addon-option .option-price {
+    font-weight: 600;
+    color: var(--neon-pink);
+  }
+
+  /* Result */
+  .estimator-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.08) 0%, rgba(0, 245, 255, 0.05) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .result-content {
+    flex: 1;
+  }
+
+  .result-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.5rem;
+  }
+
+  .result-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .price-min, .price-max {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .price-currency {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 0.125rem;
+  }
+
+  .price-separator {
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0 0.25rem;
+  }
+
+  .result-note {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .result-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: var(--gradient-pink);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .btn-ghost:hover {
+    color: var(--white);
+  }
+
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .estimator-header {
+      padding: 2rem 1.5rem 1.5rem;
+    }
+
+    .estimator-body {
+      padding: 1.5rem;
+    }
+
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .complexity-options,
+    .timeline-options {
+      grid-template-columns: 1fr;
+    }
+
+    .estimator-result {
+      flex-direction: column;
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .result-cta {
+      width: 100%;
+    }
+
+    .result-cta .btn {
+      width: 100%;
+    }
+
+    .result-price {
+      font-size: 2rem;
+    }
+
+    .step-hint {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 0.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const estimator = document.getElementById('projectEstimator');
+  if (estimator) {
+    const priceMin = document.getElementById('priceMin');
+    const priceMax = document.getElementById('priceMax');
+    const resetBtn = document.getElementById('resetEstimator');
+
+    // Get all inputs
+    const serviceInputs = estimator.querySelectorAll('input[name="services"]');
+    const complexityInputs = estimator.querySelectorAll('input[name="complexity"]');
+    const timelineInputs = estimator.querySelectorAll('input[name="timeline"]');
+    const addonInputs = estimator.querySelectorAll('input[name="addons"]');
+
+    function calculateEstimate() {
+      // Get selected services total
+      let servicesBase = 0;
+      serviceInputs.forEach(input => {
+        if ((input as HTMLInputElement).checked) {
+          const option = input.closest('.service-option');
+          servicesBase += parseInt(option?.getAttribute('data-base') || '0');
+        }
+      });
+
+      // Get complexity multiplier
+      let complexityMultiplier = 1.5; // default
+      complexityInputs.forEach(input => {
+        if ((input as HTMLInputElement).checked) {
+          const option = input.closest('.complexity-option');
+          complexityMultiplier = parseFloat(option?.getAttribute('data-multiplier') || '1.5');
+        }
+      });
+
+      // Get timeline multiplier
+      let timelineMultiplier = 1.15; // default
+      timelineInputs.forEach(input => {
+        if ((input as HTMLInputElement).checked) {
+          const option = input.closest('.timeline-option');
+          timelineMultiplier = parseFloat(option?.getAttribute('data-multiplier') || '1.15');
+        }
+      });
+
+      // Get add-ons total
+      let addonsTotal = 0;
+      addonInputs.forEach(input => {
+        if ((input as HTMLInputElement).checked) {
+          const option = input.closest('.addon-option');
+          addonsTotal += parseInt(option?.getAttribute('data-price') || '0');
+        }
+      });
+
+      // Calculate final range
+      const baseEstimate = servicesBase * complexityMultiplier * timelineMultiplier;
+      const minEstimate = Math.round((baseEstimate + addonsTotal) * 0.9 / 1000) * 1000;
+      const maxEstimate = Math.round((baseEstimate + addonsTotal) * 1.2 / 1000) * 1000;
+
+      // Format and display
+      if (priceMin && priceMax) {
+        if (servicesBase === 0) {
+          priceMin.textContent = '0';
+          priceMax.textContent = '0';
+        } else {
+          priceMin.textContent = formatPrice(minEstimate);
+          priceMax.textContent = formatPrice(maxEstimate);
+        }
+      }
+    }
+
+    function formatPrice(price: number): string {
+      if (price >= 1000) {
+        return (price / 1000).toFixed(0) + 'K';
+      }
+      return price.toString();
+    }
+
+    function resetEstimator() {
+      // Uncheck all services and addons
+      serviceInputs.forEach(input => {
+        (input as HTMLInputElement).checked = false;
+      });
+      addonInputs.forEach(input => {
+        (input as HTMLInputElement).checked = false;
+      });
+
+      // Reset to defaults
+      complexityInputs.forEach((input, i) => {
+        (input as HTMLInputElement).checked = i === 1;
+      });
+      timelineInputs.forEach((input, i) => {
+        (input as HTMLInputElement).checked = i === 1;
+      });
+
+      calculateEstimate();
+    }
+
+    // Add event listeners
+    [...serviceInputs, ...complexityInputs, ...timelineInputs, ...addonInputs].forEach(input => {
+      input.addEventListener('change', calculateEstimate);
+    });
+
+    resetBtn?.addEventListener('click', resetEstimator);
+
+    // Initial calculation
+    calculateEstimate();
+  }
+</script>

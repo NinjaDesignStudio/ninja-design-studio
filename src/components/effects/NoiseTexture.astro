@@ -1,0 +1,81 @@
+---
+/**
+ * NoiseTexture - Subtle grain overlay for depth and tactile feel
+ * 
+ * Adds a subtle animated noise texture over the entire page.
+ * Creates that high-end, premium feel seen on award-winning sites.
+ * 
+ * @example
+ * <NoiseTexture />
+ * 
+ * @example Custom opacity
+ * <NoiseTexture opacity={0.05} />
+ */
+
+interface Props {
+  /** Noise opacity (0-1) */
+  opacity?: number;
+  /** Animate the noise */
+  animated?: boolean;
+  /** Animation speed */
+  speed?: 'slow' | 'normal' | 'fast';
+  /** Blend mode */
+  blendMode?: 'overlay' | 'soft-light' | 'multiply' | 'screen';
+}
+
+const {
+  opacity = 0.03,
+  animated = true,
+  speed = 'normal',
+  blendMode = 'overlay',
+} = Astro.props;
+
+const speedMap = {
+  slow: '1s',
+  normal: '0.5s',
+  fast: '0.2s',
+};
+---
+
+<div 
+  class="noise-texture" 
+  class:list={[{ animated }]}
+  style={`--noise-opacity: ${opacity}; --noise-speed: ${speedMap[speed]}; --noise-blend: ${blendMode};`}
+  aria-hidden="true"
+></div>
+
+<style>
+  .noise-texture {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    opacity: var(--noise-opacity);
+    mix-blend-mode: var(--noise-blend);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  .noise-texture.animated {
+    animation: noise var(--noise-speed) steps(3) infinite;
+  }
+
+  @keyframes noise {
+    0%, 100% { 
+      transform: translate(0, 0); 
+    }
+    33% { 
+      transform: translate(-5%, -5%); 
+    }
+    66% { 
+      transform: translate(5%, 5%); 
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .noise-texture.animated {
+      animation: none;
+    }
+  }
+</style>

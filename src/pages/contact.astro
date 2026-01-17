@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import FAQItem from '../components/FAQItem.astro';
+
+const faqs = [
+    { question: "What's your typical timeline for a project?", answer: "It depends on the scope. Brand identity systems typically take 2-4 weeks, websites 2-6 weeks, and pitch decks 1-2 weeks. We can work faster for urgent deadlines—just let us know your timeline when you reach out." },
+    { question: "Do you work with early-stage projects?", answer: "Yes, we work with projects at all stages—from pre-seed startups to established protocols. The key is having clarity on your goals and a budget that matches your ambitions. We're happy to discuss scope options that fit your situation." },
+    { question: "Do you accept token payments?", answer: "We primarily work in USDC/USDT and fiat, but we're open to discussing token arrangements for the right projects. This is typically structured as a hybrid payment model." },
+    { question: "Can you work with our existing developers?", answer: "Absolutely. We provide detailed design specs, component documentation, and developer handoff files. We're also happy to collaborate directly with your dev team during implementation to ensure pixel-perfect results." },
+];
+
+const contactInfo = [
+    { icon: '📧', label: 'Email', value: 'hello@ninjadesignstudio.com', href: 'mailto:hello@ninjadesignstudio.com' },
+    { icon: '💬', label: 'Telegram', value: '@ninjaguy', href: 'https://t.me/ninjaguy' },
+    { icon: '📸', label: 'Instagram', value: '@ninjadesignstudio', href: 'https://www.instagram.com/ninjadesignstudio/' },
+];
+---
+
+<BaseLayout title="Contact Us" description="Get in touch with Ninja Design Studio. Start your Web3 design project today.">
+    <!-- Hero Section -->
+    <section class="about-hero" style="padding-bottom: 3rem;">
+        <div class="container" style="display: block; text-align: center;">
+            <div class="about-hero-content" style="max-width: 700px; margin: 0 auto;">
+                <span class="section-tag" style="color: var(--neon-cyan);">Contact Us</span>
+                <h1>Let's build something extraordinary</h1>
+                <p>Ready to take your project to the next level? Fill out the form below and we'll get back to you within 24 hours.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="cta" style="padding-top: 3rem;">
+        <div class="cta-bg"></div>
+        <div class="cta-lines">
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+            <div class="cta-line"></div>
+        </div>
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 400px; gap: 4rem; align-items: start;">
+                <div class="reveal">
+                    <ContactForm />
+                </div>
+                <div class="reveal-right">
+                    <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 2rem;">
+                        <h3 style="color: var(--white); font-size: 1.25rem; margin-bottom: 1.5rem;">Other ways to reach us</h3>
+                        {contactInfo.map(info => (
+                            <a href={info.href} target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 1rem; padding: 1rem; margin-bottom: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px; transition: all 0.3s; text-decoration: none;">
+                                <span style="font-size: 1.5rem;">{info.icon}</span>
+                                <div>
+                                    <div style="font-size: 0.8rem; color: var(--white); opacity: 0.5; margin-bottom: 0.25rem;">{info.label}</div>
+                                    <div style="color: var(--white); font-weight: 500;">{info.value}</div>
+                                </div>
+                            </a>
+                        ))}
+                        
+                        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <h4 style="color: var(--white); font-size: 0.9rem; margin-bottom: 1rem; opacity: 0.7;">Response time</h4>
+                            <p style="color: var(--white); font-size: 0.9rem; opacity: 0.6; line-height: 1.6;">
+                                We typically respond within 24 hours during business days. For urgent matters, reach out on Telegram for faster response.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Common questions</h2>
+                <p class="section-subtitle">Quick answers to help you decide.</p>
+            </div>
+            <div class="faq-list">
+                {faqs.map(faq => (
+                    <FAQItem question={faq.question} answer={faq.answer} />
+                ))}
+            </div>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    section.cta a:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        transform: translateX(5px);
+    }
+    
+    @media (max-width: 1024px) {
+        section.cta > div > div:first-of-type {
+            grid-template-columns: 1fr !important;
+        }
+    }
+</style>

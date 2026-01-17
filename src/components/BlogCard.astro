@@ -1,0 +1,358 @@
+---
+/**
+ * BlogCard - Article preview card with variants
+ * 
+ * @example Full variant (blog listings)
+ * <BlogCard
+ *   title="Why Web3 Needs Design Systems"
+ *   excerpt="Learn why systematic design is crucial..."
+ *   image="/images/blog/design-systems.jpg"
+ *   category="Design"
+ *   readingTime="5 min"
+ *   date={new Date()}
+ *   href="/blog/why-web3-needs-design-systems"
+ * />
+ * 
+ * @example Compact variant (sidebar, related posts)
+ * <BlogCard
+ *   variant="compact"
+ *   title="DeFi Interface Design"
+ *   image="/image.jpg"
+ *   href="/blog/defi-interface-design"
+ * />
+ */
+
+interface Props {
+  /** Card title */
+  title: string;
+  /** Description/excerpt */
+  excerpt?: string;
+  /** Featured image URL */
+  image?: string;
+  /** Link URL */
+  href: string;
+  /** Category name */
+  category?: string;
+  /** Reading time */
+  readingTime?: string;
+  /** Publish date */
+  date?: Date;
+  /** Display variant */
+  variant?: 'full' | 'compact' | 'featured';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  title,
+  excerpt,
+  image,
+  href,
+  category,
+  readingTime,
+  date,
+  variant = 'full',
+  class: className = '',
+} = Astro.props;
+
+const formattedDate = date?.toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+{variant === 'featured' ? (
+  <!-- Featured variant: Large hero-style card -->
+  <a href={href} class:list={['blog-card blog-card--featured group', className]}>
+    <div class="featured-image">
+      {image ? (
+        <img src={image} alt={title} loading="lazy" />
+      ) : (
+        <div class="placeholder-image">
+          <span>📝</span>
+        </div>
+      )}
+      <div class="featured-overlay"></div>
+    </div>
+    <div class="featured-content">
+      {category && <span class="card-category">{category}</span>}
+      <h3 class="featured-title">{title}</h3>
+      {excerpt && <p class="featured-excerpt">{excerpt}</p>}
+      <div class="card-meta">
+        {readingTime && <span>{readingTime} read</span>}
+        {formattedDate && <span>{formattedDate}</span>}
+      </div>
+    </div>
+  </a>
+) : variant === 'compact' ? (
+  <!-- Compact variant: Small horizontal card -->
+  <a href={href} class:list={['blog-card blog-card--compact group', className]}>
+    {image && (
+      <div class="compact-image">
+        <img src={image} alt={title} loading="lazy" />
+      </div>
+    )}
+    <div class="compact-content">
+      <h4 class="compact-title">{title}</h4>
+      {readingTime && <span class="compact-meta">{readingTime} read</span>}
+    </div>
+  </a>
+) : (
+  <!-- Full variant: Standard blog card -->
+  <a href={href} class:list={['blog-card blog-card--full group', className]}>
+    <div class="card-image">
+      {image ? (
+        <img src={image} alt={title} loading="lazy" />
+      ) : (
+        <div class="placeholder-image">
+          <span>📝</span>
+        </div>
+      )}
+      {category && <span class="card-category-badge">{category}</span>}
+    </div>
+    <div class="card-content">
+      <h3 class="card-title">{title}</h3>
+      {excerpt && <p class="card-excerpt">{excerpt}</p>}
+      <div class="card-meta">
+        {readingTime && <span>{readingTime} read</span>}
+        {formattedDate && <span>{formattedDate}</span>}
+      </div>
+    </div>
+  </a>
+)}
+
+<style>
+  /* Base card styles */
+  .blog-card {
+    display: block;
+    text-decoration: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  /* Full variant */
+  .blog-card--full {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .blog-card--full:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 0, 110, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  
+  .card-image {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  
+  .blog-card--full:hover .card-image img {
+    transform: scale(1.05);
+  }
+  
+  .placeholder-image {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.1) 0%, rgba(191, 0, 255, 0.1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+  
+  .card-category-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.35rem 0.75rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    color: var(--neon-pink, #ff006e);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 6px;
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    transition: color 0.3s;
+  }
+  
+  .blog-card--full:hover .card-title {
+    color: var(--neon-pink, #ff006e);
+  }
+  
+  .card-excerpt {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .card-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+  
+  /* Featured variant */
+  .blog-card--featured {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    min-height: 400px;
+  }
+  
+  .featured-image {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  
+  .blog-card--featured:hover .featured-image img {
+    transform: scale(1.05);
+  }
+  
+  .featured-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+  }
+  
+  .featured-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+  }
+  
+  .card-category {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    background: var(--neon-pink, #ff006e);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  
+  .featured-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+  
+  .featured-excerpt {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    max-width: 600px;
+  }
+  
+  /* Compact variant */
+  .blog-card--compact {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .blog-card--compact:hover {
+    border-color: rgba(255, 0, 110, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .compact-image {
+    width: 80px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .compact-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .compact-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .compact-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.3s;
+  }
+  
+  .blog-card--compact:hover .compact-title {
+    color: var(--neon-pink, #ff006e);
+  }
+  
+  .compact-meta {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.25rem;
+  }
+  
+  @media (max-width: 768px) {
+    .featured-title {
+      font-size: 1.5rem;
+    }
+    
+    .featured-content {
+      padding: 1.5rem;
+    }
+    
+    .blog-card--featured {
+      min-height: 300px;
+    }
+  }
+</style>

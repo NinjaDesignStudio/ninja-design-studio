@@ -1,0 +1,384 @@
+---
+/**
+ * Services page - now using ServiceLayout
+ * 
+ * All styling is handled by ServiceLayout, keeping this file clean and focused
+ * on content and structure.
+ */
+import ServiceLayout from '../layouts/ServiceLayout.astro';
+import { services, pricingTiers } from '../lib/services';
+import { displayStats } from '../lib/stats';
+import { getFeaturedTestimonials } from '../lib/testimonials';
+import { getFAQsByCategory } from '../lib/faqs';
+import { clientLogos } from '../lib/projects';
+
+const title = 'Services';
+const description = 'Premium design services for Web3. Brand identity systems, product design, and websites for funded protocols and DeFi projects.';
+
+const testimonials = getFeaturedTestimonials();
+const faqs = getFAQsByCategory('pricing').concat(getFAQsByCategory('process')).slice(0, 6);
+
+const processSteps = [
+  {
+    number: '01',
+    title: 'Discovery',
+    description: 'We dive deep into your project, understanding your vision, target audience, and competitive landscape.',
+    duration: '1-2 days',
+  },
+  {
+    number: '02',
+    title: 'Strategy',
+    description: 'We develop a design strategy and creative direction that positions your brand for success.',
+    duration: '2-3 days',
+  },
+  {
+    number: '03',
+    title: 'Design',
+    description: 'Our team creates stunning designs with multiple concepts, iterating based on your feedback.',
+    duration: '1-3 weeks',
+  },
+  {
+    number: '04',
+    title: 'Delivery',
+    description: 'You receive all final assets, files, and guidelines ready for launch and future use.',
+    duration: '2-3 days',
+  },
+];
+
+const whyChooseUs = [
+  {
+    icon: '🎯',
+    title: 'Web3 Native',
+    description: 'We understand crypto culture, tokenomics, and what makes DeFi users trust a project. No learning curve needed.',
+  },
+  {
+    icon: '⚡',
+    title: 'Fast & Focused',
+    description: 'Small team, no bureaucracy. Direct communication with senior designers who actually do the work.',
+  },
+  {
+    icon: '🏆',
+    title: 'Proven Results',
+    description: 'Our clients have raised over $50M combined. We know what investors and users look for in Web3 brands.',
+  },
+];
+---
+
+<ServiceLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <span class="hero-eyebrow">Our Services</span>
+        <h1 class="hero-title">
+          Design systems that<br />
+          <span class="gradient-text">build trust & convert</span>
+        </h1>
+        <p class="hero-subtitle">
+          Premium design for funded protocols, L2s, and DeFi projects. 
+          We create the visual systems that help Web3 teams look as legitimate as they are.
+        </p>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">
+            Start a Project
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a href="/work" class="btn btn-secondary">View Our Work</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="stats-section">
+    <div class="stats-container">
+      {displayStats.map((stat) => (
+        <div class="stat-item">
+          <span class="stat-number">{stat.number}</span>
+          <span class="stat-label">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Client Logos -->
+  <section class="logos-section">
+    <div class="logos-container">
+      <p class="logos-title">Trusted by Web3 Leaders</p>
+      <div class="logos-grid">
+        {clientLogos.slice(0, 8).map((logo) => (
+          <img src={logo.logo} alt={logo.name} class="logo-img" loading="lazy" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Service: Partnership Model -->
+  <section class="featured-section">
+    <div class="featured-container">
+      <div class="featured-grid">
+        <div class="featured-content">
+          <span class="featured-badge">Most Popular</span>
+          <h2 class="featured-title">Design Partnership</h2>
+          <p class="featured-description">
+            The most effective way to work with us. Get a dedicated design team that becomes 
+            an extension of your project, delivering consistent, high-quality work month after month.
+          </p>
+          <ul class="featured-benefits">
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Dedicated design team for your project
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Unlimited requests & revisions
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              48-hour average turnaround
+            </li>
+            <li>
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Direct Slack/Telegram communication
+            </li>
+          </ul>
+          <div class="featured-buttons">
+            <a href="/contact" class="btn btn-primary">Start Partnership</a>
+            <a href="https://t.me/ninjaguy" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+              Chat on Telegram
+            </a>
+          </div>
+        </div>
+        <div class="featured-visual">
+          <div class="featured-card">
+            <div class="featured-card-header">
+              <span class="featured-card-label">Starting at</span>
+              <span class="featured-card-price">$5K<span>/month</span></span>
+            </div>
+            <div class="featured-card-items">
+              <div class="featured-card-item">
+                <span class="item-icon">🎨</span>
+                <span>Brand & Identity</span>
+              </div>
+              <div class="featured-card-item">
+                <span class="item-icon">🖥️</span>
+                <span>UI/UX Design</span>
+              </div>
+              <div class="featured-card-item">
+                <span class="item-icon">📱</span>
+                <span>Social Content</span>
+              </div>
+              <div class="featured-card-item">
+                <span class="item-icon">📊</span>
+                <span>Pitch Decks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="services-section">
+    <div class="services-container">
+      <div class="section-header">
+        <span class="section-eyebrow">What We Do</span>
+        <h2 class="section-title">Core Services</h2>
+        <p class="section-subtitle">
+          Everything you need to build a premium Web3 brand, from first logo to full design system.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        {services.map((service) => (
+          <div class="service-card">
+            <div class="service-icon">{service.icon}</div>
+            <h3 class="service-title">{service.title}</h3>
+            <p class="service-description">{service.shortDescription}</p>
+            <div class="service-price">
+              <span class="price-label">Starting at</span>
+              <span class="price-value">{service.startingPrice}</span>
+            </div>
+            <ul class="service-features">
+              {service.features.slice(0, 4).map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <a href="/contact" class="service-link">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="process-section">
+    <div class="process-container">
+      <div class="section-header section-header--light">
+        <span class="section-eyebrow">Our Process</span>
+        <h2 class="section-title">How We Work</h2>
+        <p class="section-subtitle">
+          A proven process refined over 100+ projects. Clear, collaborative, and efficient.
+        </p>
+      </div>
+
+      <div class="process-grid">
+        {processSteps.map((step, index) => (
+          <div class="process-step">
+            <div class="step-number">{step.number}</div>
+            <div class="step-content">
+              <h3 class="step-title">{step.title}</h3>
+              <p class="step-description">{step.description}</p>
+              <span class="step-duration">{step.duration}</span>
+            </div>
+            {index < processSteps.length - 1 && <div class="step-connector"></div>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="why-section">
+    <div class="why-container">
+      <div class="section-header">
+        <span class="section-eyebrow">Why Ninja</span>
+        <h2 class="section-title">What Makes Us Different</h2>
+      </div>
+
+      <div class="why-grid">
+        {whyChooseUs.map((item) => (
+          <div class="why-card">
+            <div class="why-icon">{item.icon}</div>
+            <h3 class="why-title">{item.title}</h3>
+            <p class="why-description">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials-section">
+    <div class="testimonials-container">
+      <div class="section-header section-header--light">
+        <span class="section-eyebrow">Client Love</span>
+        <h2 class="section-title">What They Say</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        {testimonials.map((testimonial) => (
+          <blockquote class="testimonial-card">
+            <svg class="quote-icon" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
+            </svg>
+            <p class="testimonial-quote">{testimonial.quote}</p>
+            <footer class="testimonial-author">
+              <span class="author-name">{testimonial.author}</span>
+              <span class="author-role">{testimonial.role}, {testimonial.company}</span>
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Tiers -->
+  <section class="pricing-section">
+    <div class="pricing-container">
+      <div class="section-header">
+        <span class="section-eyebrow">Pricing</span>
+        <h2 class="section-title">Investment Levels</h2>
+        <p class="section-subtitle">
+          Transparent pricing. No hidden fees. Choose the engagement model that works for you.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        {pricingTiers.map((tier) => (
+          <div class:list={['pricing-card', tier.highlighted && 'pricing-card--highlighted']}>
+            {tier.highlighted && <div class="pricing-badge">Most Popular</div>}
+            <h3 class="pricing-name">{tier.name}</h3>
+            <div class="pricing-price">{tier.price}</div>
+            <p class="pricing-description">{tier.description}</p>
+            <ul class="pricing-features">
+              {tier.features.map((feature) => (
+                <li>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <a href="/contact" class:list={['pricing-button', tier.highlighted ? 'btn btn-primary' : 'btn btn-outline']}>
+              Get Started
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="faq-section">
+    <div class="faq-container">
+      <div class="section-header">
+        <span class="section-eyebrow">FAQs</span>
+        <h2 class="section-title">Common Questions</h2>
+      </div>
+
+      <div class="faq-grid">
+        {faqs.map((faq) => (
+          <details class="faq-item">
+            <summary class="faq-question">
+              {faq.question}
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="faq-answer">{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <h2 class="cta-title">Ready to level up your brand?</h2>
+      <p class="cta-subtitle">
+        Let's discuss your project and see how we can help you stand out in Web3.
+      </p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary btn-lg">
+          Start a Project
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="https://t.me/ninjaguy" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-lg">
+          Chat on Telegram
+        </a>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>

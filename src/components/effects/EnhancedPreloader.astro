@@ -1,0 +1,337 @@
+---
+/**
+ * EnhancedPreloader - Award-winning loading animation
+ * 
+ * A sophisticated preloader with:
+ * - Animated logo/text
+ * - Progress indicator
+ * - Smooth reveal animation
+ * - Percentage counter
+ * 
+ * @example
+ * <EnhancedPreloader />
+ */
+
+interface Props {
+  /** Show percentage counter */
+  showPercentage?: boolean;
+  /** Minimum display time in ms */
+  minDisplayTime?: number;
+  /** Logo text */
+  logoText?: string;
+}
+
+const {
+  showPercentage = true,
+  minDisplayTime = 2000,
+  logoText = 'NINJA',
+} = Astro.props;
+---
+
+<div class="preloader" id="enhancedPreloader" aria-hidden="true">
+  <div class="preloader-bg"></div>
+  
+  <div class="preloader-content">
+    <!-- Animated Logo -->
+    <div class="preloader-logo">
+      {logoText.split('').map((char, i) => (
+        <span class="logo-char" style={`--char-index: ${i};`}>{char}</span>
+      ))}
+    </div>
+
+    <!-- Tagline -->
+    <div class="preloader-tagline">Design Studio</div>
+
+    <!-- Progress Bar -->
+    <div class="preloader-progress">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      {showPercentage && (
+        <div class="progress-percent">
+          <span id="progressPercent">0</span>%
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Reveal Overlay -->
+  <div class="preloader-reveal"></div>
+</div>
+
+<style>
+  .preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .preloader-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--darker);
+  }
+
+  .preloader-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  /* Logo Animation */
+  .preloader-logo {
+    display: flex;
+    gap: 0.1em;
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-char {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    transform: translateY(50px) rotateX(-90deg);
+    animation: char-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--char-index) * 0.1s + 0.3s);
+  }
+
+  @keyframes char-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0) rotateX(0);
+    }
+  }
+
+  .preloader-tagline {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: tagline-reveal 0.8s ease forwards;
+    animation-delay: 0.8s;
+  }
+
+  @keyframes tagline-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Progress */
+  .preloader-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 200px;
+    opacity: 0;
+    animation: progress-reveal 0.5s ease forwards;
+    animation-delay: 1s;
+  }
+
+  @keyframes progress-reveal {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .progress-percent {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Reveal Animation */
+  .preloader-reveal {
+    position: absolute;
+    inset: 0;
+    background: var(--darker);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    z-index: 3;
+  }
+
+  /* Exit Animation */
+  .preloader.exit .preloader-content {
+    animation: content-exit 0.5s ease forwards;
+  }
+
+  .preloader.exit .preloader-reveal {
+    animation: reveal-exit 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    animation-delay: 0.3s;
+  }
+
+  .preloader.exit .preloader-bg {
+    animation: bg-exit 0.6s ease forwards;
+    animation-delay: 0.9s;
+  }
+
+  @keyframes content-exit {
+    to {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  }
+
+  @keyframes reveal-exit {
+    0% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: bottom;
+    }
+    50.1% {
+      transform-origin: top;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+  }
+
+  @keyframes bg-exit {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  .preloader.hidden {
+    display: none;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .logo-char {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .preloader-tagline {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .preloader-progress {
+      animation: none;
+      opacity: 1;
+    }
+
+    .preloader.exit .preloader-content,
+    .preloader.exit .preloader-reveal,
+    .preloader.exit .preloader-bg {
+      animation: simple-fade 0.3s ease forwards;
+    }
+
+    @keyframes simple-fade {
+      to { opacity: 0; }
+    }
+  }
+</style>
+
+<script define:vars={{ minDisplayTime }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const preloader = document.getElementById('enhancedPreloader');
+    const progressFill = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent');
+    
+    if (!preloader) return;
+
+    let progress = 0;
+    const startTime = Date.now();
+
+    // Simulate progress based on resource loading
+    function updateProgress(value) {
+      progress = Math.min(value, 100);
+      if (progressFill) progressFill.style.width = `${progress}%`;
+      if (progressPercent) progressPercent.textContent = Math.round(progress);
+    }
+
+    // Track actual loading progress
+    const resources = document.querySelectorAll('img, video, link[rel="stylesheet"]');
+    let loadedCount = 0;
+    const totalResources = resources.length || 1;
+
+    function onResourceLoad() {
+      loadedCount++;
+      const actualProgress = (loadedCount / totalResources) * 100;
+      updateProgress(actualProgress);
+    }
+
+    resources.forEach(resource => {
+      if (resource.complete || resource.loaded) {
+        onResourceLoad();
+      } else {
+        resource.addEventListener('load', onResourceLoad);
+        resource.addEventListener('error', onResourceLoad);
+      }
+    });
+
+    // Fallback progress animation
+    const progressInterval = setInterval(() => {
+      if (progress < 90) {
+        updateProgress(progress + Math.random() * 10);
+      }
+    }, 200);
+
+    // Hide preloader when ready
+    function hidePreloader() {
+      clearInterval(progressInterval);
+      updateProgress(100);
+      
+      // Ensure minimum display time for the animation to complete
+      const elapsed = Date.now() - startTime;
+      const remainingTime = Math.max(0, minDisplayTime - elapsed);
+
+      setTimeout(() => {
+        preloader.classList.add('exit');
+        
+        // Remove from DOM after animation
+        setTimeout(() => {
+          preloader.classList.add('hidden');
+          document.body.classList.remove('loading');
+        }, 1500);
+      }, remainingTime);
+    }
+
+    // Wait for window load
+    window.addEventListener('load', hidePreloader);
+
+    // Fallback timeout
+    setTimeout(hidePreloader, 5000);
+  });
+</script>

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Get all blog posts
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout title="Blog" description="Insights, tutorials, and thoughts on Web3 design, branding, and the future of crypto.">
+    <!-- Hero Section -->
+    <section class="blog-hero">
+        <div class="container">
+            <div class="blog-hero-content">
+                <span class="section-tag">Blog</span>
+                <h1>Insights & Ideas</h1>
+                <p>Thoughts on Web3 design, branding strategies, and the future of crypto. Learn from our experience building brands in the blockchain space.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section class="blog-grid-section">
+        <div class="container">
+            {sortedPosts.length > 0 ? (
+                <div class="blog-grid">
+                    {sortedPosts.map((post, i) => (
+                        <a href={`/blog/${post.slug}`} class={`blog-card reveal stagger-${(i % 6) + 1}`}>
+                            <div class="blog-card-image">
+                                {post.data.image ? (
+                                    <img src={post.data.image} alt={post.data.title}>
+                                ) : (
+                                    <div style="width: 100%; height: 100%; background: var(--gradient-pink);"></div>
+                                )}
+                            </div>
+                            <div class="blog-card-content">
+                                <div class="blog-card-meta">
+                                    <span class="blog-card-tag">{post.data.category}</span>
+                                    <span>{new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                </div>
+                                <h3>{post.data.title}</h3>
+                                <p>{post.data.excerpt}</p>
+                                <span class="blog-card-link">Read more →</span>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            ) : (
+                <div style="text-align: center; padding: 4rem 0;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Coming Soon</h2>
+                    <p style="opacity: 0.6; max-width: 400px; margin: 0 auto;">We're working on some great content. Check back soon for insights on Web3 design and branding.</p>
+                </div>
+            )}
+        </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="cta">
+        <div class="cta-bg"></div>
+        <div class="container">
+            <div class="cta-content reveal" style="max-width: 600px;">
+                <h2 class="cta-title">Stay in the loop</h2>
+                <p class="cta-subtitle">Get notified when we publish new articles and insights.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                    <a href="https://t.me/ninjaguy" target="_blank" class="btn btn-primary">Follow on Telegram</a>
+                    <a href="https://www.instagram.com/ninjadesignstudio/" target="_blank" class="btn btn-secondary">Follow on Instagram</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</BaseLayout>

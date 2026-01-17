@@ -1,0 +1,225 @@
+---
+/**
+ * SchemaMarkup - JSON-LD structured data for SEO
+ * 
+ * Adds structured data that search engines use for rich snippets.
+ * Include in layouts for automatic SEO benefits.
+ * 
+ * @example
+ * <SchemaMarkup type="Organization" />
+ * <SchemaMarkup type="Service" service={serviceData} />
+ * <SchemaMarkup type="FAQ" faqs={faqArray} />
+ * <SchemaMarkup type="Article" article={articleData} />
+ */
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface Service {
+  name: string;
+  description: string;
+  price?: string;
+}
+
+interface Article {
+  title: string;
+  description: string;
+  datePublished: string;
+  dateModified?: string;
+  author?: string;
+  image?: string;
+}
+
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  type: 'Organization' | 'LocalBusiness' | 'Service' | 'FAQ' | 'Article' | 'Breadcrumb' | 'WebSite';
+  service?: Service;
+  faqs?: FAQ[];
+  article?: Article;
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+const { type, service, faqs, article, breadcrumbs } = Astro.props;
+
+const siteUrl = 'https://ninjadesignstudio.com';
+
+// Organization schema (used on most pages)
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Ninja Design Studio",
+  "alternateName": "NDS",
+  "url": siteUrl,
+  "logo": `${siteUrl}/images/nds-logo.jpg`,
+  "description": "Premium design studio specializing in brand identity, UI/UX, and websites for Web3, DeFi, and blockchain projects.",
+  "foundingDate": "2019",
+  "sameAs": [
+    "https://x.com/ninjadesignstdo",
+    "https://t.me/ninjaguy"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "url": `${siteUrl}/contact`,
+    "availableLanguage": ["English"]
+  },
+  "areaServed": "Worldwide",
+  "priceRange": "$$$"
+};
+
+// LocalBusiness schema (for local SEO if needed)
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Ninja Design Studio",
+  "image": `${siteUrl}/images/nds-logo.jpg`,
+  "url": siteUrl,
+  "description": "Premium design services for Web3 and blockchain projects. Brand identity, UI/UX design, and website development.",
+  "priceRange": "$$$",
+  "servesCuisine": "",
+  "telephone": "",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "Remote"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "09:00",
+    "closes": "18:00"
+  },
+  "sameAs": [
+    "https://x.com/ninjadesignstdo",
+    "https://t.me/ninjaguy"
+  ]
+};
+
+// Service schema
+const serviceSchema = service ? {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": service.name,
+  "description": service.description,
+  "provider": {
+    "@type": "Organization",
+    "name": "Ninja Design Studio",
+    "url": siteUrl
+  },
+  "areaServed": "Worldwide",
+  ...(service.price && { "offers": {
+    "@type": "Offer",
+    "price": service.price.replace(/[^0-9]/g, ''),
+    "priceCurrency": "USD",
+    "priceSpecification": {
+      "@type": "PriceSpecification",
+      "price": service.price.replace(/[^0-9]/g, ''),
+      "priceCurrency": "USD",
+      "minPrice": service.price.replace(/[^0-9]/g, '')
+    }
+  }})
+} : null;
+
+// FAQ schema
+const faqSchema = faqs && faqs.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+} : null;
+
+// Article schema
+const articleSchema = article ? {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": article.title,
+  "description": article.description,
+  "image": article.image || `${siteUrl}/images/og-image.jpg`,
+  "datePublished": article.datePublished,
+  "dateModified": article.dateModified || article.datePublished,
+  "author": {
+    "@type": "Organization",
+    "name": article.author || "Ninja Design Studio",
+    "url": siteUrl
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ninja Design Studio",
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/images/nds-logo.jpg`
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": Astro.url.href
+  }
+} : null;
+
+// Breadcrumb schema
+const breadcrumbSchema = breadcrumbs && breadcrumbs.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbs.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    "item": item.url.startsWith('http') ? item.url : `${siteUrl}${item.url}`
+  }))
+} : null;
+
+// WebSite schema with search
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ninja Design Studio",
+  "url": siteUrl,
+  "description": "Premium design studio for Web3, DeFi, and blockchain projects",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ninja Design Studio"
+  }
+};
+
+// Select the appropriate schema based on type
+let schema: object | null = null;
+
+switch (type) {
+  case 'Organization':
+    schema = organizationSchema;
+    break;
+  case 'LocalBusiness':
+    schema = localBusinessSchema;
+    break;
+  case 'Service':
+    schema = serviceSchema;
+    break;
+  case 'FAQ':
+    schema = faqSchema;
+    break;
+  case 'Article':
+    schema = articleSchema;
+    break;
+  case 'Breadcrumb':
+    schema = breadcrumbSchema;
+    break;
+  case 'WebSite':
+    schema = websiteSchema;
+    break;
+}
+---
+
+{schema && (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+)}

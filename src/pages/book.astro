@@ -1,0 +1,349 @@
+---
+/**
+ * Book Page - Schedule a Discovery Call
+ * 
+ * Dedicated booking page with Cal.com embed.
+ * Reduces friction from inquiry to scheduled call.
+ */
+import DarkHeroLayout from '../layouts/DarkHeroLayout.astro';
+import CalEmbed from '../components/CalEmbed.astro';
+
+const title = "Book a Call";
+const description = "Schedule a free 30-minute discovery call to discuss your Web3 design project. No commitment, just a conversation about your goals.";
+
+// What to expect
+const expectations = [
+  {
+    icon: '💬',
+    title: 'Discuss Your Project',
+    description: 'Tell us about your vision, goals, and timeline.',
+  },
+  {
+    icon: '💡',
+    title: 'Get Expert Advice',
+    description: 'We\'ll share initial thoughts and recommendations.',
+  },
+  {
+    icon: '📋',
+    title: 'Receive a Proposal',
+    description: 'Get a detailed scope and quote within 48 hours.',
+  },
+];
+---
+
+<DarkHeroLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="book-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-container">
+      <span class="hero-eyebrow">Let's Talk</span>
+      <h1 class="hero-title">Book a <span class="gradient-text">Discovery Call</span></h1>
+      <p class="hero-subtitle">
+        30 minutes. No pitch, no pressure — just a conversation to see if we're a good fit for your project.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="book-content">
+    <div class="book-container">
+      <div class="book-grid">
+        <!-- Calendar -->
+        <div class="calendar-section">
+          <CalEmbed 
+            calLink="ninjadesign/discovery"
+            mode="inline"
+            theme={{
+              brandColor: '#ff006e',
+              darkMode: true,
+            }}
+          />
+          <p class="calendar-note">
+            Can't find a time that works? <a href="/contact">Send us a message</a> and we'll work something out.
+          </p>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="book-sidebar">
+          <div class="sidebar-card">
+            <h2>What to Expect</h2>
+            <div class="expectations-list">
+              {expectations.map((item, i) => (
+                <div class="expectation-item">
+                  <span class="expectation-number">{String(i + 1).padStart(2, '0')}</span>
+                  <div class="expectation-content">
+                    <span class="expectation-icon">{item.icon}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="sidebar-card sidebar-card--alt">
+            <h3>Prefer to chat first?</h3>
+            <p>Not ready for a call? That's okay. Reach out via Telegram or email and we can text.</p>
+            <div class="alt-contact">
+              <a href="https://t.me/ninjaguy" target="_blank" rel="noopener noreferrer" class="alt-link">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                </svg>
+                Telegram
+              </a>
+              <a href="mailto:hello@ninjadesignstudio.com" class="alt-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Email
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</DarkHeroLayout>
+
+<style>
+  /* Hero */
+  .book-hero {
+    position: relative;
+    padding: 10rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 50% 0%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 40%),
+      var(--darker);
+  }
+
+  .hero-container {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+  }
+
+  /* Content */
+  .book-content {
+    padding: 0 2rem 6rem;
+    background: var(--dark);
+  }
+
+  .book-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .book-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* Calendar Section */
+  .calendar-section {
+    margin-top: -2rem;
+  }
+
+  .calendar-note {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+  }
+
+  .calendar-note a {
+    color: var(--neon-cyan);
+    text-decoration: none;
+  }
+
+  .calendar-note a:hover {
+    text-decoration: underline;
+  }
+
+  /* Sidebar */
+  .book-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: sticky;
+    top: 100px;
+  }
+
+  .sidebar-card {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+  }
+
+  .sidebar-card h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .sidebar-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-card > p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .sidebar-card--alt {
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.05) 0%, rgba(0, 245, 255, 0.03) 100%);
+  }
+
+  /* Expectations */
+  .expectations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .expectation-item {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .expectation-number {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 6px;
+    height: fit-content;
+  }
+
+  .expectation-content {
+    flex: 1;
+  }
+
+  .expectation-icon {
+    display: inline-block;
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .expectation-content h3 {
+    margin-bottom: 0.25rem;
+  }
+
+  .expectation-content p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Alt Contact */
+  .alt-contact {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .alt-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .alt-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--neon-cyan);
+    color: var(--white);
+  }
+
+  .alt-link svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .book-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .book-sidebar {
+      position: static;
+    }
+
+    .calendar-section {
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .book-hero {
+      padding: 8rem 1.5rem 3rem;
+    }
+
+    .book-content {
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .sidebar-card {
+      padding: 1.5rem;
+    }
+  }
+</style>

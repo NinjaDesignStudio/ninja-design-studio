@@ -1,0 +1,486 @@
+---
+/**
+ * Newsletter - Email signup component
+ * 
+ * Reusable newsletter signup box for capturing email leads.
+ * Can be used in blog posts, footers, or standalone sections.
+ * 
+ * Uses web3forms or any email service - just update the action URL.
+ * 
+ * @example Basic inline
+ * <Newsletter />
+ * 
+ * @example Full section
+ * <Newsletter variant="section" />
+ * 
+ * @example Compact in footer
+ * <Newsletter variant="compact" />
+ * 
+ * @example With custom content
+ * <Newsletter 
+ *   title="Get Design Tips" 
+ *   description="Weekly insights on Web3 design"
+ *   buttonText="Subscribe"
+ * />
+ */
+
+interface Props {
+  /** Visual variant */
+  variant?: 'inline' | 'section' | 'compact' | 'card';
+  /** Title text */
+  title?: string;
+  /** Description text */
+  description?: string;
+  /** Button text */
+  buttonText?: string;
+  /** Placeholder text */
+  placeholder?: string;
+  /** Form action URL (email service endpoint) */
+  action?: string;
+  /** List/tag for segmentation */
+  listId?: string;
+  /** Show name field */
+  showName?: boolean;
+}
+
+const {
+  variant = 'inline',
+  title = 'Stay in the loop',
+  description = 'Get Web3 design insights, case studies, and studio updates delivered to your inbox.',
+  buttonText = 'Subscribe',
+  placeholder = 'Enter your email',
+  action = 'https://api.web3forms.com/submit',
+  listId = 'newsletter',
+  showName = false,
+} = Astro.props;
+
+// Generate unique ID for this instance
+const formId = `newsletter-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div class:list={['newsletter', `newsletter--${variant}`]}>
+  {(variant === 'section' || variant === 'card') && (
+    <div class="newsletter-header">
+      <span class="newsletter-icon">✉️</span>
+      <h3 class="newsletter-title">{title}</h3>
+      <p class="newsletter-description">{description}</p>
+    </div>
+  )}
+
+  {variant === 'inline' && (
+    <div class="newsletter-inline-header">
+      <h3 class="newsletter-title">{title}</h3>
+      <p class="newsletter-description">{description}</p>
+    </div>
+  )}
+
+  <form 
+    class="newsletter-form" 
+    id={formId}
+    action={action}
+    method="POST"
+  >
+    <!-- Hidden fields for form processing -->
+    <input type="hidden" name="access_key" value="710fa7dd-697e-454e-b5c8-8eb29c58f4a2">
+    <input type="hidden" name="subject" value="New Newsletter Subscription">
+    <input type="hidden" name="from_name" value="Ninja Design Studio Newsletter">
+    <input type="hidden" name="list" value={listId}>
+    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+    <div class="form-fields">
+      {showName && (
+        <input 
+          type="text" 
+          name="name" 
+          placeholder="Your name"
+          class="newsletter-input"
+        />
+      )}
+      <input 
+        type="email" 
+        name="email" 
+        placeholder={placeholder}
+        required
+        class="newsletter-input"
+      />
+      <button type="submit" class="newsletter-button">
+        <span class="button-text">{buttonText}</span>
+        <svg class="button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+        <svg class="button-spinner" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="form-message" id={`${formId}-message`}></div>
+  </form>
+
+  {variant !== 'compact' && (
+    <p class="newsletter-privacy">
+      No spam. Unsubscribe anytime. Read our <a href="/privacy">privacy policy</a>.
+    </p>
+  )}
+</div>
+
+<style>
+  .newsletter {
+    position: relative;
+  }
+
+  /* ========================================
+     Variant: Inline (default)
+     ======================================== */
+  .newsletter--inline {
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+  }
+
+  .newsletter-inline-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .newsletter--inline .newsletter-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .newsletter--inline .newsletter-description {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+  }
+
+  .newsletter--inline .form-fields {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .newsletter--inline .newsletter-input {
+    flex: 1;
+  }
+
+  /* ========================================
+     Variant: Section (full-width)
+     ======================================== */
+  .newsletter--section {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.08) 0%, rgba(0, 245, 255, 0.05) 100%);
+    text-align: center;
+  }
+
+  .newsletter-header {
+    max-width: 500px;
+    margin: 0 auto 2rem;
+  }
+
+  .newsletter-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .newsletter--section .newsletter-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .newsletter--section .newsletter-description {
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+  }
+
+  .newsletter--section .newsletter-form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .newsletter--section .form-fields {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .newsletter--section .newsletter-input {
+    flex: 1;
+    max-width: 300px;
+  }
+
+  /* ========================================
+     Variant: Compact (footer/sidebar)
+     ======================================== */
+  .newsletter--compact {
+    /* Minimal styling */
+  }
+
+  .newsletter--compact .form-fields {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .newsletter--compact .newsletter-input {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .newsletter--compact .newsletter-button {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .newsletter--compact .newsletter-button .button-text {
+    display: none;
+  }
+
+  .newsletter--compact .newsletter-button .button-icon {
+    margin: 0;
+  }
+
+  /* ========================================
+     Variant: Card (blog sidebar)
+     ======================================== */
+  .newsletter--card {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+  }
+
+  .newsletter--card .newsletter-header {
+    text-align: left;
+    margin-bottom: 1.5rem;
+  }
+
+  .newsletter--card .newsletter-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .newsletter--card .newsletter-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .newsletter--card .newsletter-description {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+  }
+
+  .newsletter--card .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .newsletter--card .newsletter-button {
+    width: 100%;
+  }
+
+  /* ========================================
+     Form Elements
+     ======================================== */
+  .newsletter-form {
+    position: relative;
+  }
+
+  .newsletter-input {
+    padding: 0.875rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--white);
+    transition: all 0.3s ease;
+  }
+
+  .newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--neon-pink);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .newsletter-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: var(--gradient-pink);
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .newsletter-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.3);
+  }
+
+  .newsletter-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .button-spinner {
+    display: none;
+    animation: spin 1s linear infinite;
+  }
+
+  .newsletter-button.loading .button-text,
+  .newsletter-button.loading .button-icon {
+    display: none;
+  }
+
+  .newsletter-button.loading .button-spinner {
+    display: block;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Form Message */
+  .form-message {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+    display: none;
+  }
+
+  .form-message.success {
+    display: block;
+    background: rgba(0, 245, 255, 0.1);
+    color: var(--neon-cyan);
+    border: 1px solid rgba(0, 245, 255, 0.2);
+  }
+
+  .form-message.error {
+    display: block;
+    background: rgba(255, 0, 110, 0.1);
+    color: var(--neon-pink);
+    border: 1px solid rgba(255, 0, 110, 0.2);
+  }
+
+  /* Privacy Text */
+  .newsletter-privacy {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+  }
+
+  .newsletter-privacy a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+  }
+
+  .newsletter-privacy a:hover {
+    color: var(--neon-cyan);
+  }
+
+  .newsletter--inline .newsletter-privacy,
+  .newsletter--card .newsletter-privacy {
+    text-align: left;
+  }
+
+  /* ========================================
+     Responsive
+     ======================================== */
+  @media (max-width: 640px) {
+    .newsletter--inline .form-fields,
+    .newsletter--section .form-fields {
+      flex-direction: column;
+    }
+
+    .newsletter--section .newsletter-input {
+      max-width: 100%;
+    }
+
+    .newsletter--inline .newsletter-button,
+    .newsletter--section .newsletter-button {
+      width: 100%;
+    }
+
+    .newsletter--compact .newsletter-button .button-text {
+      display: inline;
+    }
+  }
+</style>
+
+<script define:vars={{ formId }}>
+  const form = document.getElementById(formId);
+  const messageEl = document.getElementById(`${formId}-message`);
+  const submitBtn = form?.querySelector('button[type="submit"]');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!submitBtn || !messageEl) return;
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('loading');
+    messageEl.className = 'form-message';
+    messageEl.style.display = 'none';
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        messageEl.className = 'form-message success';
+        messageEl.textContent = '✓ You\'re in! Check your inbox to confirm.';
+        messageEl.style.display = 'block';
+        form.reset();
+      } else {
+        throw new Error(result.message || 'Something went wrong');
+      }
+    } catch (error) {
+      messageEl.className = 'form-message error';
+      messageEl.textContent = '✗ Oops! Please try again.';
+      messageEl.style.display = 'block';
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('loading');
+
+    // Hide message after 8 seconds
+    setTimeout(() => {
+      messageEl.style.display = 'none';
+    }, 8000);
+  });
+</script>

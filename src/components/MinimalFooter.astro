@@ -1,0 +1,264 @@
+---
+/**
+ * MinimalFooter - Distraction-free footer for landing pages
+ * 
+ * A stripped-down footer variant that keeps focus on conversion.
+ * Use for:
+ * - Landing pages
+ * - Conversion funnels
+ * - Thank-you pages
+ * - Lead magnets
+ * 
+ * @example Basic
+ * <MinimalFooter />
+ * 
+ * @example With links
+ * <MinimalFooter 
+ *   showLinks={true}
+ *   links={[
+ *     { text: 'Privacy', href: '/privacy' },
+ *     { text: 'Terms', href: '/terms' },
+ *   ]}
+ * />
+ */
+interface FooterLink {
+  text: string;
+  href: string;
+}
+
+interface Props {
+  /** Show copyright (default: true) */
+  showCopyright?: boolean;
+  /** Custom copyright text */
+  copyrightText?: string;
+  /** Show social links */
+  showSocials?: boolean;
+  /** Show navigation links */
+  showLinks?: boolean;
+  /** Navigation links */
+  links?: FooterLink[];
+  /** Footer variant */
+  variant?: 'default' | 'centered' | 'minimal';
+  /** Dark or light mode */
+  theme?: 'dark' | 'light';
+}
+
+const {
+  showCopyright = true,
+  copyrightText,
+  showSocials = false,
+  showLinks = false,
+  links = [
+    { text: 'Privacy', href: '/privacy' },
+    { text: 'Terms', href: '/terms' },
+  ],
+  variant = 'default',
+  theme = 'dark',
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+const defaultCopyright = `© ${currentYear} Ninja Design Studio`;
+
+const socials = [
+  { 
+    name: 'Twitter/X', 
+    href: 'https://x.com/ninjadesignstdo',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
+  },
+  { 
+    name: 'Telegram', 
+    href: 'https://t.me/ninjaguy',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>`
+  },
+];
+---
+
+<footer 
+  class:list={[
+    'minimal-footer',
+    `minimal-footer--${variant}`,
+    `minimal-footer--${theme}`,
+  ]}
+>
+  <div class="footer-container">
+    {/* Left/Main content */}
+    <div class="footer-main">
+      {showCopyright && (
+        <p class="footer-copyright">
+          {copyrightText || defaultCopyright}
+        </p>
+      )}
+
+      {showLinks && links.length > 0 && (
+        <nav class="footer-links" aria-label="Footer navigation">
+          {links.map((link, index) => (
+            <>
+              <a href={link.href} class="footer-link">{link.text}</a>
+              {index < links.length - 1 && <span class="link-divider">·</span>}
+            </>
+          ))}
+        </nav>
+      )}
+    </div>
+
+    {/* Right/Socials */}
+    {showSocials && (
+      <div class="footer-socials">
+        {socials.map((social) => (
+          <a 
+            href={social.href} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label={social.name}
+            set:html={social.icon}
+          />
+        ))}
+      </div>
+    )}
+
+    {/* Optional slot for custom content */}
+    <slot />
+  </div>
+</footer>
+
+<style>
+  .minimal-footer {
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Theme: Dark */
+  .minimal-footer--dark {
+    background: var(--darker);
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Theme: Light */
+  .minimal-footer--light {
+    background: var(--white);
+    color: rgba(0, 0, 0, 0.5);
+    border-top-color: rgba(0, 0, 0, 0.05);
+  }
+
+  /* Container */
+  .footer-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  /* Variant: Centered */
+  .minimal-footer--centered .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Variant: Minimal */
+  .minimal-footer--minimal {
+    padding: 1.5rem 0;
+    border-top: none;
+  }
+
+  .minimal-footer--minimal .footer-container {
+    justify-content: center;
+  }
+
+  /* Main content */
+  .footer-main {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .minimal-footer--centered .footer-main {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Copyright */
+  .footer-copyright {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  /* Links */
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .footer-link {
+    font-size: 0.875rem;
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .minimal-footer--dark .footer-link:hover {
+    color: var(--white);
+  }
+
+  .minimal-footer--light .footer-link:hover {
+    color: var(--dark);
+  }
+
+  .link-divider {
+    opacity: 0.3;
+  }
+
+  /* Socials */
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+  }
+
+  .minimal-footer--light .social-link {
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .social-link:hover {
+    background: var(--neon-pink);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .social-link :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .footer-container {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+      padding: 0 1.5rem;
+    }
+
+    .footer-main {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>

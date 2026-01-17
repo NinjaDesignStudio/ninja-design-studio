@@ -1,0 +1,729 @@
+---
+/**
+ * Individual Service Page - Dynamic Route
+ * 
+ * SEO-optimized landing pages for each service offering.
+ * Uses the service ID from the URL to load the correct service data.
+ * 
+ * Routes:
+ * - /services/brand-identity
+ * - /services/ui-ux
+ * - /services/website
+ * - /services/pitch-deck
+ * - /services/nft
+ * - /services/social-content
+ */
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import { services, getService, pricingTiers } from '../../lib/services';
+import { getFeaturedTestimonials } from '../../lib/testimonials';
+import { getFAQsByCategory } from '../../lib/faqs';
+import KeyTakeaways from '../../components/ui/KeyTakeaways.astro';
+
+// Generate static paths for all services
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+
+// Get related services (exclude current)
+const relatedServices = services.filter(s => s.id !== service.id).slice(0, 3);
+
+// Get testimonials
+const testimonials = getFeaturedTestimonials().slice(0, 2);
+
+// Get FAQs
+const faqs = getFAQsByCategory('process').slice(0, 4);
+
+// Service-specific content
+const serviceContent: Record<string, {
+  heroImage?: string;
+  benefits: string[];
+  process: { step: string; title: string; description: string }[];
+  ideal: string[];
+  notIdeal?: string[];
+}> = {
+  'brand-identity': {
+    benefits: [
+      'Stand out in a sea of generic crypto projects',
+      'Build instant credibility with investors and users',
+      'Create consistency across all touchpoints',
+      'Establish a foundation for all future design work',
+    ],
+    process: [
+      { step: '01', title: 'Discovery', description: 'We learn your vision, values, competitors, and target audience through a deep-dive session.' },
+      { step: '02', title: 'Exploration', description: 'We develop 3-5 distinct creative directions with moodboards and initial concepts.' },
+      { step: '03', title: 'Refinement', description: 'We refine your chosen direction through multiple iterations until perfect.' },
+      { step: '04', title: 'Delivery', description: 'You receive complete brand assets, guidelines, and templates ready for use.' },
+    ],
+    ideal: [
+      'Launching a new protocol or token',
+      'Rebranding an established project',
+      'Preparing for a funding round',
+      'Need professional credibility fast',
+    ],
+  },
+  'ui-ux': {
+    benefits: [
+      'Reduce user confusion and support tickets',
+      'Increase conversion rates and TVL',
+      'Make complex DeFi interactions feel simple',
+      'Ship faster with reusable design components',
+    ],
+    process: [
+      { step: '01', title: 'Research', description: 'We analyze your users, competitors, and existing product to identify opportunities.' },
+      { step: '02', title: 'Architecture', description: 'We map user flows, information architecture, and create wireframes.' },
+      { step: '03', title: 'Design', description: 'We create high-fidelity designs with interactive prototypes for testing.' },
+      { step: '04', title: 'Handoff', description: 'Developers receive specs, assets, and a component library for implementation.' },
+    ],
+    ideal: [
+      'Building a DeFi protocol or DEX',
+      'Creating an NFT marketplace',
+      'Designing a wallet or portfolio app',
+      'Need to improve an existing product',
+    ],
+  },
+  'website': {
+    benefits: [
+      'Convert visitors into users and investors',
+      'Rank higher in search results',
+      'Load fast and work on all devices',
+      'Easy to update without developers',
+    ],
+    process: [
+      { step: '01', title: 'Strategy', description: 'We plan the site structure, messaging, and conversion goals.' },
+      { step: '02', title: 'Design', description: 'We create custom designs for every page and responsive breakpoint.' },
+      { step: '03', title: 'Development', description: 'We build with modern tech (Astro, Next.js) for speed and SEO.' },
+      { step: '04', title: 'Launch', description: 'We deploy, set up analytics, and ensure everything works perfectly.' },
+    ],
+    ideal: [
+      'Launching a new project',
+      'Current site looks dated',
+      'Need better conversion rates',
+      'Want a site you can update yourself',
+    ],
+  },
+  'pitch-deck': {
+    benefits: [
+      'Tell your story with clarity and impact',
+      'Look professional to institutional investors',
+      'Stand out from other pitches',
+      'Close rounds faster',
+    ],
+    process: [
+      { step: '01', title: 'Narrative', description: 'We structure your story for maximum impact based on what investors want.' },
+      { step: '02', title: 'Content', description: 'We help refine your messaging, data, and key points.' },
+      { step: '03', title: 'Design', description: 'We create stunning visuals that reinforce your credibility.' },
+      { step: '04', title: 'Polish', description: 'We iterate until the deck is presentation-ready.' },
+    ],
+    ideal: [
+      'Raising seed or Series A',
+      'Pitching to VCs or funds',
+      'Applying to accelerators',
+      'Need to present to partners',
+    ],
+  },
+  'nft': {
+    benefits: [
+      'Create art that collectors actually want',
+      'Build a cohesive collection with variety',
+      'Stand out in a crowded marketplace',
+      'Generate buzz on social media',
+    ],
+    process: [
+      { step: '01', title: 'Concept', description: 'We develop the art style, theme, and trait system for your collection.' },
+      { step: '02', title: 'Creation', description: 'We design all base characters, traits, and variations.' },
+      { step: '03', title: 'Generation', description: 'We set up the generative system with proper rarity distribution.' },
+      { step: '04', title: 'Assets', description: 'We create marketplace assets, reveal animations, and promotional materials.' },
+    ],
+    ideal: [
+      'Launching a PFP collection',
+      'Creating utility NFTs',
+      'Building a gaming project',
+      'Want unique 1/1 artwork',
+    ],
+  },
+  'social-content': {
+    benefits: [
+      'Stay consistent without hiring full-time',
+      'Keep community engaged between launches',
+      'React quickly to market moments',
+      'Build brand recognition over time',
+    ],
+    process: [
+      { step: '01', title: 'Setup', description: 'We create templates and establish your visual content system.' },
+      { step: '02', title: 'Planning', description: 'We align on content calendar and upcoming needs.' },
+      { step: '03', title: 'Creation', description: 'We design assets on a rolling basis as you need them.' },
+      { step: '04', title: 'Iteration', description: 'We refine based on what performs best.' },
+    ],
+    ideal: [
+      'Active on Twitter/Discord',
+      'Regular announcements to make',
+      'No in-house designer',
+      'Need fast turnaround',
+    ],
+  },
+};
+
+const content = serviceContent[service.id] || serviceContent['brand-identity'];
+
+// SEO
+const title = service.title;
+const description = service.fullDescription;
+---
+
+<ServiceLayout title={title} description={description}>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <a href="/services" class="hero-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          All Services
+        </a>
+        <span class="hero-eyebrow">{service.icon} {service.title}</span>
+        <h1 class="hero-title">
+          {service.shortDescription.replace('.', '')}
+        </h1>
+        <p class="hero-subtitle">
+          {service.fullDescription}
+        </p>
+        <div class="hero-meta">
+          <div class="meta-item">
+            <span class="meta-label">Starting at</span>
+            <span class="meta-value">{service.startingPrice}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Timeline</span>
+            <span class="meta-value">{service.timeline}</span>
+          </div>
+        </div>
+        <div class="hero-buttons">
+          <a href="/contact" class="btn btn-primary">
+            Get Started
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a href="https://t.me/ninjaguy" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            Chat on Telegram
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Benefits -->
+  <section class="benefits-section">
+    <div class="benefits-container">
+      <KeyTakeaways 
+        title="Why This Matters"
+        takeaways={content.benefits}
+        variant="highlight"
+        icon="checkmark"
+        accent="gradient"
+      />
+    </div>
+  </section>
+
+  <!-- What's Included -->
+  <section class="included-section">
+    <div class="included-container">
+      <div class="section-header">
+        <span class="section-eyebrow">Deliverables</span>
+        <h2 class="section-title">What's Included</h2>
+      </div>
+      
+      <div class="included-grid">
+        {service.features.map((feature, index) => (
+          <div class="included-item">
+            <div class="included-number">{String(index + 1).padStart(2, '0')}</div>
+            <span class="included-text">{feature}</span>
+          </div>
+        ))}
+      </div>
+
+      {service.deliverables && service.deliverables.length > 0 && (
+        <div class="deliverables-list">
+          <h3>Full Deliverables</h3>
+          <ul>
+            {service.deliverables.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="process-section">
+    <div class="process-container">
+      <div class="section-header">
+        <span class="section-eyebrow">How It Works</span>
+        <h2 class="section-title">Our Process</h2>
+        <p class="section-subtitle">
+          A proven workflow refined over 100+ projects
+        </p>
+      </div>
+
+      <div class="process-grid">
+        {content.process.map((step, index) => (
+          <div class="process-step">
+            <div class="step-number">{step.step}</div>
+            <div class="step-content">
+              <h3 class="step-title">{step.title}</h3>
+              <p class="step-description">{step.description}</p>
+            </div>
+            {index < content.process.length - 1 && <div class="step-connector"></div>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Ideal For -->
+  <section class="ideal-section">
+    <div class="ideal-container">
+      <div class="ideal-grid">
+        <div class="ideal-content">
+          <span class="section-eyebrow">Perfect Fit</span>
+          <h2>This Service is Ideal For</h2>
+          <ul class="ideal-list">
+            {content.ideal.map((item) => (
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="ideal-cta">
+          <div class="cta-card">
+            <div class="cta-card-price">
+              <span class="price-label">Investment</span>
+              <span class="price-range">{service.priceRange}</span>
+            </div>
+            <div class="cta-card-timeline">
+              <span class="timeline-label">Timeline</span>
+              <span class="timeline-value">{service.timeline}</span>
+            </div>
+            <a href="/contact" class="btn btn-primary btn-lg">
+              Start Your Project
+            </a>
+            <p class="cta-card-note">Free consultation included</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials (if available) -->
+  {testimonials.length > 0 && (
+    <section class="testimonials-section">
+      <div class="testimonials-container">
+        <div class="section-header">
+          <span class="section-eyebrow">Client Results</span>
+          <h2 class="section-title">What Clients Say</h2>
+        </div>
+        <div class="testimonials-grid" style="grid-template-columns: repeat(2, 1fr);">
+          {testimonials.map((testimonial) => (
+            <blockquote class="testimonial-card">
+              <svg class="quote-icon" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
+              </svg>
+              <p class="testimonial-quote">{testimonial.quote}</p>
+              <footer class="testimonial-author">
+                <span class="author-name">{testimonial.author}</span>
+                <span class="author-role">{testimonial.role}, {testimonial.company}</span>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Related Services -->
+  <section class="related-section">
+    <div class="services-container">
+      <div class="section-header">
+        <span class="section-eyebrow">Explore More</span>
+        <h2 class="section-title">Related Services</h2>
+      </div>
+      <div class="services-grid">
+        {relatedServices.map((related) => (
+          <a href={`/services/${related.id}`} class="service-card service-card--link">
+            <div class="service-icon">{related.icon}</div>
+            <h3 class="service-title">{related.title}</h3>
+            <p class="service-description">{related.shortDescription}</p>
+            <div class="service-price">
+              <span class="price-label">Starting at</span>
+              <span class="price-value">{related.startingPrice}</span>
+            </div>
+            <span class="service-link">
+              Learn more
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="faq-section">
+    <div class="faq-container">
+      <div class="section-header">
+        <span class="section-eyebrow">Questions</span>
+        <h2 class="section-title">Common Questions</h2>
+      </div>
+      <div class="faq-grid">
+        {faqs.map((faq) => (
+          <details class="faq-item">
+            <summary class="faq-question">
+              {faq.question}
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="faq-answer">{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+      <div class="faq-more">
+        <a href="/faq" class="btn btn-secondary">View All FAQs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <span class="section-eyebrow">Ready to Start?</span>
+      <h2 class="cta-title">Let's build your {service.title.toLowerCase()}</h2>
+      <p class="cta-subtitle">
+        Book a free consultation to discuss your project and see how we can help.
+      </p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary btn-lg">
+          Get Started
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="/work" class="btn btn-ghost btn-lg">
+          See Our Work
+        </a>
+      </div>
+    </div>
+  </section>
+</ServiceLayout>
+
+<style>
+  /* Hero back link */
+  .hero-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+
+  .hero-back:hover {
+    color: var(--neon-cyan);
+  }
+
+  /* Hero meta */
+  .hero-meta {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    width: fit-content;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .meta-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .meta-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Benefits section */
+  .benefits-section {
+    padding: 4rem 0;
+    background: var(--dark);
+  }
+
+  .benefits-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Included section */
+  .included-section {
+    padding: 6rem 0;
+    background: var(--darker);
+  }
+
+  .included-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .included-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .included-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .included-item:hover {
+    border-color: rgba(255, 0, 110, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .included-number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 6px;
+  }
+
+  .included-text {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .deliverables-list {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+  }
+
+  .deliverables-list h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .deliverables-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  .deliverables-list li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .deliverables-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 6px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+  }
+
+  /* Ideal section */
+  .ideal-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.05) 0%, rgba(0, 245, 255, 0.03) 100%);
+  }
+
+  .ideal-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .ideal-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .ideal-content h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .ideal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ideal-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 1rem;
+  }
+
+  .ideal-list .check-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--neon-cyan);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* CTA Card */
+  .cta-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .cta-card-price,
+  .cta-card-timeline {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .cta-card-timeline {
+    border-bottom: none;
+    margin-bottom: 2rem;
+    padding-bottom: 0;
+  }
+
+  .price-label,
+  .timeline-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.5rem;
+  }
+
+  .price-range {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .timeline-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .cta-card .btn {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .cta-card-note {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+  }
+
+  /* Related section */
+  .related-section {
+    padding: 6rem 0;
+    background: var(--dark);
+  }
+
+  .service-card--link {
+    text-decoration: none;
+    display: block;
+  }
+
+  .service-card--link:hover {
+    transform: translateY(-4px);
+  }
+
+  /* FAQ more link */
+  .faq-more {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-meta {
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .ideal-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .deliverables-list ul {
+      columns: 1;
+    }
+  }
+</style>

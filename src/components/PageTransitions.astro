@@ -1,0 +1,202 @@
+---
+/**
+ * PageTransitions - Smooth page transitions
+ * 
+ * Uses the View Transitions API for smooth crossfades between pages.
+ * Falls back gracefully for unsupported browsers.
+ * 
+ * Add to your layout's <head> slot or include in layouts directly.
+ * 
+ * @example
+ * <PageTransitions />
+ */
+
+interface Props {
+  /** Transition duration in ms */
+  duration?: number;
+  /** Easing function */
+  easing?: string;
+}
+
+const {
+  duration = 300,
+  easing = 'ease-out',
+} = Astro.props;
+---
+
+<!-- View Transitions Meta -->
+<meta name="view-transition" content="same-origin" />
+
+<style define:vars={{ duration: `${duration}ms`, easing }}>
+  /* View Transitions API Animations */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes slide-from-right {
+    from { transform: translateX(30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slide-to-left {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-30px); opacity: 0; }
+  }
+
+  @keyframes scale-up {
+    from { transform: scale(0.98); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes scale-down {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0.98); opacity: 0; }
+  }
+
+  /* Default page transition */
+  ::view-transition-old(root) {
+    animation: var(--duration) var(--easing) both fade-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: var(--duration) var(--easing) both fade-in;
+  }
+
+  /* Named transitions for specific elements */
+  ::view-transition-old(hero) {
+    animation: var(--duration) var(--easing) both scale-down;
+  }
+
+  ::view-transition-new(hero) {
+    animation: var(--duration) var(--easing) both scale-up;
+  }
+
+  ::view-transition-old(content) {
+    animation: var(--duration) var(--easing) both slide-to-left;
+  }
+
+  ::view-transition-new(content) {
+    animation: var(--duration) var(--easing) both slide-from-right;
+  }
+
+  /* Transition overlay */
+  .page-transition-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: var(--darker);
+    opacity: 0;
+    transition: opacity var(--duration) var(--easing);
+  }
+
+  .page-transition-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Transition loader */
+  .transition-loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 150ms ease;
+    pointer-events: none;
+  }
+
+  .transition-loader.active {
+    opacity: 1;
+  }
+
+  .transition-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--neon-pink);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root),
+    ::view-transition-old(hero),
+    ::view-transition-new(hero),
+    ::view-transition-old(content),
+    ::view-transition-new(content) {
+      animation: none !important;
+    }
+
+    .page-transition-overlay,
+    .transition-loader {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Fallback for browsers without View Transitions API
+  const supportsViewTransitions = 'startViewTransition' in document;
+
+  if (!supportsViewTransitions) {
+    // Create overlay for fallback transitions
+    const overlay = document.createElement('div');
+    overlay.className = 'page-transition-overlay';
+    document.body.appendChild(overlay);
+
+    // Intercept navigation
+    document.addEventListener('click', (e) => {
+      const link = (e.target as HTMLElement).closest('a');
+      if (!link) return;
+      
+      const href = link.getAttribute('href');
+      if (!href) return;
+      
+      // Only handle internal links
+      if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      if (link.hasAttribute('target')) return;
+      
+      e.preventDefault();
+      
+      // Trigger transition
+      overlay.classList.add('active');
+      
+      setTimeout(() => {
+        window.location.href = href;
+      }, 300);
+    });
+
+    // Fade in on page load
+    window.addEventListener('pageshow', () => {
+      overlay.classList.remove('active');
+    });
+  }
+
+  // Add view-transition-name to elements that should animate separately
+  document.addEventListener('DOMContentLoaded', () => {
+    // Hero sections
+    document.querySelectorAll('.hero-section, .blog-hero, .faq-hero, [class*="hero"]').forEach((el, i) => {
+      (el as HTMLElement).style.viewTransitionName = `hero-${i}`;
+    });
+
+    // Main content
+    const main = document.querySelector('main');
+    if (main) {
+      main.style.viewTransitionName = 'main-content';
+    }
+  });
+</script>

@@ -1,0 +1,249 @@
+---
+/**
+ * ClientTestimonial - Inline testimonial for case studies
+ * 
+ * A featured quote from the client with optional photo.
+ * Different from TestimonialCard - this is designed to be
+ * embedded within case study content.
+ * 
+ * @example
+ * <ClientTestimonial
+ *   quote="Working with Ninja was transformative for our brand..."
+ *   author="Alex Chen"
+ *   role="Head of Design"
+ *   company="Aave"
+ *   image="/images/testimonials/alex.jpg"
+ * />
+ */
+interface Props {
+  /** The testimonial quote */
+  quote: string;
+  /** Author name */
+  author: string;
+  /** Author's role/title */
+  role?: string;
+  /** Company name */
+  company?: string;
+  /** Author photo URL */
+  image?: string;
+  /** Visual variant */
+  variant?: 'default' | 'featured' | 'minimal' | 'card';
+}
+
+const {
+  quote,
+  author,
+  role,
+  company,
+  image,
+  variant = 'default',
+} = Astro.props;
+---
+
+<blockquote class:list={['client-testimonial', `client-testimonial--${variant}`]}>
+  {/* Quote Icon */}
+  <div class="testimonial-icon">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
+    </svg>
+  </div>
+
+  {/* Quote Text */}
+  <p class="testimonial-quote">{quote}</p>
+
+  {/* Author Info */}
+  <footer class="testimonial-footer">
+    {image && (
+      <div class="testimonial-avatar">
+        <img src={image} alt={author} loading="lazy" />
+      </div>
+    )}
+    <div class="testimonial-author">
+      <cite class="author-name">{author}</cite>
+      {(role || company) && (
+        <span class="author-role">
+          {role}{role && company && ' · '}{company}
+        </span>
+      )}
+    </div>
+  </footer>
+
+  {/* Decorative elements */}
+  <div class="testimonial-glow"></div>
+</blockquote>
+
+<style>
+  .client-testimonial {
+    position: relative;
+    margin: 4rem 0;
+    padding: 0;
+    border: none;
+    font-style: normal;
+  }
+
+  /* Default variant */
+  .client-testimonial--default {
+    max-width: 800px;
+    padding: 3rem;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 0, 110, 0.08) 0%,
+      rgba(191, 0, 255, 0.05) 50%,
+      rgba(0, 245, 255, 0.08) 100%
+    );
+    border-radius: 24px;
+    border-left: 4px solid var(--neon-pink);
+  }
+
+  /* Featured variant */
+  .client-testimonial--featured {
+    max-width: 900px;
+    padding: 4rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 32px;
+    text-align: center;
+  }
+
+  /* Minimal variant */
+  .client-testimonial--minimal {
+    max-width: 700px;
+    padding: 2rem 0;
+    border-left: 3px solid rgba(255, 255, 255, 0.1);
+    padding-left: 2rem;
+  }
+
+  /* Card variant */
+  .client-testimonial--card {
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+  }
+
+  /* Quote Icon */
+  .testimonial-icon {
+    margin-bottom: 1.5rem;
+    color: var(--neon-pink);
+    opacity: 0.5;
+  }
+
+  .client-testimonial--featured .testimonial-icon {
+    margin-bottom: 2rem;
+  }
+
+  .client-testimonial--minimal .testimonial-icon {
+    display: none;
+  }
+
+  /* Quote Text */
+  .testimonial-quote {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 2rem;
+    font-weight: 400;
+  }
+
+  .client-testimonial--featured .testimonial-quote {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-style: italic;
+  }
+
+  .client-testimonial--minimal .testimonial-quote {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Footer */
+  .testimonial-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .client-testimonial--featured .testimonial-footer {
+    justify-content: center;
+  }
+
+  /* Avatar */
+  .testimonial-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .testimonial-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Author Info */
+  .testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .client-testimonial--featured .testimonial-author {
+    text-align: left;
+  }
+
+  .author-name {
+    font-size: 1rem;
+    font-weight: 600;
+    font-style: normal;
+    color: var(--white);
+  }
+
+  .author-role {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Glow effect */
+  .testimonial-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 30% 0%,
+      rgba(255, 0, 110, 0.1) 0%,
+      transparent 50%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .client-testimonial:hover .testimonial-glow {
+    opacity: 1;
+  }
+
+  .client-testimonial--minimal .testimonial-glow {
+    display: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .client-testimonial--default,
+    .client-testimonial--featured {
+      padding: 2rem;
+      border-radius: 20px;
+    }
+
+    .testimonial-quote {
+      font-size: 1.0625rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

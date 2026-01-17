@@ -1,0 +1,571 @@
+---
+/**
+ * CaseStudyLayout - Portfolio case study pages
+ * 
+ * Deep-dive into individual projects with:
+ * - Immersive hero with project visuals
+ * - Project metadata sidebar
+ * - Process documentation
+ * - Results & metrics
+ * - Client testimonial
+ * 
+ * @example
+ * <CaseStudyLayout
+ *   title="Aave Brand Refresh"
+ *   client="Aave"
+ *   services={['Brand Identity', 'UI Design']}
+ *   timeline="6 weeks"
+ *   year="2024"
+ * >
+ *   <CaseStudyHero ... />
+ *   <section>...</section>
+ * </CaseStudyLayout>
+ */
+import HeaderTransparent from '../components/HeaderTransparent.astro';
+import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  client?: string;
+  services?: string[];
+  timeline?: string;
+  year?: string;
+  industry?: string;
+  heroImage?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "A case study by Ninja Design Studio showcasing our work in Web3 design.",
+  client,
+  services = [],
+  timeline,
+  year,
+  industry,
+  heroImage,
+  ogImage,
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = Astro.site?.origin || "https://ninjadesignstudio.com";
+const currentUrl = new URL(Astro.url.pathname, siteUrl).href;
+const fullOgImage = ogImage?.startsWith('http') ? ogImage : new URL(ogImage || '/images/og-image.jpg', siteUrl).href;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title>{title} | Case Study | Ninja Design Studio</title>
+  <meta name="title" content={`${title} | Case Study | Ninja Design Studio`}>
+  <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href={currentUrl}>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content={currentUrl}>
+  <meta property="og:title" content={`${title} | Case Study`}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={fullOgImage}>
+  <meta property="og:site_name" content="Ninja Design Studio">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content={currentUrl}>
+  <meta name="twitter:title" content={`${title} | Case Study`}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={fullOgImage}>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="/images/nds-logo.jpg">
+  <link rel="apple-touch-icon" href="/images/nds-logo.jpg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Generator -->
+  <meta name="generator" content={Astro.generator}>
+  
+  <slot name="head" />
+</head>
+
+<body class="case-study-page">
+  <!-- Skip to main content (accessibility) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+  
+  <!-- Navigation -->
+  <HeaderTransparent />
+  
+  <!-- Main Content -->
+  <main id="main-content">
+    <slot />
+  </main>
+  
+  <!-- Navigation to other case studies -->
+  <slot name="navigation" />
+  
+  <!-- Footer -->
+  <slot name="footer">
+    <Footer />
+  </slot>
+  
+  <BackToTop />
+  
+  <slot name="scripts" />
+  
+  <script>
+    // Scroll Progress
+    const scrollProgress = document.getElementById('scrollProgress');
+    let scrollTicking = false;
+    
+    function updateScrollProgress() {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      if (scrollProgress) scrollProgress.style.width = scrollPercent + '%';
+      scrollTicking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(updateScrollProgress);
+        scrollTicking = true;
+      }
+    });
+
+    // Header scroll effect
+    const nav = document.getElementById('nav');
+    let navTicking = false;
+    
+    function updateNav() {
+      const scrolled = window.pageYOffset > 50;
+      nav?.classList.toggle('scrolled', scrolled);
+      navTicking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+      if (!navTicking) {
+        requestAnimationFrame(updateNav);
+        navTicking = true;
+      }
+    });
+    updateNav();
+
+    // Mobile menu
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let isMenuOpen = false;
+    
+    function toggleMenu() {
+      isMenuOpen = !isMenuOpen;
+      navToggle?.classList.toggle('active', isMenuOpen);
+      mobileMenu?.classList.toggle('active', isMenuOpen);
+      document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    }
+    
+    navToggle?.addEventListener('click', toggleMenu);
+    mobileMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (isMenuOpen) toggleMenu();
+      });
+    });
+
+    // Reveal animations
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, [data-reveal]');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '-50px'
+    });
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop?.classList.toggle('visible', window.pageYOffset > 500);
+    });
+    backToTop?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Image reveal on scroll
+    const images = document.querySelectorAll('.case-image, .showcase-image');
+    const imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('loaded');
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+    images.forEach(img => imageObserver.observe(img));
+  </script>
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+
+  /* ============================================
+     CASE STUDY PAGE - Base Styles
+     Dark, immersive, portfolio-focused
+     ============================================ */
+  
+  .case-study-page {
+    background: var(--darker);
+    color: var(--white);
+    min-height: 100vh;
+  }
+
+  /* ============================================
+     CONTENT CONTAINER
+     ============================================ */
+  
+  .case-study-page .case-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .case-study-page .case-content--wide {
+    max-width: 1200px;
+  }
+
+  .case-study-page .case-content--full {
+    max-width: none;
+    padding: 0;
+  }
+
+  /* ============================================
+     SECTION STYLING
+     ============================================ */
+  
+  .case-study-page section {
+    padding: 5rem 0;
+  }
+
+  .case-study-page section:first-of-type {
+    padding-top: 0;
+  }
+
+  /* Section with dark glass background */
+  .case-study-page .case-section--glass {
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Section with gradient accent */
+  .case-study-page .case-section--accent {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 0, 110, 0.05) 0%,
+      rgba(191, 0, 255, 0.03) 50%,
+      rgba(0, 245, 255, 0.05) 100%
+    );
+  }
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+  
+  .case-study-page h2 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  .case-study-page h3 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--white);
+  }
+
+  .case-study-page h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .case-study-page p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1.5rem;
+  }
+
+  .case-study-page p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Lead paragraph */
+  .case-study-page .lead {
+    font-size: 1.375rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Section eyebrow */
+  .case-study-page .case-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  /* Gradient text */
+  .case-study-page .gradient-text {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ============================================
+     LISTS
+     ============================================ */
+  
+  .case-study-page ul:not([class]) {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+  }
+
+  .case-study-page ul:not([class]) li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+
+  .case-study-page ul:not([class]) li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 8px;
+    height: 8px;
+    background: var(--gradient-pink);
+    border-radius: 50%;
+  }
+
+  .case-study-page ol:not([class]) {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    counter-reset: case-list;
+  }
+
+  .case-study-page ol:not([class]) li {
+    position: relative;
+    padding-left: 2.5rem;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    counter-increment: case-list;
+  }
+
+  .case-study-page ol:not([class]) li::before {
+    content: counter(case-list);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    background: var(--gradient-pink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  /* ============================================
+     LINKS
+     ============================================ */
+  
+  .case-study-page a:not([class]) {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 245, 255, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .case-study-page a:not([class]):hover {
+    color: var(--neon-pink);
+    border-color: var(--neon-pink);
+  }
+
+  /* ============================================
+     BLOCKQUOTES
+     ============================================ */
+  
+  .case-study-page blockquote:not([class]) {
+    position: relative;
+    margin: 3rem 0;
+    padding: 2rem 2rem 2rem 3rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border-left: 4px solid var(--neon-pink);
+  }
+
+  .case-study-page blockquote:not([class]) p {
+    font-size: 1.25rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+  }
+
+  .case-study-page blockquote:not([class])::before {
+    content: '"';
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 3rem;
+    font-family: Georgia, serif;
+    color: var(--neon-pink);
+    opacity: 0.5;
+    line-height: 1;
+  }
+
+  /* ============================================
+     IMAGES
+     ============================================ */
+  
+  .case-study-page .case-image {
+    width: 100%;
+    border-radius: 16px;
+    margin: 2rem 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s var(--ease-out);
+  }
+
+  .case-study-page .case-image.loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .case-study-page .case-image--rounded {
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .case-study-page .case-image--glow {
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.4),
+      0 0 100px rgba(255, 0, 110, 0.1);
+  }
+
+  /* Image caption */
+  .case-study-page figcaption {
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  /* ============================================
+     HORIZONTAL RULES
+     ============================================ */
+  
+  .case-study-page hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1) 20%,
+      rgba(255, 255, 255, 0.1) 80%,
+      transparent
+    );
+    margin: 4rem 0;
+  }
+
+  /* ============================================
+     SKIP LINK (Accessibility)
+     ============================================ */
+  
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--neon-pink);
+    color: white;
+    padding: 8px 16px;
+    z-index: 100;
+    transition: top 0.3s;
+  }
+  
+  .skip-link:focus {
+    top: 0;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  
+  @media (max-width: 768px) {
+    .case-study-page section {
+      padding: 3rem 0;
+    }
+
+    .case-study-page .case-content {
+      padding: 0 1.5rem;
+    }
+
+    .case-study-page h2 {
+      margin-bottom: 1rem;
+    }
+
+    .case-study-page p {
+      font-size: 1rem;
+    }
+
+    .case-study-page blockquote:not([class]) {
+      padding: 1.5rem;
+      padding-left: 2rem;
+    }
+
+    .case-study-page blockquote:not([class])::before {
+      font-size: 2rem;
+      top: 0.5rem;
+      left: 0.5rem;
+    }
+  }
+</style>

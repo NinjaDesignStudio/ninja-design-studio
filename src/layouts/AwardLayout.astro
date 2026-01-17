@@ -1,0 +1,279 @@
+---
+/**
+ * AwardLayout - Award-winning layout with premium effects
+ * 
+ * Includes all premium visual effects:
+ * - Smooth scroll (Lenis + GSAP)
+ * - Advanced cursor with context states
+ * - Magnetic buttons
+ * - Noise texture
+ * - Enhanced preloader
+ * - Page transitions
+ * 
+ * Use this for the homepage and key landing pages.
+ * For simpler pages, use DarkHeroLayout or BaseLayout.
+ * 
+ * @example
+ * <AwardLayout title="Home">
+ *   <Hero />
+ *   <Services />
+ * </AwardLayout>
+ */
+import HeaderTransparent from '../components/HeaderTransparent.astro';
+import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import PageTransitions from '../components/PageTransitions.astro';
+
+// Premium effects
+import SmoothScroll from '../components/effects/SmoothScroll.astro';
+import AdvancedCursor from '../components/effects/AdvancedCursor.astro';
+import MagneticElements from '../components/effects/MagneticElements.astro';
+import NoiseTexture from '../components/effects/NoiseTexture.astro';
+import EnhancedPreloader from '../components/effects/EnhancedPreloader.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  /** Disable smooth scroll */
+  noSmoothScroll?: boolean;
+  /** Disable custom cursor */
+  noCursor?: boolean;
+  /** Disable noise texture */
+  noNoise?: boolean;
+  /** Disable preloader */
+  noPreloader?: boolean;
+}
+
+const { 
+  title, 
+  description = "Premium design studio for Web3. We create brand systems, websites, and products for funded protocols and DeFi projects.",
+  ogImage = "/images/og-image.jpg",
+  canonicalUrl,
+  noindex = false,
+  noSmoothScroll = false,
+  noCursor = false,
+  noNoise = false,
+  noPreloader = false,
+} = Astro.props;
+
+const siteUrl = Astro.site?.origin || "https://ninjadesignstudio.com";
+const currentUrl = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
+const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>{title} | Ninja Design Studio</title>
+    <meta name="title" content={`${title} | Ninja Design Studio`}>
+    <meta name="description" content={description}>
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={currentUrl}>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={currentUrl}>
+    <meta property="og:title" content={`${title} | Ninja Design Studio`}>
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content={fullOgImage}>
+    <meta property="og:site_name" content="Ninja Design Studio">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content={currentUrl}>
+    <meta name="twitter:title" content={`${title} | Ninja Design Studio`}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={fullOgImage}>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="/images/nds-logo.jpg">
+    <link rel="apple-touch-icon" href="/images/nds-logo.jpg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Generator -->
+    <meta name="generator" content={Astro.generator}>
+    
+    <!-- Schema.org structured data -->
+    <SchemaMarkup type="Organization" />
+    <SchemaMarkup type="WebSite" />
+    
+    <!-- Page Transitions -->
+    <PageTransitions />
+    
+    <!-- Smooth Scroll + GSAP -->
+    {!noSmoothScroll && <SmoothScroll />}
+    
+    <!-- Magnetic Elements -->
+    <MagneticElements />
+    
+    <!-- Additional head content slot -->
+    <slot name="head" />
+</head>
+<body class="loading award-layout">
+    <!-- Skip to main content (accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Enhanced Preloader -->
+    {!noPreloader && <EnhancedPreloader />}
+    
+    <!-- Custom Cursor -->
+    {!noCursor && <AdvancedCursor />}
+    
+    <!-- Noise Texture -->
+    {!noNoise && <NoiseTexture opacity={0.025} />}
+    
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Transparent Header for dark hero pages -->
+    <HeaderTransparent />
+    
+    <!-- Main content -->
+    <main id="main-content" class="flex-1">
+        <slot />
+    </main>
+    
+    <!-- Footer -->
+    <slot name="footer">
+        <Footer />
+    </slot>
+    
+    <BackToTop />
+    
+    <!-- Page-specific scripts slot -->
+    <slot name="scripts" />
+    
+    <script>
+        // Scroll Progress
+        const scrollProgress = document.getElementById('scrollProgress');
+        let scrollTicking = false;
+        
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            if (scrollProgress) scrollProgress.style.width = scrollPercent + '%';
+            scrollTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                requestAnimationFrame(updateScrollProgress);
+                scrollTicking = true;
+            }
+        });
+
+        // Transparent header scroll effect
+        const nav = document.getElementById('nav');
+        let navTicking = false;
+        
+        function updateNav() {
+            const scrolled = window.pageYOffset > 50;
+            nav?.classList.toggle('scrolled', scrolled);
+            navTicking = false;
+        }
+        
+        window.addEventListener('scroll', () => {
+            if (!navTicking) {
+                requestAnimationFrame(updateNav);
+                navTicking = true;
+            }
+        });
+        updateNav();
+
+        // Mobile menu
+        const navToggle = document.getElementById('navToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let isMenuOpen = false;
+        
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            navToggle?.classList.toggle('active', isMenuOpen);
+            mobileMenu?.classList.toggle('active', isMenuOpen);
+            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+        }
+        
+        navToggle?.addEventListener('click', toggleMenu);
+
+        mobileMenu?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) toggleMenu();
+            });
+        });
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop?.classList.toggle('visible', window.pageYOffset > 500);
+        });
+        backToTop?.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
+
+<style is:global>
+    @import '../styles/global.css';
+    @import '../styles/hero.css';
+    @import '../styles/sections.css';
+    @import '../styles/pages.css';
+    
+    /* Award layout specific */
+    .award-layout {
+        cursor: none;
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+        .award-layout {
+            cursor: auto;
+        }
+    }
+    
+    /* Skip link for accessibility */
+    .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--neon-pink);
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+        top: 0;
+    }
+
+    /* Scroll progress */
+    .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+        width: 0%;
+        z-index: 10001;
+        transition: width 0.1s linear;
+    }
+
+    /* Loading state */
+    body.loading {
+        overflow: hidden;
+    }
+</style>

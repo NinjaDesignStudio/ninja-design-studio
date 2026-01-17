@@ -1,0 +1,27 @@
+---
+interface Props {
+    question: string;
+    answer: string;
+}
+
+const { question, answer } = Astro.props;
+---
+
+<div class="faq-item">
+    <button class="faq-question">
+        <h3>{question}</h3>
+        <div class="faq-icon"><span>+</span></div>
+    </button>
+    <div class="faq-answer">
+        <p>{answer}</p>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.parentElement;
+            item?.classList.toggle('active');
+        });
+    });
+</script>

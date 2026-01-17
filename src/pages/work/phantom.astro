@@ -1,0 +1,329 @@
+---
+/**
+ * Example Case Study: Phantom Wallet Rebrand
+ * 
+ * This is a sample case study demonstrating how to use
+ * the CaseStudyLayout and its components.
+ * 
+ * Replace the content with your actual project details.
+ */
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import CaseStudyHero from '../../components/case-study/CaseStudyHero.astro';
+import ProjectMeta from '../../components/case-study/ProjectMeta.astro';
+import ChallengeSection from '../../components/case-study/ChallengeSection.astro';
+import ProcessTimeline from '../../components/case-study/ProcessTimeline.astro';
+import ResultsGrid from '../../components/case-study/ResultsGrid.astro';
+import ImageShowcase from '../../components/case-study/ImageShowcase.astro';
+import ClientTestimonial from '../../components/case-study/ClientTestimonial.astro';
+import NextProject from '../../components/case-study/NextProject.astro';
+
+const title = "Phantom Wallet Rebrand";
+const description = "A complete brand identity refresh for Solana's leading wallet, establishing trust and recognition across the ecosystem.";
+
+// Project Metadata
+const client = "Phantom";
+const services = ["Brand Identity", "UI/UX Design", "Motion Design", "Design System"];
+const timeline = "8 weeks";
+const year = "2024";
+const industry = "DeFi / Wallets";
+
+// Process Steps
+const processSteps = [
+  {
+    phase: "Discovery",
+    description: "Deep-dive into Phantom's ecosystem, user research, and competitive analysis across the Solana landscape.",
+    duration: "1 week",
+    activities: ["Stakeholder interviews", "User surveys", "Competitive audit", "Brand workshop"],
+  },
+  {
+    phase: "Strategy",
+    description: "Defining the brand positioning, personality, and visual direction that would set Phantom apart.",
+    duration: "1 week",
+    activities: ["Brand strategy", "Mood boards", "Direction concepts"],
+  },
+  {
+    phase: "Design",
+    description: "Creating the complete visual identity system including logo, colors, typography, and UI patterns.",
+    duration: "4 weeks",
+    activities: ["Logo design", "Color system", "Typography", "Iconography", "UI components"],
+  },
+  {
+    phase: "Implementation",
+    description: "Building the design system, motion guidelines, and supporting the engineering team with handoff.",
+    duration: "2 weeks",
+    activities: ["Design system", "Documentation", "Engineering support"],
+  },
+];
+
+// Results
+const results = [
+  { metric: "340%", label: "Increase in brand recognition", prefix: "+" },
+  { metric: "2.5M", label: "New users post-launch", prefix: "" },
+  { metric: "4.9", label: "App Store rating", suffix: "★" },
+  { metric: "50+", label: "UI components shipped", prefix: "" },
+];
+
+// Images (replace with your actual images)
+const heroImage = "/images/work/phantom-hero.jpg";
+const showcaseImages = [
+  { src: "/images/work/phantom-logo.jpg", alt: "Phantom logo design", caption: "The new Phantom wordmark" },
+  { src: "/images/work/phantom-colors.jpg", alt: "Color system", caption: "Extended color palette" },
+];
+const uiImages = [
+  { src: "/images/work/phantom-ui-1.jpg", alt: "Wallet interface" },
+  { src: "/images/work/phantom-ui-2.jpg", alt: "Transaction flow" },
+  { src: "/images/work/phantom-ui-3.jpg", alt: "NFT gallery" },
+];
+---
+
+<CaseStudyLayout
+  title={title}
+  description={description}
+  client={client}
+  services={services}
+  timeline={timeline}
+  year={year}
+>
+  <!-- Hero Section -->
+  <CaseStudyHero
+    title={title}
+    subtitle={description}
+    client={client}
+    heroImage={heroImage}
+    services={services}
+    year={year}
+    timeline={timeline}
+    industry={industry}
+  />
+
+  <!-- Overview Section with Sidebar -->
+  <section class="case-section--glass">
+    <div class="case-content case-content--wide">
+      <div class="overview-grid">
+        <!-- Main Content -->
+        <div class="overview-main">
+          <span class="case-eyebrow">Overview</span>
+          <h2>Redefining what a crypto wallet can be</h2>
+          <p class="lead">
+            Phantom had established itself as the go-to wallet for Solana users, but their visual identity 
+            hadn't evolved to match their growth. They needed a brand that could compete with fintech giants 
+            while staying true to the Web3 ethos of accessibility and innovation.
+          </p>
+          <p>
+            Our mission was to create a brand system that would feel premium and trustworthy—essential 
+            qualities for an app handling billions in digital assets—while maintaining the approachable, 
+            user-friendly character that made Phantom successful in the first place.
+          </p>
+        </div>
+
+        <!-- Sidebar Meta -->
+        <aside class="overview-sidebar">
+          <ProjectMeta
+            client={client}
+            services={services}
+            timeline={timeline}
+            year={year}
+            industry={industry}
+            deliverables={[
+              "Brand Guidelines",
+              "Logo Suite",
+              "Design System",
+              "Motion Guidelines",
+              "Marketing Templates",
+            ]}
+            website="https://phantom.app"
+            variant="card"
+            sticky={true}
+          />
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Challenge Section -->
+  <section>
+    <div class="case-content">
+      <ChallengeSection
+        title="The Challenge"
+        challenge="Phantom needed to evolve from a 'Solana wallet' to a multi-chain powerhouse without alienating their loyal user base. The existing brand felt startup-y and lacked the gravitas needed to compete with institutional players entering the space."
+        problems={[
+          "The original logo was hard to recognize at small sizes and didn't work well across different contexts",
+          "Inconsistent visual language across mobile, extension, and marketing materials",
+          "Lack of distinct personality—could be any fintech app",
+          "No systematic approach to illustrations, icons, or motion design",
+        ]}
+        approach="We started with extensive user research to understand what Phantom meant to its community. The purple ghost had become iconic—we needed to evolve it, not replace it. Our strategy focused on refinement over revolution: making the brand more sophisticated while amplifying what users already loved."
+        variant="default"
+      />
+    </div>
+  </section>
+
+  <!-- Visual Identity Section -->
+  <section class="case-section--accent">
+    <div class="case-content">
+      <span class="case-eyebrow">Visual Identity</span>
+      <h2>A ghost that means business</h2>
+      <p class="lead">
+        The new identity strikes a balance between playful and professional. The ghost mark has been 
+        refined for better legibility while maintaining its friendly character.
+      </p>
+    </div>
+    
+    <ImageShowcase
+      images={showcaseImages}
+      layout="grid"
+      columns={2}
+      glow={true}
+    />
+  </section>
+
+  <!-- Process Section -->
+  <section>
+    <div class="case-content">
+      <ProcessTimeline
+        title="How we got there"
+        steps={processSteps}
+        layout="vertical"
+        showNumbers={true}
+      />
+    </div>
+  </section>
+
+  <!-- UI Design Section -->
+  <section class="case-section--glass">
+    <div class="case-content">
+      <span class="case-eyebrow">UI Design</span>
+      <h2>Every pixel earns its place</h2>
+      <p>
+        The interface was redesigned from the ground up with a focus on clarity and confidence. 
+        We developed a comprehensive component library with accessibility baked in from the start.
+      </p>
+    </div>
+    
+    <ImageShowcase
+      images={uiImages}
+      layout="grid"
+      columns={3}
+      background="dark"
+    />
+  </section>
+
+  <!-- Testimonial -->
+  <section>
+    <div class="case-content">
+      <ClientTestimonial
+        quote="Ninja Design Studio understood our vision from day one. They didn't just give us a new look—they gave us a brand system that can scale with our ambitions. The attention to detail in every component is remarkable."
+        author="Brandon Millman"
+        role="CEO"
+        company="Phantom"
+        image="/images/testimonials/brandon.jpg"
+        variant="featured"
+      />
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section class="case-section--accent">
+    <div class="case-content case-content--wide">
+      <ResultsGrid
+        title="The Impact"
+        subtitle="Measurable results within 3 months of launch"
+        results={results}
+        columns={4}
+        variant="cards"
+      />
+    </div>
+  </section>
+
+  <!-- Conclusion -->
+  <section>
+    <div class="case-content">
+      <span class="case-eyebrow">Conclusion</span>
+      <h2>Setting a new standard</h2>
+      <p class="lead">
+        The rebrand positioned Phantom as the premium choice in an increasingly crowded wallet market. 
+        The new design system enabled the team to ship faster while maintaining visual consistency 
+        across all touchpoints.
+      </p>
+      <p>
+        Most importantly, users responded positively to the evolution. The new brand felt like a natural 
+        progression rather than a jarring change—exactly what we aimed for.
+      </p>
+    </div>
+  </section>
+
+  <!-- Next Project Navigation -->
+  <NextProject
+    title="Uniswap V4 Design System"
+    subtitle="Next Project"
+    href="/work/uniswap"
+    image="/images/work/uniswap-thumb.jpg"
+    category="Design System"
+    slot="navigation"
+  />
+</CaseStudyLayout>
+
+<style>
+  /* Overview Grid */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .overview-main {
+    max-width: 700px;
+  }
+
+  .overview-sidebar {
+    position: relative;
+  }
+
+  /* Section spacing adjustments */
+  section {
+    padding: 5rem 0;
+  }
+
+  /* Lead paragraph styling */
+  .lead {
+    font-size: 1.375rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Eyebrow styling */
+  .case-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .overview-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .overview-sidebar {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    section {
+      padding: 3rem 0;
+    }
+
+    .lead {
+      font-size: 1.125rem;
+    }
+  }
+</style>

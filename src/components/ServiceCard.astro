@@ -1,0 +1,19 @@
+---
+interface Props {
+    icon: string;
+    iconClass: string;
+    title: string;
+    description: string;
+    link?: string;
+    stagger?: number;
+}
+
+const { icon, iconClass, title, description, link, stagger = 1 } = Astro.props;
+---
+
+<div class={`service-card reveal stagger-${stagger}`}>
+    <div class={`service-icon ${iconClass}`}>{icon}</div>
+    <h3 class="service-title">{title}</h3>
+    <p class="service-desc">{description}</p>
+    {link && <a href={link} class="service-link">Learn more →</a>}
+</div>

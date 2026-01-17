@@ -1,0 +1,586 @@
+---
+/**
+ * Testimonials Page - Client Reviews
+ * 
+ * Filterable grid of client testimonials.
+ * Social proof hub for building trust.
+ */
+import DarkHeroLayout from '../layouts/DarkHeroLayout.astro';
+import { testimonials, getTestimonialCategories, categoryLabels } from '../lib/testimonials';
+
+const title = "Client Testimonials";
+const description = "See what our clients say about working with Ninja Design Studio. Real feedback from Web3 founders, product leads, and marketing directors.";
+
+// Get all categories for filter
+const categories = getTestimonialCategories();
+
+// Stats
+const stats = [
+  { value: '100+', label: 'Projects Delivered' },
+  { value: '50+', label: 'Happy Clients' },
+  { value: '5.0', label: 'Average Rating' },
+  { value: '$50M+', label: 'Raised by Clients' },
+];
+---
+
+<DarkHeroLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="testimonials-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-container">
+      <span class="hero-eyebrow">Social Proof</span>
+      <h1 class="hero-title">What our <span class="gradient-text">clients</span> say</h1>
+      <p class="hero-subtitle">
+        Real feedback from Web3 founders and teams we've worked with.
+        No fluff, no fake reviews — just honest opinions.
+      </p>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="stats-container">
+      {stats.map((stat) => (
+        <div class="stat-item">
+          <span class="stat-value">{stat.value}</span>
+          <span class="stat-label">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Filter & Grid -->
+  <section class="testimonials-section">
+    <div class="testimonials-container">
+      <!-- Filters -->
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-filter="all">
+          All Reviews
+          <span class="filter-count">{testimonials.length}</span>
+        </button>
+        {categories.map((category) => {
+          const count = testimonials.filter(t => t.category === category).length;
+          return (
+            <button class="filter-btn" data-filter={category}>
+              {categoryLabels[category]}
+              <span class="filter-count">{count}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <!-- Testimonial Grid -->
+      <div class="testimonials-grid" id="testimonialsGrid">
+        {testimonials.map((testimonial) => (
+          <article 
+            class="testimonial-card" 
+            data-category={testimonial.category}
+          >
+            <!-- Quote Icon -->
+            <div class="quote-icon">
+              <svg viewBox="0 0 32 32" fill="currentColor">
+                <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
+              </svg>
+            </div>
+
+            <!-- Rating -->
+            {testimonial.rating && (
+              <div class="rating">
+                {[...Array(5)].map((_, i) => (
+                  <svg 
+                    class={`star ${i < testimonial.rating! ? 'filled' : ''}`}
+                    viewBox="0 0 24 24" 
+                    fill="currentColor"
+                  >
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                ))}
+              </div>
+            )}
+
+            <!-- Quote -->
+            <blockquote class="quote">
+              "{testimonial.quote}"
+            </blockquote>
+
+            <!-- Author -->
+            <footer class="author">
+              <div class="author-avatar">
+                {testimonial.avatar ? (
+                  <img src={testimonial.avatar} alt={testimonial.author} />
+                ) : (
+                  <span class="avatar-initial">{testimonial.author.charAt(0)}</span>
+                )}
+              </div>
+              <div class="author-info">
+                <span class="author-name">{testimonial.author}</span>
+                <span class="author-role">{testimonial.role}, {testimonial.company}</span>
+              </div>
+            </footer>
+
+            <!-- Category Tag -->
+            <span class="category-tag">{categoryLabels[testimonial.category]}</span>
+          </article>
+        ))}
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <span class="empty-icon">🔍</span>
+        <p>No testimonials in this category yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="testimonials-cta">
+    <div class="cta-container">
+      <h2>Ready to become our next success story?</h2>
+      <p>Join 50+ Web3 projects who trusted us with their design.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary btn-lg">
+          Start Your Project
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="/work" class="btn btn-ghost btn-lg">
+          See Our Work
+        </a>
+      </div>
+    </div>
+  </section>
+</DarkHeroLayout>
+
+<style>
+  /* Hero */
+  .testimonials-hero {
+    position: relative;
+    padding: 10rem 2rem 5rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 50% 0%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 40%),
+      var(--darker);
+  }
+
+  .hero-container {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    background: var(--dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem 0;
+  }
+
+  .stats-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Testimonials Section */
+  .testimonials-section {
+    padding: 4rem 2rem 6rem;
+    background: var(--dark);
+  }
+
+  .testimonials-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Filter Bar */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    justify-content: center;
+  }
+
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .filter-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+  }
+
+  .filter-btn.active {
+    background: rgba(255, 0, 110, 0.1);
+    border-color: var(--neon-pink);
+    color: var(--white);
+  }
+
+  .filter-count {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.125rem 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .filter-btn.active .filter-count {
+    background: var(--neon-pink);
+    color: white;
+  }
+
+  /* Testimonials Grid */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Testimonial Card */
+  .testimonial-card {
+    position: relative;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .testimonial-card.hidden {
+    display: none;
+  }
+
+  .quote-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 1rem;
+    color: var(--neon-pink);
+    opacity: 0.3;
+  }
+
+  .rating {
+    display: flex;
+    gap: 0.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .star {
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.15);
+  }
+
+  .star.filled {
+    color: #fbbf24;
+  }
+
+  .quote {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 1.5rem;
+  }
+
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .author-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-initial {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .author-role {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .category-tag {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.625rem;
+    background: rgba(0, 245, 255, 0.1);
+    color: var(--neon-cyan);
+    border-radius: 6px;
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  /* CTA */
+  .testimonials-cta {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.1) 0%, rgba(0, 245, 255, 0.05) 100%);
+    text-align: center;
+  }
+
+  .cta-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .testimonials-cta h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .testimonials-cta p {
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: var(--gradient-pink);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--neon-cyan);
+  }
+
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .testimonials-hero {
+      padding: 8rem 1.5rem 3rem;
+    }
+
+    .stats-container {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+    }
+
+    .testimonials-section {
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    .filter-bar {
+      justify-content: flex-start;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-btn {
+      flex-shrink: 0;
+    }
+
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  const filterBar = document.getElementById('filterBar');
+  const grid = document.getElementById('testimonialsGrid');
+  const emptyState = document.getElementById('emptyState');
+  const cards = grid?.querySelectorAll('.testimonial-card');
+
+  filterBar?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.filter-btn');
+    if (!btn) return;
+
+    const filter = btn.getAttribute('data-filter');
+
+    // Update active button
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Filter cards
+    let visibleCount = 0;
+    cards?.forEach(card => {
+      const category = card.getAttribute('data-category');
+      const shouldShow = filter === 'all' || category === filter;
+      
+      card.classList.toggle('hidden', !shouldShow);
+      if (shouldShow) visibleCount++;
+    });
+
+    // Show/hide empty state
+    if (emptyState) {
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  });
+</script>

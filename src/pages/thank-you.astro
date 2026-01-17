@@ -1,0 +1,436 @@
+---
+/**
+ * Thank You Page - Post-Form Submission
+ * 
+ * Displayed after contact form submission.
+ * Includes next steps, social links, and upsell opportunity.
+ * 
+ * Uses LandingLayout for minimal distractions.
+ */
+import LandingLayout from '../layouts/LandingLayout.astro';
+
+const title = "Thank You";
+const description = "Your message has been received. We'll be in touch soon.";
+
+// Next steps
+const nextSteps = [
+  {
+    icon: '📧',
+    title: 'Check Your Email',
+    description: 'We\'ll send a confirmation within the next hour.',
+  },
+  {
+    icon: '📅',
+    title: 'Book a Call',
+    description: 'Skip the back-and-forth and schedule a discovery call directly.',
+    action: {
+      text: 'Book Now',
+      href: 'https://cal.com/ninjadesign', // Replace with actual cal link
+    },
+  },
+  {
+    icon: '👀',
+    title: 'Check Our Work',
+    description: 'See what we\'ve built for projects like yours.',
+    action: {
+      text: 'View Portfolio',
+      href: '/work',
+    },
+  },
+];
+
+// Social links
+const socials = [
+  { 
+    name: 'Twitter/X', 
+    href: 'https://x.com/ninjadesignstdo',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+  },
+  { 
+    name: 'Telegram', 
+    href: 'https://t.me/ninjaguy',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>`,
+  },
+];
+
+// Resources
+const resources = [
+  { title: 'Blog: Why Web3 Needs Design Systems', href: '/blog/why-web3-needs-design-systems' },
+  { title: 'Blog: Psychology of DeFi Interface Design', href: '/blog/psychology-defi-interface-design' },
+];
+---
+
+<LandingLayout 
+  title={title} 
+  description={description}
+  showBackLink={true}
+  backHref="/"
+  backText="Home"
+>
+  <section class="thank-you">
+    <div class="thank-you-container">
+      <!-- Success animation -->
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <div class="success-ring"></div>
+        <div class="success-ring success-ring--2"></div>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="thank-you-title">Message received!</h1>
+      <p class="thank-you-message">
+        Thanks for reaching out. We're excited to learn about your project and will 
+        get back to you within 24 hours (usually much faster).
+      </p>
+
+      <!-- Next Steps -->
+      <div class="next-steps">
+        <h2 class="next-steps-title">What's Next</h2>
+        <div class="next-steps-grid">
+          {nextSteps.map((step, index) => (
+            <div class="step-card">
+              <div class="step-header">
+                <span class="step-number">{index + 1}</span>
+                <span class="step-icon">{step.icon}</span>
+              </div>
+              <h3 class="step-title">{step.title}</h3>
+              <p class="step-description">{step.description}</p>
+              {step.action && (
+                <a href={step.action.href} class="step-action">
+                  {step.action.text}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Quick Connect -->
+      <div class="quick-connect">
+        <p class="connect-label">Want to connect faster?</p>
+        <div class="connect-buttons">
+          <a href="https://t.me/ninjaguy" target="_blank" rel="noopener noreferrer" class="connect-btn connect-btn--telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
+            Message on Telegram
+          </a>
+          <a href="https://x.com/ninjadesignstdo" target="_blank" rel="noopener noreferrer" class="connect-btn connect-btn--twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            Follow on X
+          </a>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="resources">
+        <p class="resources-label">While you wait, check out:</p>
+        <div class="resources-list">
+          {resources.map((resource) => (
+            <a href={resource.href} class="resource-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              {resource.title}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</LandingLayout>
+
+<style>
+  .thank-you {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+  }
+
+  .thank-you-container {
+    max-width: 700px;
+    text-align: center;
+  }
+
+  /* Success Icon */
+  .success-icon {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-pink);
+    border-radius: 50%;
+    animation: pop 0.5s ease-out;
+  }
+
+  .success-icon svg {
+    width: 50px;
+    height: 50px;
+    color: white;
+    animation: check 0.5s ease-out 0.2s both;
+  }
+
+  .success-ring {
+    position: absolute;
+    inset: -10px;
+    border: 3px solid var(--neon-pink);
+    border-radius: 50%;
+    opacity: 0;
+    animation: ring 1s ease-out 0.3s both;
+  }
+
+  .success-ring--2 {
+    inset: -20px;
+    border-color: var(--neon-cyan);
+    animation-delay: 0.5s;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes check {
+    0% { 
+      opacity: 0;
+      transform: scale(0);
+    }
+    100% { 
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes ring {
+    0% {
+      opacity: 1;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.3);
+    }
+  }
+
+  /* Heading */
+  .thank-you-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .thank-you-message {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 3rem;
+  }
+
+  /* Next Steps */
+  .next-steps {
+    margin-bottom: 3rem;
+  }
+
+  .next-steps-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.5rem;
+  }
+
+  .next-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .step-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  .step-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 0, 110, 0.3);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .step-number {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    padding: 0.25rem 0.5rem;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 6px;
+  }
+
+  .step-icon {
+    font-size: 1.25rem;
+  }
+
+  .step-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-description {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+  }
+
+  .step-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--neon-pink);
+    text-decoration: none;
+    transition: gap 0.3s;
+  }
+
+  .step-action:hover {
+    gap: 0.75rem;
+  }
+
+  /* Quick Connect */
+  .quick-connect {
+    margin-bottom: 2.5rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 20px;
+  }
+
+  .connect-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+  }
+
+  .connect-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .connect-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .connect-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .connect-btn--telegram {
+    background: #0088cc;
+    color: white;
+  }
+
+  .connect-btn--telegram:hover {
+    background: #0077b5;
+    transform: translateY(-2px);
+  }
+
+  .connect-btn--twitter {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .connect-btn--twitter:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Resources */
+  .resources {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .resources-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+  }
+
+  .resources-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .resource-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .resource-link:hover {
+    color: var(--neon-cyan);
+  }
+
+  .resource-link svg {
+    opacity: 0.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .next-steps-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .connect-buttons {
+      flex-direction: column;
+    }
+
+    .connect-btn {
+      justify-content: center;
+    }
+  }
+</style>

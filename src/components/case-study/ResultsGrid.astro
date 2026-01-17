@@ -1,0 +1,257 @@
+---
+/**
+ * ResultsGrid - Showcase key metrics and outcomes
+ * 
+ * Displays quantifiable results in an eye-catching grid.
+ * Perfect for the "Results" section of case studies.
+ * 
+ * @example
+ * <ResultsGrid
+ *   results={[
+ *     { metric: '340%', label: 'Increase in TVL', icon: '📈' },
+ *     { metric: '2.5M', label: 'New Users Onboarded', icon: '👥' },
+ *     { metric: '98%', label: 'Positive Feedback', icon: '⭐' },
+ *   ]}
+ * />
+ */
+interface Result {
+  /** The main metric/number */
+  metric: string;
+  /** Description of what the metric represents */
+  label: string;
+  /** Optional emoji or icon */
+  icon?: string;
+  /** Optional prefix (like $ or +) */
+  prefix?: string;
+  /** Optional suffix (like % or x) */
+  suffix?: string;
+}
+
+interface Props {
+  /** Array of results to display */
+  results: Result[];
+  /** Section title */
+  title?: string;
+  /** Section subtitle */
+  subtitle?: string;
+  /** Number of columns (2, 3, or 4) */
+  columns?: 2 | 3 | 4;
+  /** Visual variant */
+  variant?: 'default' | 'cards' | 'minimal';
+}
+
+const {
+  results,
+  title,
+  subtitle,
+  columns = 3,
+  variant = 'default',
+} = Astro.props;
+---
+
+<section class:list={['results-grid', `results-grid--${variant}`, `results-grid--cols-${columns}`]}>
+  {(title || subtitle) && (
+    <div class="results-grid__header">
+      {title && <h2 class="results-grid__title">{title}</h2>}
+      {subtitle && <p class="results-grid__subtitle">{subtitle}</p>}
+    </div>
+  )}
+
+  <div class="results-grid__items">
+    {results.map((result, index) => (
+      <div class="result-item reveal" style={`--delay: ${index * 0.1}s`}>
+        {variant === 'cards' && result.icon && (
+          <span class="result-item__icon">{result.icon}</span>
+        )}
+        <div class="result-item__metric">
+          {result.prefix && <span class="metric-prefix">{result.prefix}</span>}
+          <span class="metric-value">{result.metric}</span>
+          {result.suffix && <span class="metric-suffix">{result.suffix}</span>}
+        </div>
+        <p class="result-item__label">{result.label}</p>
+        <div class="result-item__glow"></div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .results-grid {
+    padding: 4rem 0;
+  }
+
+  .results-grid__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .results-grid__title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .results-grid__subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .results-grid__items {
+    display: grid;
+    gap: 2rem;
+  }
+
+  /* Column variants */
+  .results-grid--cols-2 .results-grid__items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .results-grid--cols-3 .results-grid__items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .results-grid--cols-4 .results-grid__items {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Result Item */
+  .result-item {
+    position: relative;
+    text-align: center;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s var(--ease-out);
+    transition-delay: var(--delay, 0s);
+  }
+
+  .result-item.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .result-item__icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .result-item__metric {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .metric-value {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--white) 0%, var(--neon-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .metric-prefix,
+  .metric-suffix {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--neon-pink);
+  }
+
+  .result-item__label {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .result-item__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 0, 110, 0.1) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .result-item:hover .result-item__glow {
+    opacity: 1;
+  }
+
+  /* Cards Variant */
+  .results-grid--cards .result-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    transition: all 0.3s var(--ease-out);
+  }
+
+  .results-grid--cards .result-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 0, 110, 0.3);
+    transform: translateY(-4px);
+  }
+
+  /* Minimal Variant */
+  .results-grid--minimal .result-item {
+    padding: 1.5rem;
+    text-align: left;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.3s;
+  }
+
+  .results-grid--minimal .result-item:hover {
+    border-color: var(--neon-pink);
+  }
+
+  .results-grid--minimal .result-item__metric {
+    justify-content: flex-start;
+  }
+
+  .results-grid--minimal .metric-value {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .results-grid--cols-4 .results-grid__items {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .results-grid--cols-3 .results-grid__items,
+    .results-grid--cols-4 .results-grid__items {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .results-grid--cols-2 .results-grid__items {
+      grid-template-columns: 1fr;
+    }
+
+    .result-item {
+      padding: 1.5rem;
+    }
+
+    .metric-value {
+      font-size: 2.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .results-grid--cols-3 .results-grid__items {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

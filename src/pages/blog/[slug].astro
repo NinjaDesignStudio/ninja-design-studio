@@ -1,0 +1,570 @@
+---
+/**
+ * Blog Post Template - Enhanced
+ * 
+ * Features:
+ * - Reading time calculation
+ * - Social share buttons
+ * - Related posts
+ * - Newsletter signup
+ * - Schema markup for SEO
+ * - Dark theme consistent with site
+ */
+import DarkHeroLayout from '../../layouts/DarkHeroLayout.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import ShareButtons from '../../components/blog/ShareButtons.astro';
+import RelatedPosts from '../../components/blog/RelatedPosts.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import { getCollection } from 'astro:content';
+import { getReadingTime, formatBlogDate } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Get reading time from raw content
+const readingTime = getReadingTime(post.body);
+
+// Format dates
+const formattedDate = formatBlogDate(post.data.date, 'long');
+const isoDate = new Date(post.data.date).toISOString();
+
+// Get current URL for sharing
+const postUrl = Astro.url.href;
+
+// Article schema data
+const articleSchema = {
+  title: post.data.title,
+  description: post.data.excerpt,
+  datePublished: isoDate,
+  dateModified: isoDate,
+  image: post.data.image,
+};
+---
+
+<DarkHeroLayout 
+  title={post.data.title} 
+  description={post.data.excerpt} 
+  ogImage={post.data.image}
+>
+  <!-- Article Schema -->
+  <SchemaMarkup slot="head" type="Article" article={articleSchema} />
+
+  <!-- Hero Section -->
+  <section class="blog-hero">
+    <div class="blog-hero-bg"></div>
+    <div class="blog-hero-container">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="separator">/</span>
+        <a href="/blog">Blog</a>
+        <span class="separator">/</span>
+        <span class="current">{post.data.category}</span>
+      </nav>
+
+      <!-- Meta -->
+      <div class="post-meta">
+        <span class="post-category">{post.data.category}</span>
+        <span class="meta-divider">·</span>
+        <time datetime={isoDate}>{formattedDate}</time>
+        <span class="meta-divider">·</span>
+        <span class="reading-time">{readingTime.text}</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="post-title">{post.data.title}</h1>
+
+      <!-- Excerpt -->
+      <p class="post-excerpt">{post.data.excerpt}</p>
+
+      <!-- Author & Share -->
+      <div class="hero-footer">
+        <div class="author">
+          <div class="author-avatar">
+            <img src="/images/nds-logo.jpg" alt="Ninja Design Studio" />
+          </div>
+          <div class="author-info">
+            <span class="author-name">Ninja Design Studio</span>
+            <span class="author-role">Web3 Design Agency</span>
+          </div>
+        </div>
+        <ShareButtons title={post.data.title} url={postUrl} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Image -->
+  {post.data.image && (
+    <div class="featured-image-wrapper">
+      <div class="featured-image-container">
+        <img 
+          src={post.data.image} 
+          alt={post.data.title}
+          class="featured-image"
+          loading="eager"
+        />
+      </div>
+    </div>
+  )}
+
+  <!-- Post Content -->
+  <section class="post-content-section">
+    <div class="post-container">
+      <article class="post-content prose">
+        <Content />
+      </article>
+
+      <!-- Tags -->
+      {post.data.tags && post.data.tags.length > 0 && (
+        <div class="post-tags">
+          <span class="tags-label">Tags:</span>
+          <div class="tags-list">
+            {post.data.tags.map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Bottom Share -->
+      <div class="post-share-bottom">
+        <p class="share-prompt">Found this helpful? Share it with your network:</p>
+        <ShareButtons title={post.data.title} url={postUrl} showLabels={true} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <Newsletter 
+    variant="section" 
+    title="Get More Insights"
+    description="Design tips, case studies, and Web3 trends delivered to your inbox."
+  />
+
+  <!-- Related Posts -->
+  <section class="related-section">
+    <div class="related-container">
+      <RelatedPosts 
+        currentSlug={post.slug}
+        category={post.data.category}
+        tags={post.data.tags}
+        limit={3}
+      />
+    </div>
+  </section>
+
+  <!-- Back to Blog -->
+  <div class="back-to-blog">
+    <a href="/blog" class="back-link">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      Back to all articles
+    </a>
+  </div>
+</DarkHeroLayout>
+
+<style>
+  /* Hero */
+  .blog-hero {
+    position: relative;
+    padding: 10rem 2rem 5rem;
+    overflow: hidden;
+  }
+
+  .blog-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 30% 0%, rgba(255, 0, 110, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 100%, rgba(0, 245, 255, 0.08) 0%, transparent 40%),
+      var(--darker);
+  }
+
+  .blog-hero-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--neon-cyan);
+  }
+
+  .breadcrumb .separator {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .breadcrumb .current {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Post Meta */
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1.5rem;
+  }
+
+  .post-category {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neon-pink);
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 0, 110, 0.1);
+    border-radius: 100px;
+  }
+
+  .meta-divider {
+    opacity: 0.4;
+  }
+
+  .reading-time {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  /* Title & Excerpt */
+  .post-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .post-excerpt {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+  }
+
+  /* Hero Footer */
+  .hero-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .author-role {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Featured Image */
+  .featured-image-wrapper {
+    background: var(--dark);
+    padding: 0 2rem;
+    margin-top: -2rem;
+  }
+
+  .featured-image-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .featured-image {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Post Content */
+  .post-content-section {
+    background: var(--dark);
+    padding: 4rem 2rem;
+  }
+
+  .post-container {
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
+  /* Prose styles for markdown content */
+  .prose {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 3rem 0 1.5rem;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--white);
+    margin: 2.5rem 0 1rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .prose :global(a) {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+
+  .prose :global(a:hover) {
+    border-bottom-color: var(--neon-cyan);
+  }
+
+  .prose :global(strong) {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.75rem;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 4px solid var(--neon-pink);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+  }
+
+  .prose :global(pre) {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1.5rem;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 2rem 0;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 2rem 0;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 3rem 0;
+  }
+
+  /* Tags */
+  .post-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+  }
+
+  .tags-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .tags-list {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    padding: 0.375rem 0.875rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Bottom Share */
+  .post-share-bottom {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .share-prompt {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+  }
+
+  .post-share-bottom :global(.share-buttons) {
+    justify-content: center;
+  }
+
+  /* Related Section */
+  .related-section {
+    background: var(--darker);
+    padding: 4rem 2rem;
+  }
+
+  .related-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Back to Blog */
+  .back-to-blog {
+    background: var(--darker);
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+  }
+
+  .back-link svg {
+    transition: transform 0.3s ease;
+  }
+
+  .back-link:hover svg {
+    transform: translateX(-4px);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .blog-hero {
+      padding: 8rem 1.5rem 3rem;
+    }
+
+    .post-title {
+      font-size: 2rem;
+    }
+
+    .post-excerpt {
+      font-size: 1.0625rem;
+    }
+
+    .hero-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    .featured-image-wrapper {
+      padding: 0 1rem;
+    }
+
+    .post-content-section {
+      padding: 3rem 1.5rem;
+    }
+
+    .post-share-bottom {
+      padding: 1.5rem;
+    }
+
+    .related-section {
+      padding: 3rem 1.5rem;
+    }
+  }
+</style>

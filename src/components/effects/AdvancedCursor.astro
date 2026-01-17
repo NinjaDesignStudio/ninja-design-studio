@@ -1,0 +1,324 @@
+---
+/**
+ * AdvancedCursor - Context-aware custom cursor
+ * 
+ * A sophisticated cursor that changes based on what you're hovering.
+ * Features:
+ * - Smooth following animation
+ * - Expand on interactive elements
+ * - Text labels on specific elements
+ * - Blend mode for contrast
+ * - Hide on touch devices
+ * 
+ * Add data attributes to elements:
+ * - data-cursor="expand" - Expands cursor
+ * - data-cursor="view" - Shows "View" text
+ * - data-cursor="drag" - Shows "Drag" text
+ * - data-cursor="play" - Shows play icon
+ * - data-cursor="link" - Arrow icon
+ * - data-cursor-text="Custom" - Custom text
+ * 
+ * @example
+ * <a href="/work" data-cursor="view">See Our Work</a>
+ * <div class="slider" data-cursor="drag">...</div>
+ */
+
+interface Props {
+  /** Main cursor color */
+  color?: string;
+  /** Cursor size in px */
+  size?: number;
+  /** Expanded cursor size in px */
+  expandedSize?: number;
+}
+
+const {
+  color = 'var(--neon-pink)',
+  size = 16,
+  expandedSize = 80,
+} = Astro.props;
+---
+
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-dot"></div>
+  <div class="cursor-circle">
+    <span class="cursor-text"></span>
+    <svg class="cursor-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
+    </svg>
+    <svg class="cursor-play" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  </div>
+</div>
+
+<style define:vars={{ color, size: `${size}px`, expandedSize: `${expandedSize}px` }}>
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .cursor.visible {
+    opacity: 1;
+  }
+
+  .cursor-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, opacity 0.2s ease;
+  }
+
+  .cursor-circle {
+    position: absolute;
+    width: var(--size);
+    height: var(--size);
+    border: 2px solid var(--color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s cubic-bezier(0.33, 1, 0.68, 1), 
+                height 0.4s cubic-bezier(0.33, 1, 0.68, 1),
+                background-color 0.3s ease,
+                border-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cursor-text {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .cursor-arrow,
+  .cursor-play {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    color: var(--color);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* States */
+  .cursor.expanded .cursor-circle {
+    width: var(--expandedSize);
+    height: var(--expandedSize);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .cursor.expanded .cursor-dot {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  .cursor.has-text .cursor-text {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .cursor.has-arrow .cursor-arrow {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .cursor.has-play .cursor-play {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .cursor.hidden {
+    opacity: 0 !important;
+  }
+
+  /* Invert for light backgrounds */
+  .cursor.inverted {
+    mix-blend-mode: normal;
+  }
+
+  .cursor.inverted .cursor-dot {
+    background: var(--darker);
+  }
+
+  .cursor.inverted .cursor-circle {
+    border-color: var(--darker);
+  }
+
+  .cursor.inverted .cursor-text,
+  .cursor.inverted .cursor-arrow,
+  .cursor.inverted .cursor-play {
+    color: var(--darker);
+  }
+
+  /* Hide on touch */
+  @media (hover: none) and (pointer: coarse) {
+    .cursor {
+      display: none !important;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cursor = document.getElementById('cursor');
+    if (!cursor) return;
+
+    const dot = cursor.querySelector('.cursor-dot');
+    const circle = cursor.querySelector('.cursor-circle');
+    const textEl = cursor.querySelector('.cursor-text');
+
+    // Check for touch device
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchDevice) {
+      cursor.style.display = 'none';
+      return;
+    }
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let dotX = 0;
+    let dotY = 0;
+    let circleX = 0;
+    let circleY = 0;
+
+    // Smooth cursor following
+    function animate() {
+      // Dot follows quickly
+      dotX += (mouseX - dotX) * 0.5;
+      dotY += (mouseY - dotY) * 0.5;
+      
+      // Circle follows slower
+      circleX += (mouseX - circleX) * 0.15;
+      circleY += (mouseY - circleY) * 0.15;
+
+      if (dot) {
+        dot.style.left = `${dotX}px`;
+        dot.style.top = `${dotY}px`;
+      }
+      
+      if (circle) {
+        circle.style.left = `${circleX}px`;
+        circle.style.top = `${circleY}px`;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Track mouse position
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      if (!cursor.classList.contains('visible')) {
+        cursor.classList.add('visible');
+      }
+    });
+
+    // Hide when leaving window
+    document.addEventListener('mouseleave', () => {
+      cursor.classList.remove('visible');
+    });
+
+    document.addEventListener('mouseenter', () => {
+      cursor.classList.add('visible');
+    });
+
+    // Interactive elements
+    function setupCursorTriggers() {
+      // Default interactive elements
+      const defaultInteractive = 'a, button, input, textarea, select, [role="button"]';
+      
+      document.querySelectorAll(defaultInteractive).forEach((el) => {
+        if (!el.hasAttribute('data-cursor')) {
+          el.setAttribute('data-cursor', 'expand');
+        }
+      });
+
+      // All cursor triggers
+      document.querySelectorAll('[data-cursor]').forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+          const type = el.getAttribute('data-cursor');
+          const customText = el.getAttribute('data-cursor-text');
+
+          cursor.classList.add('expanded');
+
+          if (customText && textEl) {
+            textEl.textContent = customText;
+            cursor.classList.add('has-text');
+          } else if (type === 'view' && textEl) {
+            textEl.textContent = 'View';
+            cursor.classList.add('has-text');
+          } else if (type === 'drag' && textEl) {
+            textEl.textContent = 'Drag';
+            cursor.classList.add('has-text');
+          } else if (type === 'link') {
+            cursor.classList.add('has-arrow');
+          } else if (type === 'play') {
+            cursor.classList.add('has-play');
+          }
+        });
+
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('expanded', 'has-text', 'has-arrow', 'has-play');
+          if (textEl) textEl.textContent = '';
+        });
+      });
+
+      // Inverted cursor on light sections
+      document.querySelectorAll('[data-cursor-invert]').forEach((section) => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              cursor.classList.add('inverted');
+            } else {
+              cursor.classList.remove('inverted');
+            }
+          });
+        }, { threshold: 0.5 });
+
+        observer.observe(section);
+      });
+
+      // Hide cursor on specific elements
+      document.querySelectorAll('[data-cursor-hide]').forEach((el) => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hidden'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hidden'));
+      });
+    }
+
+    setupCursorTriggers();
+
+    // Re-run on dynamic content
+    const observer = new MutationObserver(() => {
+      setupCursorTriggers();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+</script>

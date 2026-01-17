@@ -1,0 +1,159 @@
+---
+/**
+ * PullQuote - Highlighted quote with neon accent
+ * 
+ * Used to highlight key insights, testimonials, or important
+ * takeaways within content.
+ * 
+ * @example Basic usage
+ * <PullQuote>
+ *   The best Web3 brands don't explain blockchain. 
+ *   They make users forget they're even using it.
+ * </PullQuote>
+ * 
+ * @example With attribution
+ * <PullQuote author="Alex Chen" role="Founder, DeFi Protocol">
+ *   Working with Ninja was seamless. They get crypto.
+ * </PullQuote>
+ * 
+ * @example As insight callout
+ * <PullQuote variant="insight">
+ *   Research shows that trust signals are 3x more important in Web3.
+ * </PullQuote>
+ */
+
+interface Props {
+  /** Quote author name */
+  author?: string;
+  /** Author's role/title */
+  role?: string;
+  /** Visual variant */
+  variant?: 'default' | 'insight' | 'testimonial';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  author,
+  role,
+  variant = 'default',
+  class: className = '',
+} = Astro.props;
+---
+
+<blockquote class:list={['pull-quote', `pull-quote--${variant}`, className]}>
+  <div class="pull-quote-content">
+    <slot />
+  </div>
+  {(author || role) && (
+    <footer class="pull-quote-footer">
+      {author && <cite class="pull-quote-author">{author}</cite>}
+      {role && <span class="pull-quote-role">{role}</span>}
+    </footer>
+  )}
+</blockquote>
+
+<style>
+  .pull-quote {
+    position: relative;
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+    border-left: 4px solid var(--neon-pink, #ff006e);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0 1rem 1rem 0;
+  }
+  
+  .pull-quote::before {
+    content: '"';
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    font-size: 4rem;
+    color: var(--neon-pink, #ff006e);
+    opacity: 0.2;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  
+  .pull-quote-content {
+    position: relative;
+    z-index: 1;
+    font-style: italic;
+  }
+  
+  /* Insight variant */
+  .pull-quote--insight {
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.05) 0%, rgba(191, 0, 255, 0.05) 100%);
+    border-left-color: var(--neon-cyan, #00f5ff);
+  }
+  
+  .pull-quote--insight::before {
+    content: '💡';
+    font-size: 2rem;
+    opacity: 0.6;
+    top: 1rem;
+    left: 1rem;
+  }
+  
+  /* Testimonial variant */
+  .pull-quote--testimonial {
+    background: rgba(255, 0, 110, 0.05);
+    border-left-width: 0;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .pull-quote--testimonial::before {
+    position: static;
+    display: block;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+  }
+  
+  .pull-quote-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .pull-quote--testimonial .pull-quote-footer {
+    border-top: none;
+    align-items: center;
+  }
+  
+  .pull-quote-author {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+  }
+  
+  .pull-quote-role {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: normal;
+  }
+  
+  @media (max-width: 640px) {
+    .pull-quote {
+      font-size: 1.125rem;
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .pull-quote::before {
+      font-size: 3rem;
+      left: 0.75rem;
+    }
+    
+    .pull-quote--insight::before {
+      font-size: 1.5rem;
+    }
+  }
+</style>

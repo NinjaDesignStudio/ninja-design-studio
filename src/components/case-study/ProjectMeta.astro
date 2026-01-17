@@ -1,0 +1,285 @@
+---
+/**
+ * ProjectMeta - Sticky sidebar with project details
+ * 
+ * Displays project metadata in a clean, scannable format.
+ * Can be used standalone or as a sticky sidebar alongside content.
+ * 
+ * @example
+ * <ProjectMeta
+ *   client="Aave"
+ *   services={['Brand Identity', 'UI Design', 'Motion Graphics']}
+ *   timeline="6 weeks"
+ *   year="2024"
+ *   team={['Creative Director', 'UI Designer', 'Motion Designer']}
+ *   deliverables={['Brand Guidelines', 'UI Kit', 'Marketing Assets']}
+ *   website="https://aave.com"
+ * />
+ */
+interface Props {
+  /** Client name */
+  client?: string;
+  /** Services provided */
+  services?: string[];
+  /** Project timeline/duration */
+  timeline?: string;
+  /** Year completed */
+  year?: string;
+  /** Industry/category */
+  industry?: string;
+  /** Team roles involved */
+  team?: string[];
+  /** Key deliverables */
+  deliverables?: string[];
+  /** Client website */
+  website?: string;
+  /** Sticky positioning */
+  sticky?: boolean;
+  /** Visual variant */
+  variant?: 'default' | 'compact' | 'card';
+}
+
+const {
+  client,
+  services = [],
+  timeline,
+  year,
+  industry,
+  team = [],
+  deliverables = [],
+  website,
+  sticky = false,
+  variant = 'default',
+} = Astro.props;
+---
+
+<aside class:list={[
+  'project-meta',
+  `project-meta--${variant}`,
+  { 'project-meta--sticky': sticky }
+]}>
+  {/* Client */}
+  {client && (
+    <div class="meta-group">
+      <h4 class="meta-label">Client</h4>
+      <p class="meta-value meta-value--highlight">{client}</p>
+    </div>
+  )}
+
+  {/* Year */}
+  {year && (
+    <div class="meta-group">
+      <h4 class="meta-label">Year</h4>
+      <p class="meta-value">{year}</p>
+    </div>
+  )}
+
+  {/* Timeline */}
+  {timeline && (
+    <div class="meta-group">
+      <h4 class="meta-label">Timeline</h4>
+      <p class="meta-value">{timeline}</p>
+    </div>
+  )}
+
+  {/* Industry */}
+  {industry && (
+    <div class="meta-group">
+      <h4 class="meta-label">Industry</h4>
+      <p class="meta-value">{industry}</p>
+    </div>
+  )}
+
+  {/* Services */}
+  {services.length > 0 && (
+    <div class="meta-group">
+      <h4 class="meta-label">Services</h4>
+      <ul class="meta-list">
+        {services.map((service) => (
+          <li>{service}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {/* Team */}
+  {team.length > 0 && (
+    <div class="meta-group">
+      <h4 class="meta-label">Team</h4>
+      <ul class="meta-list meta-list--inline">
+        {team.map((role) => (
+          <li>{role}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {/* Deliverables */}
+  {deliverables.length > 0 && (
+    <div class="meta-group">
+      <h4 class="meta-label">Deliverables</h4>
+      <ul class="meta-list">
+        {deliverables.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {/* Website Link */}
+  {website && (
+    <div class="meta-group">
+      <a href={website} target="_blank" rel="noopener noreferrer" class="meta-link">
+        <span>Visit Website</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+        </svg>
+      </a>
+    </div>
+  )}
+</aside>
+
+<style>
+  .project-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .project-meta--sticky {
+    position: sticky;
+    top: 120px;
+  }
+
+  /* Card Variant */
+  .project-meta--card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 2rem;
+  }
+
+  /* Compact Variant */
+  .project-meta--compact {
+    gap: 1.25rem;
+  }
+
+  .project-meta--compact .meta-label {
+    font-size: 0.65rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .project-meta--compact .meta-value {
+    font-size: 0.9rem;
+  }
+
+  /* Meta Group */
+  .meta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .meta-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .meta-value--highlight {
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  /* Meta List */
+  .meta-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .meta-list li {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .meta-list li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Inline List */
+  .meta-list--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  .meta-list--inline li::before {
+    width: 3px;
+    height: 3px;
+  }
+
+  /* Website Link */
+  .meta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    transition: all 0.3s var(--ease-out);
+  }
+
+  .meta-link:hover {
+    background: rgba(255, 0, 110, 0.1);
+    border-color: var(--neon-pink);
+    transform: translateY(-2px);
+  }
+
+  .meta-link svg {
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .meta-link:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .project-meta--sticky {
+      position: static;
+    }
+
+    .project-meta--card {
+      padding: 1.5rem;
+    }
+  }
+</style>

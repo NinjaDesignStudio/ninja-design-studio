@@ -1,0 +1,94 @@
+---
+interface Props {
+    badge?: string;
+    title: string;
+    gradientText?: string;
+    subtitle: string;
+    primaryCta?: { text: string; href: string };
+    secondaryCta?: { text: string; href: string };
+    showCharacter?: boolean;
+}
+
+const { 
+    badge = "Available for new projects",
+    title,
+    gradientText,
+    subtitle,
+    primaryCta = { text: "Get Started", href: "/contact" },
+    secondaryCta = { text: "View Work", href: "/work" },
+    showCharacter = true
+} = Astro.props;
+---
+
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+
+    <div class="hero-content">
+        <div class="hero-text">
+            <div class="hero-badge">{badge}</div>
+            <h1 class="hero-title">
+                {title}<br>
+                {gradientText && <span class="gradient">{gradientText}</span>}
+            </h1>
+            <p class="hero-subtitle">{subtitle}</p>
+            <div class="hero-buttons">
+                <a href={primaryCta.href} class="btn btn-primary">{primaryCta.text}</a>
+                <a href={secondaryCta.href} class="btn btn-secondary">{secondaryCta.text}</a>
+            </div>
+        </div>
+
+        {showCharacter && (
+            <div class="hero-visual">
+                <div class="floating-scene">
+                    <!-- Space particles -->
+                    <div class="space-particles">
+                        <div class="space-particle sp1 white"></div>
+                        <div class="space-particle sp2 pink"></div>
+                        <div class="space-particle sp3 white"></div>
+                        <div class="space-particle sp4 cyan"></div>
+                        <div class="space-particle sp5 white"></div>
+                        <div class="space-particle sp6 pink"></div>
+                        <div class="space-particle sp7 white"></div>
+                        <div class="space-particle sp8 cyan"></div>
+                        <div class="space-particle sp9 pink"></div>
+                        <div class="space-particle sp10 white"></div>
+                        <div class="space-particle sp11 cyan"></div>
+                        <div class="space-particle sp12 white"></div>
+                    </div>
+                    
+                    <!-- Glow effects -->
+                    <div class="scene-glow glow-white"></div>
+                    <div class="scene-glow glow-pink"></div>
+                    <div class="scene-glow glow-cyan"></div>
+                    <div class="scene-glow glow-purple"></div>
+                    
+                    <!-- Floating objects -->
+                    <div class="floating-object float-drink">
+                        <img src="/images/hero/drink.png" alt="Floating drink">
+                    </div>
+                    <div class="floating-object float-cat">
+                        <img src="/images/hero/cat.png" alt="Floating cat">
+                    </div>
+                    <div class="floating-object float-cyber-head">
+                        <img src="/images/hero/cyber-head.png" alt="Floating cyber head">
+                    </div>
+                    
+                    <!-- Main character -->
+                    <img src="/images/hero/character.png" alt="Ninja Character" class="floating-character">
+                    
+                    <!-- More floating objects (in front) -->
+                    <div class="floating-object float-katana">
+                        <img src="/images/hero/katana.png" alt="Floating katana">
+                    </div>
+                    <div class="floating-object float-cap">
+                        <img src="/images/hero/cap.png" alt="Floating cap">
+                    </div>
+                </div>
+            </div>
+        )}
+    </div>
+</section>

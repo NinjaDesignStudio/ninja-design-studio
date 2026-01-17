@@ -1,0 +1,121 @@
+---
+/**
+ * Button - Reusable button/link component with variants
+ * 
+ * @example
+ * <Button href="/contact">Get Started</Button>
+ * <Button variant="secondary" size="lg">Learn More</Button>
+ * <Button variant="outline" type="submit">Submit</Button>
+ */
+
+interface Props {
+  /** Visual variant */
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'dark';
+  /** Size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Link URL (renders as anchor) */
+  href?: string;
+  /** Button type (when not a link) */
+  type?: 'button' | 'submit' | 'reset';
+  /** Disabled state */
+  disabled?: boolean;
+  /** Full width */
+  fullWidth?: boolean;
+  /** Show arrow icon */
+  showArrow?: boolean;
+  /** Additional CSS classes */
+  class?: string;
+  /** Any additional attributes */
+  [key: string]: any;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  fullWidth = false,
+  showArrow = false,
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const baseStyles = `
+  inline-flex items-center justify-center gap-2
+  font-semibold
+  rounded-xl
+  transition-all duration-300
+  focus:outline-none focus:ring-2 focus:ring-offset-2
+  disabled:opacity-50 disabled:cursor-not-allowed
+`;
+
+const variants = {
+  primary: `
+    bg-gradient-to-r from-pink-500 to-purple-600
+    text-white
+    hover:shadow-lg hover:shadow-pink-500/30 hover:-translate-y-0.5
+    focus:ring-pink-500
+  `,
+  secondary: `
+    bg-white/10 backdrop-blur
+    text-white
+    border border-white/20
+    hover:bg-white/20 hover:-translate-y-0.5
+    focus:ring-white/50
+  `,
+  outline: `
+    bg-transparent
+    text-white
+    border-2 border-pink-500
+    hover:bg-pink-500 hover:text-white hover:-translate-y-0.5
+    focus:ring-pink-500
+  `,
+  ghost: `
+    bg-transparent
+    text-white/80
+    hover:text-white hover:bg-white/10
+    focus:ring-white/30
+  `,
+  dark: `
+    bg-gray-900
+    text-white
+    hover:bg-gray-800 hover:-translate-y-0.5
+    focus:ring-gray-500
+  `,
+};
+
+const sizes = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
+};
+
+const classes = [
+  baseStyles,
+  variants[variant],
+  sizes[size],
+  fullWidth && 'w-full',
+  className,
+].filter(Boolean).join(' ');
+---
+
+{href ? (
+  <a href={href} class={classes} {...rest}>
+    <slot />
+    {showArrow && (
+      <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    )}
+  </a>
+) : (
+  <button type={type} disabled={disabled} class={classes} {...rest}>
+    <slot />
+    {showArrow && (
+      <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    )}
+  </button>
+)}

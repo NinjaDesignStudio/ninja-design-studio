@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkItem from '../components/WorkItem.astro';
+import ProjectModal from '../components/ProjectModal.astro';
+
+const projects = [
+    { id: 'project1', tag: 'Pet Services', title: 'TailsBnB', description: 'Pet sitting website for Vancouver couple', gradientClass: 'work-1' },
+    { id: 'project2', tag: 'FinTech', title: 'EZO Platform', description: 'All-in-one crypto payment ecosystem', gradientClass: 'work-2' },
+    { id: 'project3', tag: 'Travel', title: 'Moon Wanderlust', description: 'Backpacker camping community platform', gradientClass: 'work-3' },
+    { id: 'project4', tag: 'Blockchain', title: 'Avalanche Ecosystem', description: 'Brand refresh and marketing website', gradientClass: 'work-4' },
+];
+---
+
+<BaseLayout title="Our Work" description="Explore our portfolio of Web3, blockchain, and design projects. From DeFi platforms to brand identities.">
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container" style="display: block; text-align: center;">
+            <div class="about-hero-content" style="max-width: 700px; margin: 0 auto;">
+                <span class="section-tag" style="color: var(--neon-cyan);">Our Work</span>
+                <h1>Projects we're proud of</h1>
+                <p>A showcase of our best work across Web3, fintech, and beyond. Each project represents a unique challenge solved with creativity and precision.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Grid -->
+    <section class="work" style="padding-top: 5rem;">
+        <div class="container">
+            <div class="work-grid">
+                {projects.map((project, i) => (
+                    <WorkItem {...project} stagger={i + 1} />
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- More Projects Coming -->
+    <section class="process" style="background: var(--off-white);">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">More Coming</span>
+                <h2 class="section-title">We're always creating</h2>
+                <p class="section-subtitle">New projects are added regularly. Want to see your brand here?</p>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/contact" class="btn btn-primary">Start Your Project</a>
+            </div>
+        </div>
+    </section>
+
+    <ProjectModal />
+</BaseLayout>

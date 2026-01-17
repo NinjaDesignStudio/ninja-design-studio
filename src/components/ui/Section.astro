@@ -1,0 +1,120 @@
+---
+/**
+ * Section - Reusable page section wrapper with background and spacing variants
+ * 
+ * @example
+ * <Section bg="dark" spacing="lg">
+ *   <h2>Section Title</h2>
+ *   <p>Content here</p>
+ * </Section>
+ * 
+ * <Section bg="gradient" width="narrow" id="about">
+ *   <p>Narrower content section</p>
+ * </Section>
+ */
+
+interface Props {
+  /** Background variant */
+  bg?: 'transparent' | 'dark' | 'darker' | 'gradient' | 'glow';
+  /** Vertical padding size */
+  spacing?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  /** Container width */
+  width?: 'default' | 'narrow' | 'wide' | 'full';
+  /** HTML element to render */
+  as?: 'section' | 'div' | 'article' | 'aside';
+  /** Additional CSS classes */
+  class?: string;
+  /** ID for anchor linking */
+  id?: string;
+}
+
+const {
+  bg = 'transparent',
+  spacing = 'lg',
+  width = 'default',
+  as: Tag = 'section',
+  class: className = '',
+  id,
+} = Astro.props;
+
+const backgrounds: Record<NonNullable<Props['bg']>, string> = {
+  transparent: '',
+  dark: 'bg-dark',
+  darker: 'bg-darker',
+  gradient: 'section-gradient',
+  glow: 'section-glow',
+};
+
+const spacings: Record<NonNullable<Props['spacing']>, string> = {
+  none: '',
+  sm: 'py-12 md:py-16',
+  md: 'py-16 md:py-20',
+  lg: 'py-20 md:py-28',
+  xl: 'py-28 md:py-36',
+};
+
+const widths: Record<NonNullable<Props['width']>, string> = {
+  default: 'max-w-7xl',
+  narrow: 'max-w-4xl',
+  wide: 'max-w-screen-2xl',
+  full: 'max-w-none',
+};
+
+const sectionClasses = [
+  'relative overflow-hidden',
+  backgrounds[bg],
+  spacings[spacing],
+  className,
+].filter(Boolean).join(' ');
+
+const containerClasses = [
+  'mx-auto px-4 sm:px-6 lg:px-8',
+  widths[width],
+].join(' ');
+---
+
+<Tag class={sectionClasses} id={id}>
+  <div class={containerClasses}>
+    <slot />
+  </div>
+</Tag>
+
+<style>
+  .bg-dark {
+    background: var(--dark, #0a0a0f);
+  }
+  
+  .bg-darker {
+    background: var(--darker, #050508);
+  }
+  
+  .section-gradient {
+    background: linear-gradient(
+      180deg,
+      var(--darker) 0%,
+      var(--dark) 50%,
+      var(--darker) 100%
+    );
+  }
+  
+  .section-glow {
+    background: var(--dark);
+    position: relative;
+  }
+  
+  .section-glow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 0, 110, 0.1) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+</style>

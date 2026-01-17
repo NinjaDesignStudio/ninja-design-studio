@@ -1,0 +1,286 @@
+---
+/**
+ * HeaderTransparent - Transparent header for dark hero pages
+ * 
+ * Starts transparent with white text/logo, transitions to solid on scroll.
+ * Use with DarkHeroLayout for pages with dark hero sections.
+ */
+import { mainNavigation, isCTA, type NavCTA, type NavLink } from '../lib/navigation';
+---
+
+<nav id="nav" class="nav nav-transparent">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <img src="/images/nds-logo.jpg" alt="Ninja Design Studio" class="logo-img">
+            <span class="logo-text">NINJA</span>
+        </a>
+        
+        <!-- Desktop Navigation -->
+        <div class="nav-links">
+            {mainNavigation.map((item) => {
+                if (isCTA(item)) {
+                    const cta = item as NavCTA;
+                    return (
+                        <a href={cta.href} class="btn btn-primary nav-cta">
+                            {cta.label}
+                        </a>
+                    );
+                }
+                
+                const link = item as NavLink;
+                return (
+                    <a href={link.href} class="nav-link">
+                        {link.label}
+                    </a>
+                );
+            })}
+        </div>
+        
+        <!-- Mobile Menu Toggle -->
+        <button id="navToggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span class="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </span>
+        </button>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="mobile-menu-content">
+            {mainNavigation.map((item) => {
+                if (isCTA(item)) {
+                    const cta = item as NavCTA;
+                    return (
+                        <a href={cta.href} class="mobile-cta">
+                            {cta.label}
+                        </a>
+                    );
+                }
+                
+                const link = item as NavLink;
+                return (
+                    <a href={link.href} class="mobile-link">
+                        {link.label}
+                    </a>
+                );
+            })}
+        </div>
+    </div>
+</nav>
+
+<style>
+    .nav-transparent {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 1.5rem 0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: transparent;
+    }
+    
+    .nav-transparent.scrolled {
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 1rem 0;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+    }
+    
+    .logo-img {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+    
+    .logo-text {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        color: white;
+        transition: color 0.3s;
+    }
+    
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: color 0.3s;
+        position: relative;
+    }
+    
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--neon-pink);
+        transition: width 0.3s;
+    }
+    
+    .nav-link:hover {
+        color: white;
+    }
+    
+    .nav-link:hover::after {
+        width: 100%;
+    }
+    
+    .nav-cta {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Mobile toggle */
+    .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        z-index: 1001;
+    }
+    
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 24px;
+    }
+    
+    .hamburger-line {
+        width: 100%;
+        height: 2px;
+        background: white;
+        border-radius: 2px;
+        transition: all 0.3s;
+    }
+    
+    .nav-toggle.active .hamburger-line:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    
+    .nav-toggle.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    
+    .nav-toggle.active .hamburger-line:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+    
+    /* Mobile menu */
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        max-width: 400px;
+        height: 100vh;
+        background: var(--darker);
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+        padding: 6rem 2rem 2rem;
+        overflow-y: auto;
+    }
+    
+    .mobile-menu.active {
+        transform: translateX(0);
+    }
+    
+    .mobile-menu-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .mobile-link {
+        display: block;
+        padding: 1rem 0;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-size: 1.25rem;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: color 0.3s, padding-left 0.3s;
+    }
+    
+    .mobile-link:hover {
+        color: var(--neon-pink);
+        padding-left: 0.5rem;
+    }
+    
+    .mobile-cta {
+        display: block;
+        margin-top: 1.5rem;
+        padding: 1rem 2rem;
+        background: var(--gradient-pink);
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .mobile-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 0, 110, 0.3);
+    }
+    
+    @media (max-width: 1024px) {
+        .nav-links {
+            display: none;
+        }
+        
+        .nav-toggle {
+            display: block;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .nav-container {
+            padding: 0 1rem;
+        }
+        
+        .logo-text {
+            font-size: 1.25rem;
+        }
+        
+        .logo-img {
+            width: 40px;
+            height: 40px;
+        }
+    }
+</style>

@@ -1,0 +1,142 @@
+---
+// ProjectModal component - will be controlled by JavaScript
+---
+
+<div class="project-modal" id="projectModal">
+    <div class="modal-backdrop" onclick="closeProjectModal()"></div>
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeProjectModal()">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <div class="modal-image" id="modalImage"></div>
+        <div class="modal-body">
+            <span class="modal-tag" id="modalTag">Category</span>
+            <h2 class="modal-title" id="modalTitle">Project Title</h2>
+            <p class="modal-description" id="modalDescription">Project description goes here.</p>
+            <div class="modal-details">
+                <div class="modal-detail">
+                    <span class="modal-detail-label">Client</span>
+                    <span class="modal-detail-value" id="modalClient">Client Name</span>
+                </div>
+                <div class="modal-detail">
+                    <span class="modal-detail-label">Year</span>
+                    <span class="modal-detail-value" id="modalYear">2024</span>
+                </div>
+                <div class="modal-detail">
+                    <span class="modal-detail-label">Timeline</span>
+                    <span class="modal-detail-value" id="modalTimeline">6 weeks</span>
+                </div>
+                <div class="modal-detail">
+                    <span class="modal-detail-label">Industry</span>
+                    <span class="modal-detail-value" id="modalIndustry">Industry</span>
+                </div>
+            </div>
+            <div class="modal-services" id="modalServices"></div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    const projectsData = {
+        project1: {
+            tag: 'Pet Services',
+            title: 'TailsBnB',
+            description: 'A heartfelt project for a Vancouver couple who turned their passion for animals into a thriving pet sitting business. After fostering dozens of rescue animals, they needed a website that would instantly put pet parents at ease. We designed a warm, playful interface featuring a custom booking system, real-time availability calendar, and a testimonial showcase to build trust with new visitors. The turquoise and coral color palette was carefully chosen to evoke feelings of joy and reliability—because leaving your furry family member with someone new is a big deal. The site helped establish TailsBnB as a go-to pet care destination in the Greater Vancouver area.',
+            client: 'TailsBnB',
+            year: '2023',
+            timeline: '6 weeks',
+            industry: 'Pet Services',
+            services: ['Web Design', 'UI/UX', 'Booking System', 'Brand Identity'],
+            image: '/images/tailsbnb.jpg',
+            gradient: 'linear-gradient(135deg, #40E0D0, #FF6B6B, #4ECDC4)'
+        },
+        project2: {
+            tag: 'FinTech',
+            title: 'EZO Platform',
+            description: 'EZO came to us with an ambitious goal: create a unified crypto ecosystem that bridges the gap between digital assets and everyday transactions. The challenge was designing interfaces for multiple products—EZO Pay, EZO Swap, EZO Earn, and the physical EZO Card—while maintaining a cohesive visual language throughout. Our solution centered on a bold coral-red color system with clean, confidence-inspiring UI patterns. We designed 47+ unique screens across web and mobile, including complex transaction flows, portfolio dashboards, and a sleek card management interface. The platform integrates with partners like PinkSale, InterFi, and NDS, processing real transactions from day one. The mobile app achieved strong early ratings, and the design system we created ensures consistency as the platform continues to expand.',
+            client: 'EZO Finance',
+            year: '2025',
+            timeline: '12 weeks',
+            industry: 'FinTech / Crypto',
+            services: ['UI/UX Design', 'Mobile App Design', 'Web Design', 'Design System'],
+            image: '/images/ezo.jpg',
+            gradient: 'linear-gradient(135deg, #FF6B6B, #FFA07A, #FF4757)'
+        },
+        project3: {
+            tag: 'Travel',
+            title: 'Moon Wanderlust',
+            description: 'The California Camping Society needed more than a website—they needed a digital campfire that would bring their outdoor community together. Moon Wanderlust was designed to be an immersive hub for camping enthusiasts, featuring a destination search engine, interactive trail guides, community event calendar, and a blog section for member stories. The design draws inspiration from vintage camping aesthetics mixed with modern functionality, using warm oranges and earthy tones that evoke sunset horizons and crackling fires. Custom illustrations of camping gear and vintage vans added personality throughout. The platform now serves as the central gathering point for the society\'s events, including their annual Sierra Nevada Mountains gathering.',
+            client: 'California Camping Society',
+            year: '2023',
+            timeline: '8 weeks',
+            industry: 'Travel / Non-Profit',
+            services: ['Web Design', 'UI/UX', 'Custom Illustrations', 'Community Platform'],
+            image: '/images/moon-wanderlust.jpg',
+            gradient: 'linear-gradient(135deg, #FF8C00, #FFA500, #2C3E50)'
+        },
+        project4: {
+            tag: 'Blockchain',
+            title: 'Avalanche Ecosystem',
+            description: 'A comprehensive brand refresh for one of the leading Layer 1 blockchain platforms. Avalanche needed a design presence that could communicate both technical sophistication and accessibility to developers and enterprise clients alike. We developed a striking visual system anchored by their signature red, enhanced with dynamic gradients and geometric patterns inspired by their subnet architecture. The marketing website features interactive network visualizations, improved developer documentation UX, and a streamlined onboarding flow. We also delivered a comprehensive design system with reusable components that maintain consistency across their growing ecosystem of dApps and partner integrations.',
+            client: 'Avalanche Labs',
+            year: '2024',
+            timeline: '10 weeks',
+            industry: 'Blockchain / Web3',
+            services: ['Brand Refresh', 'Web Design', 'Design System', 'Marketing Materials'],
+            image: '/images/avalanche.jpg',
+            gradient: 'linear-gradient(135deg, #E84142, #1A1A2E, #E84142)'
+        }
+    };
+
+    function openProjectModal(projectId) {
+        const project = projectsData[projectId];
+        if (!project) return;
+
+        const modal = document.getElementById('projectModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTag = document.getElementById('modalTag');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalClient = document.getElementById('modalClient');
+        const modalYear = document.getElementById('modalYear');
+        const modalTimeline = document.getElementById('modalTimeline');
+        const modalIndustry = document.getElementById('modalIndustry');
+        const modalServices = document.getElementById('modalServices');
+
+        modalTag.textContent = project.tag;
+        modalTitle.textContent = project.title;
+        modalDescription.textContent = project.description;
+        modalClient.textContent = project.client;
+        modalYear.textContent = project.year;
+        modalTimeline.textContent = project.timeline;
+        modalIndustry.textContent = project.industry;
+
+        if (project.image) {
+            modalImage.innerHTML = `<img src="${project.image}" alt="${project.title}">`;
+        } else {
+            modalImage.innerHTML = '';
+            modalImage.style.background = project.gradient;
+        }
+
+        modalServices.innerHTML = project.services
+            .map(service => `<span class="modal-service-tag">${service}</span>`)
+            .join('');
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+        const modal = document.getElementById('projectModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeProjectModal();
+        }
+    });
+</script>

@@ -1,0 +1,436 @@
+---
+/**
+ * Terms of Service Page
+ * 
+ * Standard terms of service for a design agency.
+ * Uses DarkHeroLayout for consistent styling.
+ */
+import DarkHeroLayout from '../layouts/DarkHeroLayout.astro';
+
+const title = "Terms of Service";
+const description = "Terms of service for Ninja Design Studio. Read about our service agreements, intellectual property, and policies.";
+
+const lastUpdated = "January 2025";
+---
+
+<DarkHeroLayout title={title} description={description}>
+  <section class="legal-page">
+    <div class="legal-container">
+      <header class="legal-header">
+        <a href="/" class="legal-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Back to Home
+        </a>
+        <h1>Terms of Service</h1>
+        <p class="legal-updated">Last updated: {lastUpdated}</p>
+      </header>
+
+      <article class="legal-content">
+        <section>
+          <h2>Agreement to Terms</h2>
+          <p>
+            By accessing our website or engaging our design services, you agree to be bound 
+            by these Terms of Service and our Privacy Policy. If you disagree with any part 
+            of these terms, you may not access our website or use our services.
+          </p>
+        </section>
+
+        <section>
+          <h2>Our Services</h2>
+          <p>
+            Ninja Design Studio provides design services including but not limited to:
+          </p>
+          <ul>
+            <li>Brand identity and logo design</li>
+            <li>User interface and experience design (UI/UX)</li>
+            <li>Website design and development</li>
+            <li>Pitch deck and presentation design</li>
+            <li>NFT and digital collectible design</li>
+            <li>Social media and marketing assets</li>
+          </ul>
+          <p>
+            Specific deliverables, timelines, and pricing are outlined in individual 
+            project proposals or statements of work.
+          </p>
+        </section>
+
+        <section>
+          <h2>Project Engagement</h2>
+          
+          <h3>Proposals and Agreements</h3>
+          <p>
+            All projects begin with a written proposal outlining scope, deliverables, 
+            timeline, and pricing. Work commences only after client approval and receipt 
+            of the initial payment as specified in the proposal.
+          </p>
+
+          <h3>Communication</h3>
+          <p>
+            We communicate primarily via email, Telegram, or Slack as agreed upon. 
+            Timely responses from both parties ensure projects stay on schedule. 
+            Delays in client feedback may extend project timelines.
+          </p>
+
+          <h3>Revisions</h3>
+          <p>
+            Unless otherwise specified, our proposals include a reasonable number of 
+            revision rounds. Additional revisions beyond the agreed scope may incur 
+            extra charges at our standard hourly rate.
+          </p>
+        </section>
+
+        <section>
+          <h2>Payment Terms</h2>
+          
+          <h3>Pricing</h3>
+          <p>
+            All prices are quoted in USD unless otherwise specified. Pricing in proposals 
+            is valid for 30 days from the proposal date.
+          </p>
+
+          <h3>Payment Schedule</h3>
+          <p>
+            For project-based work, we typically require:
+          </p>
+          <ul>
+            <li>50% deposit to commence work</li>
+            <li>50% upon project completion, before final file delivery</li>
+          </ul>
+          <p>
+            For larger projects, milestones payments may be arranged. Retainer clients 
+            are billed monthly in advance.
+          </p>
+
+          <h3>Late Payments</h3>
+          <p>
+            Invoices are due within 14 days unless otherwise agreed. Late payments may 
+            result in work suspension and/or a late fee of 2% per month on outstanding 
+            balances.
+          </p>
+
+          <h3>Accepted Payment Methods</h3>
+          <p>
+            We accept bank transfers, credit cards, and select cryptocurrencies 
+            (USDC, USDT, ETH). Crypto payments are valued at the exchange rate at 
+            the time of payment.
+          </p>
+        </section>
+
+        <section>
+          <h2>Intellectual Property</h2>
+          
+          <h3>Ownership Transfer</h3>
+          <p>
+            Upon full payment, all intellectual property rights to the final deliverables 
+            transfer to the client. This includes source files, designs, and any custom 
+            assets created specifically for the project.
+          </p>
+
+          <h3>Preliminary Work</h3>
+          <p>
+            Unused concepts, preliminary designs, and rejected directions remain our 
+            property unless explicitly purchased by the client.
+          </p>
+
+          <h3>Third-Party Elements</h3>
+          <p>
+            Some projects may include third-party elements (fonts, stock images, icons) 
+            which are subject to their respective licenses. We will inform you of any 
+            licensing requirements.
+          </p>
+
+          <h3>Portfolio Rights</h3>
+          <p>
+            We reserve the right to display completed work in our portfolio, case studies, 
+            and marketing materials unless a non-disclosure agreement is in place. 
+            We will not share confidential business information.
+          </p>
+        </section>
+
+        <section>
+          <h2>Confidentiality</h2>
+          <p>
+            We treat all client information as confidential. We will not disclose your 
+            project details, business strategies, or proprietary information to third 
+            parties without your consent, except as required by law.
+          </p>
+          <p>
+            For projects requiring enhanced confidentiality, we're happy to sign a 
+            mutual non-disclosure agreement (NDA) before discussions begin.
+          </p>
+        </section>
+
+        <section>
+          <h2>Project Cancellation</h2>
+          
+          <h3>Client Cancellation</h3>
+          <p>
+            If you cancel a project after work has commenced:
+          </p>
+          <ul>
+            <li>The deposit is non-refundable</li>
+            <li>Work completed to date will be billed at our standard rate</li>
+            <li>No ownership of work transfers until payment for completed work is received</li>
+          </ul>
+
+          <h3>Our Right to Cancel</h3>
+          <p>
+            We reserve the right to terminate a project if:
+          </p>
+          <ul>
+            <li>Payment obligations are not met</li>
+            <li>The project scope changes significantly without agreement</li>
+            <li>Client conduct is unprofessional or abusive</li>
+          </ul>
+          <p>
+            In such cases, payment for work completed is still due.
+          </p>
+        </section>
+
+        <section>
+          <h2>Warranties and Limitations</h2>
+          
+          <h3>Our Warranty</h3>
+          <p>
+            We warrant that our work will be original (except for licensed elements) 
+            and will substantially conform to the agreed specifications. We will 
+            correct any defects reported within 30 days of delivery at no extra charge.
+          </p>
+
+          <h3>Limitation of Liability</h3>
+          <p>
+            Our total liability for any claim arising from our services shall not exceed 
+            the total fees paid by you for the relevant project. We are not liable for 
+            indirect, incidental, special, or consequential damages.
+          </p>
+
+          <h3>No Guarantee of Results</h3>
+          <p>
+            While we strive to create effective designs, we cannot guarantee specific 
+            business outcomes such as sales, conversions, or user engagement. Design 
+            is one factor among many in business success.
+          </p>
+        </section>
+
+        <section>
+          <h2>Website Use</h2>
+          
+          <h3>Permitted Use</h3>
+          <p>
+            Our website is provided for informational purposes about our services. 
+            You may view, download, and print pages for personal, non-commercial use.
+          </p>
+
+          <h3>Prohibited Actions</h3>
+          <p>You agree not to:</p>
+          <ul>
+            <li>Copy, reproduce, or distribute our content without permission</li>
+            <li>Use our website for any unlawful purpose</li>
+            <li>Attempt to gain unauthorized access to our systems</li>
+            <li>Interfere with website functionality</li>
+            <li>Scrape or harvest data from our website</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Indemnification</h2>
+          <p>
+            You agree to indemnify and hold harmless Ninja Design Studio, its 
+            principals, and affiliates from any claims, damages, or expenses arising 
+            from your use of our services, violation of these terms, or infringement 
+            of any third-party rights.
+          </p>
+        </section>
+
+        <section>
+          <h2>Governing Law</h2>
+          <p>
+            These terms shall be governed by and construed in accordance with applicable 
+            law, without regard to conflict of law principles. Any disputes shall be 
+            resolved through good-faith negotiation first, and if unsuccessful, through 
+            binding arbitration.
+          </p>
+        </section>
+
+        <section>
+          <h2>Changes to Terms</h2>
+          <p>
+            We may update these terms from time to time. Changes take effect immediately 
+            upon posting to this page. Continued use of our services after changes 
+            constitutes acceptance of the new terms.
+          </p>
+          <p>
+            For active projects, the terms in effect at the time of the signed proposal 
+            will govern that engagement.
+          </p>
+        </section>
+
+        <section>
+          <h2>Contact</h2>
+          <p>
+            Questions about these terms? Contact us:
+          </p>
+          <ul>
+            <li>Email: hello@ninjadesignstudio.com</li>
+            <li>Telegram: <a href="https://t.me/ninjaguy">@ninjaguy</a></li>
+          </ul>
+        </section>
+      </article>
+
+      <footer class="legal-footer">
+        <a href="/privacy" class="legal-link">Privacy Policy</a>
+        <span class="legal-divider">·</span>
+        <a href="/contact" class="legal-link">Contact Us</a>
+      </footer>
+    </div>
+  </section>
+</DarkHeroLayout>
+
+<style>
+  .legal-page {
+    padding: 8rem 2rem 6rem;
+    min-height: 100vh;
+  }
+
+  .legal-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .legal-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .legal-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+
+  .legal-back:hover {
+    color: var(--neon-cyan);
+  }
+
+  .legal-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-updated {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Content */
+  .legal-content section {
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+  }
+
+  .legal-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--white);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .legal-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1rem;
+  }
+
+  .legal-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .legal-content li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 6px;
+    height: 6px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+  }
+
+  .legal-content a {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+
+  .legal-content a:hover {
+    opacity: 0.8;
+  }
+
+  .legal-content strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* Footer */
+  .legal-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .legal-link {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .legal-link:hover {
+    color: var(--neon-cyan);
+  }
+
+  .legal-divider {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .legal-page {
+      padding: 6rem 1.5rem 4rem;
+    }
+  }
+</style>

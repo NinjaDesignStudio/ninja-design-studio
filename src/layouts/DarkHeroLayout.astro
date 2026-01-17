@@ -1,0 +1,282 @@
+---
+/**
+ * DarkHeroLayout - Layout for pages with dark full-bleed hero sections
+ * 
+ * Features a transparent header that transitions to solid on scroll.
+ * Use this for: homepage, work pages, case studies with hero images.
+ * 
+ * @example
+ * <DarkHeroLayout title="Our Work">
+ *   <section class="hero-dark">...</section>
+ *   <section class="content">...</section>
+ * </DarkHeroLayout>
+ */
+import HeaderTransparent from '../components/HeaderTransparent.astro';
+import Footer from '../components/Footer.astro';
+import PageLoader from '../components/PageLoader.astro';
+import BackToTop from '../components/BackToTop.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import PageTransitions from '../components/PageTransitions.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const { 
+  title, 
+  description = "Premium design studio for Web3. We create brand systems, websites, and products for funded protocols and DeFi projects.",
+  ogImage = "/images/og-image.jpg",
+  canonicalUrl,
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = Astro.site?.origin || "https://ninjadesignstudio.com";
+const currentUrl = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
+const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>{title} | Ninja Design Studio</title>
+    <meta name="title" content={`${title} | Ninja Design Studio`}>
+    <meta name="description" content={description}>
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={currentUrl}>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={currentUrl}>
+    <meta property="og:title" content={`${title} | Ninja Design Studio`}>
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content={fullOgImage}>
+    <meta property="og:site_name" content="Ninja Design Studio">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content={currentUrl}>
+    <meta name="twitter:title" content={`${title} | Ninja Design Studio`}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={fullOgImage}>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="/images/nds-logo.jpg">
+    <link rel="apple-touch-icon" href="/images/nds-logo.jpg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Generator -->
+    <meta name="generator" content={Astro.generator}>
+    
+    <!-- Schema.org structured data -->
+    <SchemaMarkup type="Organization" />
+    <SchemaMarkup type="WebSite" />
+    
+    <!-- Page Transitions -->
+    <PageTransitions />
+    
+    <!-- Additional head content slot -->
+    <slot name="head" />
+</head>
+<body class="loading min-h-screen flex flex-col">
+    <!-- Skip to main content (accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <PageLoader />
+    
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Transparent Header for dark hero pages -->
+    <HeaderTransparent />
+    
+    <!-- Main content -->
+    <main id="main-content" class="flex-1">
+        <slot />
+    </main>
+    
+    <!-- Footer -->
+    <slot name="footer">
+        <Footer />
+    </slot>
+    
+    <BackToTop />
+    
+    <!-- Page-specific scripts slot -->
+    <slot name="scripts" />
+    
+    <script>
+        // Page Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('pageLoader')?.classList.add('hidden');
+                document.body.classList.remove('loading');
+            }, 1800);
+        });
+
+        // Scroll Progress
+        const scrollProgress = document.getElementById('scrollProgress');
+        let scrollTicking = false;
+        
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            if (scrollProgress) scrollProgress.style.width = scrollPercent + '%';
+            scrollTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                requestAnimationFrame(updateScrollProgress);
+                scrollTicking = true;
+            }
+        });
+
+        // Transparent header scroll effect
+        const nav = document.getElementById('nav');
+        let navTicking = false;
+        
+        function updateNav() {
+            const scrolled = window.pageYOffset > 50;
+            nav?.classList.toggle('scrolled', scrolled);
+            navTicking = false;
+        }
+        
+        window.addEventListener('scroll', () => {
+            if (!navTicking) {
+                requestAnimationFrame(updateNav);
+                navTicking = true;
+            }
+        });
+        updateNav();
+
+        // Mobile menu
+        const navToggle = document.getElementById('navToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let isMenuOpen = false;
+        
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            navToggle?.classList.toggle('active', isMenuOpen);
+            mobileMenu?.classList.toggle('active', isMenuOpen);
+            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+        }
+        
+        navToggle?.addEventListener('click', toggleMenu);
+
+        mobileMenu?.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) toggleMenu();
+            });
+        });
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '-50px'
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop?.classList.toggle('visible', window.pageYOffset > 500);
+        });
+        backToTop?.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Custom cursor (non-touch only)
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (!isTouchDevice) {
+            const cursor = document.createElement('div');
+            cursor.className = 'custom-cursor';
+            document.body.appendChild(cursor);
+
+            let cursorVisible = false;
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX - 10 + 'px';
+                cursor.style.top = e.clientY - 10 + 'px';
+                if (!cursorVisible) {
+                    cursor.style.opacity = '1';
+                    cursorVisible = true;
+                }
+            });
+
+            document.addEventListener('mouseleave', () => {
+                cursor.style.opacity = '0';
+                cursorVisible = false;
+            });
+
+            const interactiveElements = document.querySelectorAll('a, button, .service-card, .work-item, .testimonial-card, .faq-question, .blog-card');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+        }
+    </script>
+</body>
+</html>
+
+<style is:global>
+    @import '../styles/global.css';
+    @import '../styles/hero.css';
+    @import '../styles/sections.css';
+    @import '../styles/pages.css';
+    
+    /* Skip link for accessibility */
+    .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--neon-pink);
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+        top: 0;
+    }
+    
+    /* Custom cursor styles */
+    .custom-cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--neon-pink);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transition: transform 0.15s ease, opacity 0.3s, border-color 0.3s;
+        mix-blend-mode: difference;
+        opacity: 0;
+    }
+    
+    .custom-cursor.hover {
+        transform: scale(1.5);
+        border-color: var(--neon-cyan);
+    }
+</style>

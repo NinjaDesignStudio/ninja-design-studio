@@ -1,0 +1,811 @@
+---
+/**
+ * About Page - Clean Layout
+ * 
+ * Centered hero, full-width sections, better spacing
+ */
+import DarkHeroLayout from '../layouts/DarkHeroLayout.astro';
+
+const title = "About Us";
+const description = "Learn about Ninja Design Studio - your premium design partner for Web3, blockchain, and crypto projects.";
+
+// Industries we serve
+const industries = [
+  { name: "DeFi Protocols", icon: "📊" },
+  { name: "L1/L2 Chains", icon: "⛓️" },
+  { name: "NFT Platforms", icon: "🖼️" },
+  { name: "DAOs", icon: "🏛️" },
+  { name: "Crypto Wallets", icon: "👛" },
+  { name: "Gaming/GameFi", icon: "🎮" },
+];
+
+// Why choose us 
+const whyUs = [
+  { 
+    title: "Web3 Native", 
+    description: "We've been in crypto since 2019. No explaining what a DEX is or how tokenomics work.",
+    highlight: "5+ years in Web3"
+  },
+  { 
+    title: "Speed Matters", 
+    description: "Crypto moves fast. We deliver brand identities in 2-4 weeks, not months.",
+    highlight: "2-4 week turnaround"
+  },
+  { 
+    title: "Proven Results", 
+    description: "Our clients have raised over $50M after our brand work. Design that builds investor confidence.",
+    highlight: "$50M+ raised by clients"
+  },
+];
+
+// Values
+const values = [
+  { 
+    title: "Speed Without Compromise", 
+    description: "We move fast because crypto moves fast. But we never sacrifice quality for speed.",
+    gradient: "linear-gradient(135deg, #ff006e, #ff4d94)"
+  },
+  { 
+    title: "Results-Focused", 
+    description: "Pretty designs are nice. Designs that convert, build trust, and drive growth? That's what we deliver.",
+    gradient: "linear-gradient(135deg, #00f5ff, #00b8d4)"
+  },
+  { 
+    title: "True Partnership", 
+    description: "We're not just vendors. We become an extension of your team, invested in your success.",
+    gradient: "linear-gradient(135deg, #8338ec, #b668ff)"
+  },
+  { 
+    title: "Future-Ready", 
+    description: "We design for where the industry is going, not just where it is today.",
+    gradient: "linear-gradient(135deg, #ff006e, #8338ec)"
+  },
+];
+
+// Milestones
+const milestones = [
+  { year: "2019", title: "Founded", description: "Started as freelance designers in the NFT space" },
+  { year: "2020", title: "First DeFi Client", description: "Expanded into protocol design and token branding" },
+  { year: "2021", title: "Studio Launch", description: "Formalized as Ninja Design Studio" },
+  { year: "2022", title: "Bear Market Growth", description: "Doubled down while others left—built trust" },
+  { year: "2023", title: "Premium Positioning", description: "Shifted focus to funded protocols and L2s" },
+  { year: "2024", title: "Design Systems", description: "Launched comprehensive design system offerings" },
+];
+
+// Clients
+const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "HKAC"];
+---
+
+<DarkHeroLayout title={title} description={description}>
+  <!-- Hero Section - Centered -->
+  <section class="about-hero">
+    <div class="hero-bg">
+      <div class="hero-gradient-1"></div>
+      <div class="hero-gradient-2"></div>
+    </div>
+
+    <div class="hero-container">
+      <span class="hero-eyebrow">About Us</span>
+      <h1 class="hero-title">
+        Design partners for<br>
+        <span class="gradient-text">Web3's next chapter</span>
+      </h1>
+      <p class="hero-subtitle">
+        We're a design studio built specifically for crypto and blockchain. 
+        No learning curve. No explaining what a DEX is. Just world-class design 
+        that speaks your language.
+      </p>
+      <div class="hero-cta">
+        <a href="/contact" class="btn btn-primary">
+          Work With Us
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="/work" class="btn btn-outline">See Our Work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us Section -->
+  <section class="why-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Why Us</span>
+        <h2>What makes us different</h2>
+      </div>
+      
+      <div class="why-grid">
+        {whyUs.map((item) => (
+          <div class="why-card">
+            <span class="why-highlight">{item.highlight}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Industries Section -->
+  <section class="industries-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Industries</span>
+        <h2>Who we work with</h2>
+      </div>
+      <div class="industries-grid">
+        {industries.map((industry) => (
+          <div class="industry-card">
+            <span class="industry-icon">{industry.icon}</span>
+            <span class="industry-name">{industry.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Story Section -->
+  <section class="story-section">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-content">
+          <span class="section-eyebrow">Our Story</span>
+          <h2>Born in the trenches of Web3</h2>
+          
+          <p class="lead">
+            We didn't start as a "Web3 agency"—we started as crypto believers who happened to be designers.
+          </p>
+          <p>
+            Through bull runs and bear markets, we've been building brands for the projects 
+            shaping the future of finance and technology. That experience matters. We understand 
+            token launches, the importance of community trust, the speed of crypto Twitter, and 
+            why your DEX interface needs to feel as secure as a bank vault while being as 
+            intuitive as your favorite app.
+          </p>
+          <p>
+            Today, we work with funded protocols, DeFi platforms, and Web3 startups who need 
+            design partners that actually get it.
+          </p>
+        </div>
+
+        <div class="story-quote">
+          <blockquote>
+            <svg class="quote-icon" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
+            </svg>
+            <p>
+              We only do Web3. We've been in this space through multiple cycles and understand 
+              the culture, technology, and what users expect.
+            </p>
+            <footer>— Our Philosophy</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline Section -->
+  <section class="timeline-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Journey</span>
+        <h2>Our Timeline</h2>
+      </div>
+      
+      <div class="timeline">
+        {milestones.map((milestone) => (
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">{milestone.year}</div>
+            <div class="timeline-content">
+              <h3>{milestone.title}</h3>
+              <p>{milestone.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="values-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Values</span>
+        <h2>What drives us</h2>
+      </div>
+
+      <div class="values-grid">
+        {values.map((value, index) => (
+          <div class="value-card">
+            <div class="value-number">0{index + 1}</div>
+            <div class="value-accent" style={`background: ${value.gradient};`}></div>
+            <h3>{value.title}</h3>
+            <p>{value.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients Section -->
+  <section class="clients-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Trusted By</span>
+        <h2>Projects we've worked with</h2>
+      </div>
+      <div class="clients-grid">
+        {clients.map((client) => (
+          <div class="client-item">{client}</div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <span class="section-eyebrow">Let's Talk</span>
+      <h2>Ready to build something extraordinary?</h2>
+      <p>Book a discovery call or drop us a message. No pitch decks required.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn btn-primary btn-lg">
+          Start a Project
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="https://t.me/ninjaguy" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+          </svg>
+          Chat on Telegram
+        </a>
+      </div>
+    </div>
+  </section>
+</DarkHeroLayout>
+
+<style>
+  /* Variables */
+  :root {
+    --darker: #0a0a0f;
+    --dark: #12121a;
+    --dark-card: #1a1a24;
+    --white: #ffffff;
+    --neon-pink: #ff006e;
+    --neon-cyan: #00f5ff;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-eyebrow {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    padding: 0.5rem 1rem;
+    background: rgba(255, 0, 110, 0.1);
+    border-radius: 100px;
+    margin-bottom: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  /* ===========================================
+     HERO - CENTERED
+     =========================================== */
+  .about-hero {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 2rem 6rem;
+    background: var(--darker);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hero-gradient-1 {
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(255, 0, 110, 0.15) 0%, transparent 60%);
+    filter: blur(80px);
+  }
+
+  .hero-gradient-2 {
+    position: absolute;
+    bottom: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(0, 245, 255, 0.1) 0%, transparent 60%);
+    filter: blur(80px);
+  }
+
+  .hero-container {
+    position: relative;
+    max-width: 800px;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* ===========================================
+     BUTTONS
+     =========================================== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--neon-pink), #ff4081);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--neon-cyan);
+  }
+
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  /* ===========================================
+     WHY US SECTION
+     =========================================== */
+  .why-section {
+    padding: 6rem 0;
+    background: var(--dark);
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .why-card {
+    padding: 2rem;
+    background: var(--dark-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .why-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 0, 110, 0.3);
+  }
+
+  .why-highlight {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--neon-cyan);
+    padding: 0.375rem 0.75rem;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+
+  .why-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .why-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
+
+  /* ===========================================
+     INDUSTRIES SECTION
+     =========================================== */
+  .industries-section {
+    padding: 6rem 0;
+    background: var(--darker);
+  }
+
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .industry-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .industry-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 0, 110, 0.3);
+  }
+
+  .industry-icon {
+    font-size: 1.5rem;
+  }
+
+  .industry-name {
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* ===========================================
+     STORY SECTION
+     =========================================== */
+  .story-section {
+    padding: 6rem 0;
+    background: var(--dark);
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .story-content h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .story-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1.25rem;
+  }
+
+  .story-content .lead {
+    font-size: 1.125rem;
+    color: var(--white);
+  }
+
+  .story-quote blockquote {
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.1) 0%, rgba(131, 56, 236, 0.1) 100%);
+    border-left: 3px solid var(--neon-pink);
+    border-radius: 0 16px 16px 0;
+  }
+
+  .quote-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--neon-pink);
+    opacity: 0.5;
+    margin-bottom: 1rem;
+  }
+
+  .story-quote p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--white);
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .story-quote footer {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ===========================================
+     TIMELINE SECTION
+     =========================================== */
+  .timeline-section {
+    padding: 6rem 0;
+    background: var(--darker);
+  }
+
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .timeline-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+  }
+
+  .timeline-year {
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 245, 255, 0.1);
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+
+  .timeline-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+  }
+
+  /* ===========================================
+     VALUES SECTION
+     =========================================== */
+  .values-section {
+    padding: 6rem 0;
+    background: var(--dark);
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .value-card {
+    position: relative;
+    padding: 2rem;
+    background: var(--dark-card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .value-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .value-number {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: monospace;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.03);
+  }
+
+  .value-accent {
+    width: 50px;
+    height: 4px;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .value-card h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .value-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
+
+  /* ===========================================
+     CLIENTS SECTION
+     =========================================== */
+  .clients-section {
+    padding: 6rem 0;
+    background: var(--darker);
+  }
+
+  .clients-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .client-item {
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+  }
+
+  .client-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--white);
+  }
+
+  /* ===========================================
+     CTA SECTION
+     =========================================== */
+  .cta-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, rgba(255, 0, 110, 0.15) 0%, rgba(131, 56, 236, 0.1) 50%, rgba(0, 245, 255, 0.1) 100%);
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--white);
+    margin: 0.75rem 0 1rem;
+  }
+
+  .cta-section p {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  /* ===========================================
+     RESPONSIVE
+     =========================================== */
+  @media (max-width: 900px) {
+    .story-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-hero {
+      padding: 6rem 1.5rem 4rem;
+      min-height: auto;
+    }
+
+    .hero-cta,
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-cta .btn,
+    .cta-buttons .btn {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .container {
+      padding: 0 1.5rem;
+    }
+  }
+</style>

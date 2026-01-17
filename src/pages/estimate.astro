@@ -1,0 +1,327 @@
+---
+/**
+ * Estimate Page - Project Cost Estimator
+ * 
+ * Interactive calculator that helps potential clients 
+ * understand pricing and pre-qualifies leads.
+ */
+import DarkHeroLayout from '../layouts/DarkHeroLayout.astro';
+import ProjectEstimator from '../components/ProjectEstimator.astro';
+
+const title = "Get an Estimate";
+const description = "Use our interactive project estimator to get a ballpark cost for your Web3 design project. Brand identity, websites, UI/UX, and more.";
+---
+
+<DarkHeroLayout title={title} description={description}>
+  <!-- Hero -->
+  <section class="estimate-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-container">
+      <span class="hero-eyebrow">Transparent Pricing</span>
+      <h1 class="hero-title">What's your project <span class="gradient-text">worth?</span></h1>
+      <p class="hero-subtitle">
+        Get a ballpark estimate in under 2 minutes. No signup required, no sales pitch — 
+        just honest numbers to help you plan.
+      </p>
+    </div>
+  </section>
+
+  <!-- Estimator -->
+  <section class="estimator-section">
+    <div class="estimator-container">
+      <ProjectEstimator 
+        ctaText="Let's Talk"
+        ctaHref="/contact"
+      />
+    </div>
+  </section>
+
+  <!-- Trust Signals -->
+  <section class="trust-section">
+    <div class="trust-container">
+      <div class="trust-grid">
+        <div class="trust-item">
+          <span class="trust-icon">💬</span>
+          <h3>No Surprises</h3>
+          <p>Our estimates reflect actual project costs. What you see is what you'll pay.</p>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🤝</span>
+          <h3>Flexible Scope</h3>
+          <p>We'll work with you to adjust scope and deliverables to match your budget.</p>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">💳</span>
+          <h3>Payment Options</h3>
+          <p>We accept USDC, USDT, ETH, and traditional payment methods.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Preview -->
+  <section class="pricing-faq">
+    <div class="faq-container">
+      <h2>Common Pricing Questions</h2>
+      
+      <div class="faq-grid">
+        <details class="faq-item">
+          <summary>What's included in the price?</summary>
+          <p>Every project includes discovery, design exploration, revisions, and final asset delivery. We don't nickel-and-dime you for feedback rounds or small adjustments.</p>
+        </details>
+        
+        <details class="faq-item">
+          <summary>Do you require a deposit?</summary>
+          <p>Yes, we typically require 50% upfront to begin work, with the remaining 50% due upon completion. For larger projects, we can structure milestone payments.</p>
+        </details>
+        
+        <details class="faq-item">
+          <summary>What if my project is smaller/larger?</summary>
+          <p>This estimator gives ballpark figures. Every project is unique — let's chat and we'll provide a detailed quote based on your specific needs.</p>
+        </details>
+        
+        <details class="faq-item">
+          <summary>Do you offer retainers?</summary>
+          <p>Yes! Retainers start at $5K/month and include dedicated design hours, priority communication, and faster turnarounds.</p>
+        </details>
+      </div>
+
+      <div class="faq-cta">
+        <a href="/faq" class="btn btn-secondary">View All FAQs</a>
+      </div>
+    </div>
+  </section>
+</DarkHeroLayout>
+
+<style>
+  /* Hero */
+  .estimate-hero {
+    position: relative;
+    padding: 10rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 50% 0%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 40%),
+      var(--darker);
+  }
+
+  .hero-container {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+  }
+
+  /* Estimator Section */
+  .estimator-section {
+    padding: 0 2rem 4rem;
+    background: var(--darker);
+  }
+
+  .estimator-container {
+    max-width: 900px;
+    margin: 0 auto;
+    margin-top: -2rem;
+  }
+
+  /* Trust Section */
+  .trust-section {
+    padding: 5rem 2rem;
+    background: var(--dark);
+  }
+
+  .trust-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .trust-item {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+  }
+
+  .trust-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .trust-item h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .trust-item p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Pricing FAQ */
+  .pricing-faq {
+    padding: 5rem 2rem;
+    background: var(--darker);
+  }
+
+  .faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .pricing-faq h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .faq-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .faq-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+    color: var(--white);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s;
+  }
+
+  .faq-item[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-item p {
+    padding: 0 1.5rem 1.5rem;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .faq-cta {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--neon-cyan);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .estimate-hero {
+      padding: 8rem 1.5rem 3rem;
+    }
+
+    .estimator-section {
+      padding: 0 1rem 3rem;
+    }
+
+    .trust-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .trust-item {
+      padding: 1.5rem;
+    }
+
+    .pricing-faq {
+      padding: 3rem 1.5rem;
+    }
+  }
+</style>

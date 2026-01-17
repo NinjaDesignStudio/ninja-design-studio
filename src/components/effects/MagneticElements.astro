@@ -1,0 +1,99 @@
+---
+/**
+ * MagneticElements - Magnetic hover effect for buttons and links
+ * 
+ * Makes elements "pull" toward the cursor on hover.
+ * Awards-worthy microinteraction.
+ * 
+ * Add class "magnetic" to any element to enable.
+ * Add class "magnetic-strong" for stronger effect.
+ * 
+ * @example
+ * <button class="magnetic">Hover Me</button>
+ * <a href="/contact" class="magnetic-strong">Get in Touch</a>
+ */
+
+interface Props {
+  /** Magnetic strength (default pull distance) */
+  strength?: number;
+  /** Strong magnetic strength */
+  strongStrength?: number;
+}
+
+const {
+  strength = 0.3,
+  strongStrength = 0.5,
+} = Astro.props;
+---
+
+<script define:vars={{ strength, strongStrength }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Skip on touch devices
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchDevice) return;
+
+    // Skip if reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const magneticElements = document.querySelectorAll('.magnetic, .magnetic-strong');
+
+    magneticElements.forEach((el) => {
+      const isStrong = el.classList.contains('magnetic-strong');
+      const magnetStrength = isStrong ? strongStrength : strength;
+
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const deltaX = (e.clientX - centerX) * magnetStrength;
+        const deltaY = (e.clientY - centerY) * magnetStrength;
+
+        el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        el.style.transition = 'transform 0.15s ease-out';
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'translate(0, 0)';
+        el.style.transition = 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)';
+      });
+    });
+
+    // Magnetic text (inner element moves opposite for parallax effect)
+    const magneticTextElements = document.querySelectorAll('.magnetic-text');
+    
+    magneticTextElements.forEach((el) => {
+      const inner = el.querySelector('.magnetic-text-inner');
+      if (!inner) return;
+
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const deltaX = (e.clientX - centerX) * 0.2;
+        const deltaY = (e.clientY - centerY) * 0.2;
+
+        el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        inner.style.transform = `translate(${-deltaX * 0.5}px, ${-deltaY * 0.5}px)`;
+        el.style.transition = 'transform 0.15s ease-out';
+        inner.style.transition = 'transform 0.15s ease-out';
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'translate(0, 0)';
+        inner.style.transform = 'translate(0, 0)';
+        el.style.transition = 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)';
+        inner.style.transition = 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)';
+      });
+    });
+  });
+</script>
+
+<style is:global>
+  .magnetic,
+  .magnetic-strong,
+  .magnetic-text {
+    will-change: transform;
+  }
+</style>

@@ -1,0 +1,196 @@
+---
+/**
+ * Marquee - Infinite scrolling text
+ * 
+ * Creates an endlessly scrolling text banner.
+ * Great for showcasing capabilities, awards, or client names.
+ * 
+ * @example Basic
+ * <Marquee text="Award Winning Design • Web3 Specialists • " />
+ * 
+ * @example With custom items
+ * <Marquee items={['Branding', 'UI/UX', 'Development', 'Strategy']} />
+ * 
+ * @example Reverse direction
+ * <Marquee text="Premium Design Studio • " reverse />
+ */
+
+interface Props {
+  /** Text to repeat (include trailing space/separator) */
+  text?: string;
+  /** Or array of items (will be joined with separator) */
+  items?: string[];
+  /** Separator between items */
+  separator?: string;
+  /** Scroll direction */
+  reverse?: boolean;
+  /** Animation duration in seconds */
+  duration?: number;
+  /** Pause on hover */
+  pauseOnHover?: boolean;
+  /** Size variant */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Text style */
+  variant?: 'default' | 'outline' | 'gradient';
+}
+
+const {
+  text,
+  items,
+  separator = ' • ',
+  reverse = false,
+  duration = 30,
+  pauseOnHover = true,
+  size = 'md',
+  variant = 'default',
+} = Astro.props;
+
+// Build the content string
+const content = text || (items ? items.join(separator) + separator : 'Design Excellence • ');
+
+// Repeat content enough times to ensure seamless loop
+const repeatCount = 4;
+const repeatedContent = content.repeat(repeatCount);
+---
+
+<div 
+  class:list={[
+    'marquee',
+    `marquee--${size}`,
+    `marquee--${variant}`,
+    { 'marquee--pause-hover': pauseOnHover }
+  ]}
+  style={`--marquee-duration: ${duration}s;`}
+>
+  <div class="marquee-track" class:list={[{ reverse }]}>
+    <span class="marquee-content">{repeatedContent}</span>
+    <span class="marquee-content" aria-hidden="true">{repeatedContent}</span>
+  </div>
+</div>
+
+<style>
+  .marquee {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .marquee::before,
+  .marquee::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .marquee::before {
+    left: 0;
+    background: linear-gradient(to right, var(--darker), transparent);
+  }
+
+  .marquee::after {
+    right: 0;
+    background: linear-gradient(to left, var(--darker), transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee var(--marquee-duration) linear infinite;
+  }
+
+  .marquee-track.reverse {
+    animation-direction: reverse;
+  }
+
+  .marquee--pause-hover:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .marquee-content {
+    white-space: nowrap;
+    padding-right: 0;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Size variants */
+  .marquee--sm {
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
+
+  .marquee--md {
+    font-size: 1.5rem;
+    padding: 1.5rem 0;
+    font-weight: 500;
+  }
+
+  .marquee--lg {
+    font-size: 2.5rem;
+    padding: 2rem 0;
+    font-weight: 600;
+  }
+
+  .marquee--xl {
+    font-size: 4rem;
+    padding: 2.5rem 0;
+    font-weight: 700;
+  }
+
+  /* Style variants */
+  .marquee--default {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .marquee--outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .marquee--gradient .marquee-content {
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan), var(--neon-pink));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 8s linear infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+    
+    .marquee-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .marquee--lg {
+      font-size: 1.75rem;
+    }
+    
+    .marquee--xl {
+      font-size: 2.5rem;
+    }
+  }
+</style>

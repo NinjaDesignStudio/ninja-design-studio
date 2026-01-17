@@ -1,0 +1,84 @@
+---
+/**
+ * StatsBanner - Display key statistics in a horizontal bar
+ * 
+ * Uses centralized stats from lib/stats.ts
+ * 
+ * @example
+ * <StatsBanner />
+ * <StatsBanner variant="glass" />
+ */
+import { displayStats } from '../lib/stats';
+
+interface StatItem {
+  number: string;
+  label: string;
+}
+
+interface Props {
+  /** Custom stats (overrides default) */
+  stats?: StatItem[];
+  /** Visual variant */
+  variant?: 'default' | 'glass' | 'gradient';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  stats = displayStats,
+  variant = 'default',
+  class: className = '',
+} = Astro.props;
+
+const variants = {
+  default: 'bg-darker border-y border-white/5',
+  glass: 'bg-white/5 backdrop-blur-xl border-y border-white/10',
+  gradient: 'bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 border-y border-white/10',
+};
+---
+
+<div class:list={['py-8 md:py-12', variants[variant], className]}>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+      {stats.map((stat) => (
+        <div class="text-center stat-item">
+          <div class="stat-number text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
+            {stat.number}
+          </div>
+          <div class="stat-label mt-2 text-sm md:text-base text-white/60 font-medium">
+            {stat.label}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .stat-item {
+    position: relative;
+  }
+  
+  .stat-number {
+    font-family: 'Space Mono', monospace;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Animated gradient on hover */
+  .stat-item:hover .stat-number {
+    animation: gradient-shift 2s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .bg-darker {
+    background: var(--darker, #050508);
+  }
+</style>
