@@ -7,73 +7,71 @@
 import DarkHeroLayout from '../layouts/DarkHeroLayout.astro';
 
 const title = "About Us";
-const description = "Learn about Ninja Design Studio - your premium design partner for Web3, blockchain, and crypto projects.";
+const description = "Learn about Ninja Design Studio - premium design partners for companies building the future.";
 
 // Industries we serve
 const industries = [
-  { name: "DeFi Protocols", icon: "📊" },
-  { name: "L1/L2 Chains", icon: "⛓️" },
-  { name: "NFT Platforms", icon: "🖼️" },
-  { name: "DAOs", icon: "🏛️" },
-  { name: "Crypto Wallets", icon: "👛" },
-  { name: "Gaming/GameFi", icon: "🎮" },
+  { name: "FinTech & Payments", icon: "💳" },
+  { name: "AI & Technology", icon: "🤖" },
+  { name: "Real Estate", icon: "🏢" },
+  { name: "SaaS & Enterprise", icon: "⚡" },
+  { name: "Blockchain & Web3", icon: "⛓️" },
+  { name: "Gaming & Entertainment", icon: "🎮" },
 ];
 
-// Why choose us 
+// Why choose us
 const whyUs = [
-  { 
-    title: "Web3 Native", 
-    description: "We've been in crypto since 2019. No explaining what a DEX is or how tokenomics work.",
-    highlight: "5+ years in Web3"
+  {
+    title: "Built for Growth",
+    description: "We partner with companies at inflection points. Whether you're launching, raising, or scaling—we've been there.",
+    highlight: "Growth-stage experts"
   },
-  { 
-    title: "Speed Matters", 
-    description: "Crypto moves fast. We deliver brand identities in 2-4 weeks, not months.",
-    highlight: "2-4 week turnaround"
+  {
+    title: "Speed Without Sacrifice",
+    description: "We move fast because your market moves fast. Brand identities in 2-4 weeks. Websites in 3-6. No compromises.",
+    highlight: "2-4 week delivery"
   },
-  { 
-    title: "Proven Results", 
-    description: "Our clients have raised over $50M after our brand work. Design that builds investor confidence.",
+  {
+    title: "Results That Matter",
+    description: "Our clients have raised $50M+, launched successful products, and built brands people remember. That's the work we care about.",
     highlight: "$50M+ raised by clients"
   },
 ];
 
 // Values
 const values = [
-  { 
-    title: "Speed Without Compromise", 
-    description: "We move fast because crypto moves fast. But we never sacrifice quality for speed.",
+  {
+    title: "Substance Over Flash",
+    description: "Anyone can make things look pretty. We make things that work—designs that convert, build trust, and actually move the needle.",
     gradient: "linear-gradient(135deg, #ff006e, #ff4d94)"
   },
-  { 
-    title: "Results-Focused", 
-    description: "Pretty designs are nice. Designs that convert, build trust, and drive growth? That's what we deliver.",
+  {
+    title: "Partners, Not Vendors",
+    description: "We don't just take briefs and disappear. We dig in, ask hard questions, and become part of your team until the job's done right.",
     gradient: "linear-gradient(135deg, #00f5ff, #00b8d4)"
   },
-  { 
-    title: "True Partnership", 
-    description: "We're not just vendors. We become an extension of your team, invested in your success.",
+  {
+    title: "Honest & Direct",
+    description: "We'll tell you what we think, not what you want to hear. That kind of honesty leads to better work and stronger outcomes.",
     gradient: "linear-gradient(135deg, #8338ec, #b668ff)"
   },
-  { 
-    title: "Future-Ready", 
-    description: "We design for where the industry is going, not just where it is today.",
+  {
+    title: "Relentlessly Curious",
+    description: "We stay on the edge of where technology and design intersect. It's why we understand your space before we even start.",
     gradient: "linear-gradient(135deg, #ff006e, #8338ec)"
   },
 ];
 
-// Milestones
+// Milestones - condensed to key growth moments
 const milestones = [
-  { year: "2019", title: "Founded", description: "Started as freelance designers in the NFT space" },
-  { year: "2020", title: "First DeFi Client", description: "Expanded into protocol design and token branding" },
-  { year: "2021", title: "Studio Launch", description: "Formalized as Ninja Design Studio" },
-  { year: "2022", title: "Bear Market Growth", description: "Doubled down while others left—built trust" },
-  { year: "2023", title: "Premium Positioning", description: "Shifted focus to funded protocols and L2s" },
-  { year: "2024", title: "Design Systems", description: "Launched comprehensive design system offerings" },
+  { year: "Launch", title: "Studio Founded", description: "Started with a focus on tech and fintech brands" },
+  { year: "Expansion", title: "Web3 Deep Dive", description: "Added blockchain expertise as the space exploded" },
+  { year: "Growth", title: "Premium Focus", description: "Shifted to growth-stage and funded companies" },
+  { year: "Today", title: "Multi-Industry", description: "Design partners across tech, finance, and beyond" },
 ];
 
-// Clients
-const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "HKAC"];
+// Clients - mix of industries
+const clients = ["Avalanche", "EZO Finance", "TailsBnB", "Moon Wanderlust", "PinkSale", "HKAC"];
 ---
 
 <DarkHeroLayout title={title} description={description}>
@@ -87,13 +85,13 @@ const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "H
     <div class="hero-container">
       <span class="hero-eyebrow">About Us</span>
       <h1 class="hero-title">
-        Design partners for<br>
-        <span class="gradient-text">Web3's next chapter</span>
+        We help ambitious companies<br>
+        <span class="gradient-text">look the part</span>
       </h1>
       <p class="hero-subtitle">
-        We're a design studio built specifically for crypto and blockchain. 
-        No learning curve. No explaining what a DEX is. Just world-class design 
-        that speaks your language.
+        Ninja Design Studio is a small team obsessed with great work. We partner
+        with founders and teams building products people actually use—across
+        fintech, AI, blockchain, and beyond.
       </p>
       <div class="hero-cta">
         <a href="/contact" class="btn btn-primary">
@@ -151,21 +149,22 @@ const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "H
       <div class="story-grid">
         <div class="story-content">
           <span class="section-eyebrow">Our Story</span>
-          <h2>Born in the trenches of Web3</h2>
-          
+          <h2>Started lean, stayed focused</h2>
+
           <p class="lead">
-            We didn't start as a "Web3 agency"—we started as crypto believers who happened to be designers.
+            We launched Ninja Design Studio with a simple bet: small, focused teams
+            do better work than big agencies with layers of account managers.
           </p>
           <p>
-            Through bull runs and bear markets, we've been building brands for the projects 
-            shaping the future of finance and technology. That experience matters. We understand 
-            token launches, the importance of community trust, the speed of crypto Twitter, and 
-            why your DEX interface needs to feel as secure as a bank vault while being as 
-            intuitive as your favorite app.
+            That bet paid off. Word spread. We went from branding startups to working with
+            funded companies, enterprise teams, and some of the most exciting projects in
+            fintech and blockchain. The common thread? They all wanted a team that could move
+            fast, think strategically, and actually deliver.
           </p>
           <p>
-            Today, we work with funded protocols, DeFi platforms, and Web3 startups who need 
-            design partners that actually get it.
+            We're still small by choice. We take on fewer projects so we can go deeper.
+            No junior designers learning on your dime. No bloated timelines. Just senior-level
+            work from people who've done this before.
           </p>
         </div>
 
@@ -175,8 +174,8 @@ const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "H
               <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
             </svg>
             <p>
-              We only do Web3. We've been in this space through multiple cycles and understand 
-              the culture, technology, and what users expect.
+              We'd rather do exceptional work for a handful of clients than average
+              work for dozens. That philosophy hasn't changed since day one.
             </p>
             <footer>— Our Philosophy</footer>
           </blockquote>
@@ -190,7 +189,7 @@ const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "H
     <div class="container">
       <div class="section-header">
         <span class="section-eyebrow">Journey</span>
-        <h2>Our Timeline</h2>
+        <h2>How we got here</h2>
       </div>
       
       <div class="timeline">
@@ -234,7 +233,7 @@ const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "H
     <div class="container">
       <div class="section-header">
         <span class="section-eyebrow">Trusted By</span>
-        <h2>Projects we've worked with</h2>
+        <h2>Companies we've partnered with</h2>
       </div>
       <div class="clients-grid">
         {clients.map((client) => (
@@ -248,8 +247,8 @@ const clients = ["Avalanche", "RugDoc", "Ezo Finance", "Binamon", "PinkSale", "H
   <section class="cta-section">
     <div class="container">
       <span class="section-eyebrow">Let's Talk</span>
-      <h2>Ready to build something extraordinary?</h2>
-      <p>Book a discovery call or drop us a message. No pitch decks required.</p>
+      <h2>Got a project in mind?</h2>
+      <p>We'd love to hear about it. Reach out and let's see if we're a good fit.</p>
       <div class="cta-buttons">
         <a href="/contact" class="btn btn-primary btn-lg">
           Start a Project
