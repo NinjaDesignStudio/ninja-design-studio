@@ -659,10 +659,15 @@ const addons = [
         }
       });
 
-      // Calculate final range
+      // Calculate final range (round to nearest $500 for better granularity)
       const baseEstimate = servicesBase * complexityMultiplier * timelineMultiplier;
-      const minEstimate = Math.round((baseEstimate + addonsTotal) * 0.9 / 1000) * 1000;
-      const maxEstimate = Math.round((baseEstimate + addonsTotal) * 1.2 / 1000) * 1000;
+      let minEstimate = Math.round((baseEstimate + addonsTotal) * 0.9 / 500) * 500;
+      let maxEstimate = Math.round((baseEstimate + addonsTotal) * 1.3 / 500) * 500;
+
+      // Ensure there's always at least $500 difference between min and max
+      if (maxEstimate <= minEstimate) {
+        maxEstimate = minEstimate + 500;
+      }
 
       // Format and display
       if (priceMin && priceMax) {
@@ -678,9 +683,11 @@ const addons = [
 
     function formatPrice(price: number): string {
       if (price >= 1000) {
-        return (price / 1000).toFixed(0) + 'K';
+        const k = price / 1000;
+        // Show .5 for half thousands, otherwise whole number
+        return k % 1 === 0 ? k.toFixed(0) + 'K' : k.toFixed(1) + 'K';
       }
-      return price.toString();
+      return '$' + price.toString();
     }
 
     function resetEstimator() {
