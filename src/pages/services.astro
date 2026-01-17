@@ -6,16 +6,11 @@
  * on content and structure.
  */
 import ServiceLayout from '../layouts/ServiceLayout.astro';
-import { services, pricingTiers } from '../lib/services';
-import { displayStats } from '../lib/stats';
-import { getFeaturedTestimonials } from '../lib/testimonials';
+import { services } from '../lib/services';
 import { getFAQsByCategory } from '../lib/faqs';
-import { clientLogos } from '../lib/projects';
 
 const title = 'Services';
 const description = 'Premium design services for Web3. Brand identity systems, product design, and websites for funded protocols and DeFi projects.';
-
-const testimonials = getFeaturedTestimonials();
 const faqs = getFAQsByCategory('pricing').concat(getFAQsByCategory('process')).slice(0, 6);
 
 const processSteps = [
@@ -92,30 +87,6 @@ const whyChooseUs = [
     </div>
   </section>
 
-  <!-- Stats Bar -->
-  <section class="stats-section">
-    <div class="stats-container">
-      {displayStats.map((stat) => (
-        <div class="stat-item">
-          <span class="stat-number">{stat.number}</span>
-          <span class="stat-label">{stat.label}</span>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- Client Logos -->
-  <section class="logos-section">
-    <div class="logos-container">
-      <p class="logos-title">Trusted by Web3 Leaders</p>
-      <div class="logos-grid">
-        {clientLogos.slice(0, 8).map((logo) => (
-          <img src={logo.logo} alt={logo.name} class="logo-img" loading="lazy" />
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Featured Service: Partnership Model -->
   <section class="featured-section">
     <div class="featured-container">
@@ -164,7 +135,7 @@ const whyChooseUs = [
           <div class="featured-card">
             <div class="featured-card-header">
               <span class="featured-card-label">Starting at</span>
-              <span class="featured-card-price">$5K<span>/month</span></span>
+              <span class="featured-card-price">$3K<span>/month</span></span>
             </div>
             <div class="featured-card-items">
               <div class="featured-card-item">
@@ -269,68 +240,6 @@ const whyChooseUs = [
             <div class="why-icon">{item.icon}</div>
             <h3 class="why-title">{item.title}</h3>
             <p class="why-description">{item.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials -->
-  <section class="testimonials-section">
-    <div class="testimonials-container">
-      <div class="section-header section-header--light">
-        <span class="section-eyebrow">Client Love</span>
-        <h2 class="section-title">What They Say</h2>
-      </div>
-
-      <div class="testimonials-grid">
-        {testimonials.map((testimonial) => (
-          <blockquote class="testimonial-card">
-            <svg class="quote-icon" viewBox="0 0 32 32" fill="currentColor">
-              <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H6c0-2.2 1.8-4 4-4V8zm14 0c-3.3 0-6 2.7-6 6v10h10V14h-8c0-2.2 1.8-4 4-4V8z" />
-            </svg>
-            <p class="testimonial-quote">{testimonial.quote}</p>
-            <footer class="testimonial-author">
-              <span class="author-name">{testimonial.author}</span>
-              <span class="author-role">{testimonial.role}, {testimonial.company}</span>
-            </footer>
-          </blockquote>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing Tiers -->
-  <section class="pricing-section">
-    <div class="pricing-container">
-      <div class="section-header">
-        <span class="section-eyebrow">Pricing</span>
-        <h2 class="section-title">Investment Levels</h2>
-        <p class="section-subtitle">
-          Transparent pricing. No hidden fees. Choose the engagement model that works for you.
-        </p>
-      </div>
-
-      <div class="pricing-grid">
-        {pricingTiers.map((tier) => (
-          <div class:list={['pricing-card', tier.highlighted && 'pricing-card--highlighted']}>
-            {tier.highlighted && <div class="pricing-badge">Most Popular</div>}
-            <h3 class="pricing-name">{tier.name}</h3>
-            <div class="pricing-price">{tier.price}</div>
-            <p class="pricing-description">{tier.description}</p>
-            <ul class="pricing-features">
-              {tier.features.map((feature) => (
-                <li>
-                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <a href="/contact" class:list={['pricing-button', tier.highlighted ? 'btn btn-primary' : 'btn btn-outline']}>
-              Get Started
-            </a>
           </div>
         ))}
       </div>
