@@ -3,7 +3,7 @@ title: "The Psychology of DeFi Interface Design"
 excerpt: "How thoughtful UI/UX can make complex financial operations feel intuitive and safe for your users."
 date: "2025-11-28"
 category: "UI/UX"
-image: ""
+image: "/images/blog/defi-interface.jpg"
 author: "Ninja Design Studio"
 tags: ["defi", "ui-ux", "psychology", "user-experience"]
 ---

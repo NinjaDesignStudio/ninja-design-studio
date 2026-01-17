@@ -3,7 +3,7 @@ title: "Why Your Web3 Project Needs a Design System"
 excerpt: "In the fast-moving world of crypto, consistency isn't just nice to have—it's essential for building trust. Here's why design systems matter."
 date: "2025-12-15"
 category: "Design"
-image: ""
+image: "/images/blog/design-systems.jpg"
 author: "Ninja Design Studio"
 tags: ["design-systems", "web3", "branding", "ui-ux"]
 ---
