@@ -1,11 +1,12 @@
 ---
 /**
  * 404 Page - Not Found
- * 
+ *
  * Custom branded error page that helps users find their way back.
  * Uses DarkHeroLayout for consistent styling.
  */
 import DarkHeroLayout from '../layouts/DarkHeroLayout.astro';
+import { getCollection } from 'astro:content';
 
 const title = "Page Not Found";
 const description = "The page you're looking for doesn't exist or has been moved.";
@@ -17,6 +18,12 @@ const suggestions = [
   { title: 'About Us', href: '/about', icon: '👋' },
   { title: 'Contact', href: '/contact', icon: '💬' },
 ];
+
+// Get recent blog posts
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
 ---
 
 <DarkHeroLayout title={title} description={description}>
@@ -38,23 +45,22 @@ const suggestions = [
         The page you're looking for doesn't exist, got rugged, or maybe it was never minted in the first place.
       </p>
 
-      <!-- Search (optional) -->
-      <div class="error-search">
-        <form action="/search" method="get" class="search-form">
-          <input 
-            type="text" 
-            name="q" 
-            placeholder="Search for something..." 
-            class="search-input"
-          />
-          <button type="submit" class="search-button">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
-            </svg>
-          </button>
-        </form>
-      </div>
+      <!-- Recent Blog Posts -->
+      {recentPosts.length > 0 && (
+        <div class="recent-posts">
+          <p class="recent-label">Or check out our latest articles:</p>
+          <div class="recent-list">
+            {recentPosts.map((post) => (
+              <a href={`/blog/${post.slug}`} class="recent-post">
+                <span class="recent-title">{post.data.title}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       <!-- Suggestions -->
       <div class="error-suggestions">
@@ -200,51 +206,62 @@ const suggestions = [
     margin-bottom: 2.5rem;
   }
 
-  /* Search */
-  .error-search {
+  /* Recent Posts */
+  .recent-posts {
     margin-bottom: 2.5rem;
   }
 
-  .search-form {
+  .recent-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+  }
+
+  .recent-list {
     display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     max-width: 400px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 100px;
+  }
+
+  .recent-post {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .recent-post:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 245, 255, 0.3);
+  }
+
+  .recent-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: left;
+    white-space: nowrap;
     overflow: hidden;
-    transition: border-color 0.3s;
+    text-overflow: ellipsis;
   }
 
-  .search-form:focus-within {
-    border-color: var(--neon-pink);
-  }
-
-  .search-input {
-    flex: 1;
-    padding: 1rem 1.5rem;
-    background: transparent;
-    border: none;
-    color: var(--white);
-    font-size: 1rem;
-    outline: none;
-  }
-
-  .search-input::placeholder {
+  .recent-post svg {
+    flex-shrink: 0;
     color: rgba(255, 255, 255, 0.4);
+    transition: all 0.3s;
   }
 
-  .search-button {
-    padding: 1rem 1.5rem;
-    background: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    transition: color 0.3s;
-  }
-
-  .search-button:hover {
-    color: var(--neon-pink);
+  .recent-post:hover svg {
+    color: var(--neon-cyan);
+    transform: translateX(3px);
   }
 
   /* Suggestions */

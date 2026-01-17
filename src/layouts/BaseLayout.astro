@@ -14,6 +14,7 @@ import Footer from '../components/Footer.astro';
 import PageLoader from '../components/PageLoader.astro';
 import BackToTop from '../components/BackToTop.astro';
 import PageTransitions from '../components/PageTransitions.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 
 interface Props {
   title: string;
@@ -109,7 +110,8 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     </slot>
     
     <BackToTop />
-    
+    <CookieConsent />
+
     <!-- Page-specific scripts slot -->
     <slot name="scripts" />
     
