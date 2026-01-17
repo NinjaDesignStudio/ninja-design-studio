@@ -27,7 +27,7 @@
  *   <section class="services-section">...</section>
  * </ServiceLayout>
  */
-import HeaderTransparent from '../components/HeaderTransparent.astro';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BackToTop from '../components/BackToTop.astro';
 
@@ -104,7 +104,7 @@ const fullOgImage = ogImage?.startsWith('http') ? ogImage : new URL(ogImage || '
   <div class="scroll-progress" id="scrollProgress"></div>
   
   <!-- Navigation -->
-  <HeaderTransparent />
+  <Header />
   
   <!-- Main Content -->
   <main>
