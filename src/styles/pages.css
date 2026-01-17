@@ -22,8 +22,8 @@
 .modal-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(5, 5, 8, 0.9);
-    backdrop-filter: blur(10px);
+    background: rgba(5, 5, 8, 0.8);
+    backdrop-filter: blur(4px);
 }
 
 .modal-content {
@@ -45,12 +45,12 @@
 
 .modal-close {
     position: absolute;
-    top: 1.5rem;
+    top: 3.5rem;
     right: 1.5rem;
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--neon-pink);
     border: none;
     cursor: pointer;
     display: flex;
@@ -61,7 +61,7 @@
 }
 
 .modal-close:hover {
-    background: var(--neon-pink);
+    background: #000;
     transform: rotate(90deg);
 }
 
