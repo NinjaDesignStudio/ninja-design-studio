@@ -30,36 +30,38 @@ const {
   ctaHref = "/contact",
 } = Astro.props;
 
-// Service options with base prices
+// Service options with base prices (matching services.ts minimums)
 const services = [
-  { id: 'brand', label: 'Brand Identity', base: 8000, icon: '🎨' },
-  { id: 'website', label: 'Website Design', base: 10000, icon: '🌐' },
-  { id: 'ui-ux', label: 'Product UI/UX', base: 12000, icon: '📱' },
-  { id: 'pitch-deck', label: 'Pitch Deck', base: 5000, icon: '📊' },
-  { id: 'nft', label: 'NFT Collection', base: 8000, icon: '🖼️' },
+  { id: 'brand', label: 'Brand Identity', base: 2000, icon: '🎨' },
+  { id: 'website', label: 'Website Design', base: 2000, icon: '🌐' },
+  { id: 'ui-ux', label: 'Product UI/UX', base: 3000, icon: '📱' },
+  { id: 'pitch-deck', label: 'Pitch Deck', base: 1000, icon: '📊' },
+  { id: 'nft', label: 'NFT Collection', base: 4000, icon: '🖼️' },
+  { id: 'social', label: 'Social & Marketing', base: 1000, icon: '📣' },
 ];
 
 // Complexity multipliers
 const complexities = [
-  { id: 'simple', label: 'Simple', description: 'Clean, minimal, focused', multiplier: 1.0 },
-  { id: 'standard', label: 'Standard', description: 'Multiple pages/features', multiplier: 1.5 },
-  { id: 'complex', label: 'Complex', description: 'Custom, feature-rich', multiplier: 2.0 },
+  { id: 'simple', label: 'Simple', description: 'Minimal, single focus', multiplier: 1.0 },
+  { id: 'standard', label: 'Standard', description: 'Multiple pages/features', multiplier: 2.0 },
+  { id: 'complex', label: 'Complex', description: 'Full system, feature-rich', multiplier: 3.5 },
 ];
 
 // Timeline options
 const timelines = [
   { id: 'relaxed', label: 'Relaxed', description: '4-6 weeks', multiplier: 1.0 },
-  { id: 'standard', label: 'Standard', description: '2-4 weeks', multiplier: 1.15 },
-  { id: 'rush', label: 'Rush', description: '1-2 weeks', multiplier: 1.35 },
+  { id: 'standard', label: 'Standard', description: '2-4 weeks', multiplier: 1.2 },
+  { id: 'rush', label: 'Rush', description: '1-2 weeks', multiplier: 1.5 },
 ];
 
 // Add-ons
 const addons = [
-  { id: 'animation', label: 'Motion & Animation', price: 2500 },
-  { id: 'copywriting', label: 'Copywriting', price: 2000 },
-  { id: 'illustration', label: 'Custom Illustrations', price: 3000 },
-  { id: 'development', label: 'Development', price: 5000 },
-  { id: 'social', label: 'Social Media Kit', price: 1500 },
+  { id: 'animation', label: 'Motion & Animation', price: 1500 },
+  { id: 'copywriting', label: 'Copywriting', price: 1000 },
+  { id: 'illustration', label: 'Custom Illustrations', price: 2000 },
+  { id: 'development', label: 'Development', price: 3000 },
+  { id: 'video', label: 'Video Production', price: 2500 },
+  { id: 'strategy', label: 'Brand Strategy', price: 1500 },
 ];
 ---
 
