@@ -229,7 +229,7 @@
 }
 
 .blog-grid-section {
-    background: var(--off-white);
+    background: var(--charcoal);
     padding: var(--section-padding);
 }
 
@@ -240,10 +240,10 @@
 }
 
 .blog-card {
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 20px;
     overflow: hidden;
-    border: 1px solid var(--light-gray);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.3s var(--ease-out);
     text-decoration: none;
     color: inherit;
@@ -253,7 +253,9 @@
 
 .blog-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 0, 110, 0.3);
 }
 
 .blog-card-image {
@@ -284,7 +286,7 @@
     display: flex;
     gap: 1rem;
     font-size: 0.8rem;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.5;
     margin-bottom: 0.75rem;
 }
@@ -303,7 +305,7 @@
 .blog-card h3 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--white);
     margin-bottom: 0.75rem;
     letter-spacing: -0.02em;
     line-height: 1.3;
@@ -311,7 +313,7 @@
 
 .blog-card p {
     font-size: 0.9rem;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.6;
     line-height: 1.6;
     flex: 1;
@@ -395,7 +397,7 @@
 }
 
 .blog-post-content {
-    background: var(--white);
+    background: var(--slate);
     padding: 4rem 0;
 }
 
@@ -406,7 +408,7 @@
 .blog-post-body {
     font-size: 1.1rem;
     line-height: 1.8;
-    color: var(--dark);
+    color: var(--white);
 }
 
 .blog-post-body h2 {
@@ -414,7 +416,7 @@
     font-weight: 700;
     margin: 2.5rem 0 1rem;
     letter-spacing: -0.02em;
-    color: var(--dark);
+    color: var(--white);
 }
 
 .blog-post-body h3 {
@@ -422,7 +424,7 @@
     font-weight: 700;
     margin: 2rem 0 0.75rem;
     letter-spacing: -0.02em;
-    color: var(--dark);
+    color: var(--white);
 }
 
 .blog-post-body p {
@@ -442,14 +444,14 @@
 .blog-post-body blockquote {
     margin: 2rem 0;
     padding: 1.5rem 2rem;
-    background: var(--off-white);
+    background: rgba(255, 255, 255, 0.03);
     border-left: 4px solid var(--neon-pink);
     border-radius: 0 12px 12px 0;
     font-style: italic;
 }
 
 .blog-post-body code {
-    background: var(--off-white);
+    background: rgba(255, 255, 255, 0.1);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-family: var(--font-mono);
@@ -556,7 +558,14 @@
 }
 
 .about-values {
-    background: var(--off-white);
+    background:
+        repeating-linear-gradient(
+            135deg,
+            var(--charcoal) 0px,
+            var(--charcoal) 25px,
+            var(--charcoal-light) 25px,
+            var(--charcoal-light) 50px
+        );
     padding: var(--section-padding);
 }
 
@@ -567,16 +576,18 @@
 }
 
 .about-value-card {
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 20px;
     padding: 2rem;
-    border: 1px solid var(--light-gray);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.3s var(--ease-out);
 }
 
 .about-value-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 245, 255, 0.2);
 }
 
 .about-value-icon {
@@ -594,13 +605,13 @@
 .about-value-card h3 {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--dark);
+    color: var(--white);
     margin-bottom: 0.5rem;
 }
 
 .about-value-card p {
     font-size: 0.9rem;
-    color: var(--dark);
+    color: var(--white);
     opacity: 0.6;
     line-height: 1.6;
 }
