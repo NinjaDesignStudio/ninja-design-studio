@@ -15,15 +15,15 @@ export interface FAQ {
 export const faqs: FAQ[] = [
   // General
   {
-    id: 'what-is-web3-design',
-    question: 'What makes Web3 design different?',
-    answer: 'Web3 design requires deep understanding of blockchain UX patterns, crypto culture, and community expectations. We\'ve been in the space for 5+ years and speak the language natively—no learning curve, no explaining what a DEX is.',
+    id: 'what-industries',
+    question: 'What industries do you specialize in?',
+    answer: 'We specialize in fintech, SaaS, and complex technical products. Our team has deep experience designing for financial platforms, data-heavy dashboards, and products where trust and usability are critical. We understand the unique challenges of making complex systems feel intuitive.',
     category: 'general',
   },
   {
     id: 'who-do-you-work-with',
     question: 'What types of projects do you work with?',
-    answer: 'We work with funded protocols, DeFi platforms, NFT projects, L2s, and Web3 startups. Our sweet spot is projects that have secured funding and are ready to invest in professional design that matches their ambitions.',
+    answer: 'We work with funded startups, growth-stage companies, and enterprise teams across fintech and SaaS. Our sweet spot is projects that have secured funding and are ready to invest in professional design that matches their ambitions.',
     category: 'general',
   },
   
@@ -41,9 +41,9 @@ export const faqs: FAQ[] = [
     category: 'pricing',
   },
   {
-    id: 'token-payments',
-    question: 'Do you accept token payments?',
-    answer: 'We primarily work in USDC/USDT and fiat, but we\'re open to discussing token arrangements for the right projects. This is typically structured as a hybrid payment model.',
+    id: 'payment-terms',
+    question: 'What are your payment terms?',
+    answer: 'We use milestone-based payments for most projects. Typically it\'s 50% upfront to begin work, with the remaining 50% due on delivery. For retainer clients, we bill monthly. We accept bank transfer, credit card, and wire payments.',
     category: 'pricing',
   },
   
@@ -71,7 +71,7 @@ export const faqs: FAQ[] = [
   {
     id: 'full-development',
     question: 'Do you build websites or just design them?',
-    answer: 'We offer both design-only and full design + development packages. For development, we work with modern frameworks like Astro, Next.js, and can integrate with any Web3 stack.',
+    answer: 'We offer both design-only and full design + development packages. For development, we work with modern frameworks like Astro, Next.js, and React.',
     category: 'services',
   },
 ];

@@ -7,14 +7,14 @@ const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
 
-<BaseLayout title="Blog" description="Insights, tutorials, and thoughts on Web3 design, branding, and the future of crypto.">
+<BaseLayout title="Blog" description="Insights, tutorials, and thoughts on design, branding, and building great products.">
     <!-- Hero Section -->
     <section class="blog-hero">
         <div class="container">
             <div class="blog-hero-content">
                 <span class="section-tag">Blog</span>
                 <h1>Insights & Ideas</h1>
-                <p>Thoughts on Web3 design, branding strategies, and the future of crypto. Learn from our experience building brands in the blockchain space.</p>
+                <p>Thoughts on design, branding strategies, and building products people trust. Learn from our experience building brands for ambitious tech companies.</p>
             </div>
         </div>
     </section>
@@ -49,7 +49,7 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new D
                 <div style="text-align: center; padding: 4rem 0;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
                     <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Coming Soon</h2>
-                    <p style="opacity: 0.6; max-width: 400px; margin: 0 auto;">We're working on some great content. Check back soon for insights on Web3 design and branding.</p>
+                    <p style="opacity: 0.6; max-width: 400px; margin: 0 auto;">We're working on some great content. Check back soon for insights on design and branding.</p>
                 </div>
             )}
         </div>

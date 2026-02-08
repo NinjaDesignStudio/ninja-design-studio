@@ -14,7 +14,7 @@ export const stats = {
   clientsNum: 40,
   
   experience: '5+',
-  experienceLabel: 'Years in Web3',
+  experienceLabel: 'Years in Design',
   
   clientFunds: '$50M+',
   clientFundsLabel: 'Raised by Clients',
@@ -32,7 +32,7 @@ export const stats = {
  */
 export const displayStats = [
   { number: stats.projects, label: 'Projects Delivered' },
-  { number: stats.experience, label: 'Years in Web3' },
+  { number: stats.experience, label: 'Years in Design' },
   { number: stats.clientFunds, label: 'Raised by Clients' },
   { number: stats.brandsBuilt, label: 'Brands Built' },
 ];

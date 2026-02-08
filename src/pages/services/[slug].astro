@@ -10,7 +10,7 @@
  * - /services/ui-ux
  * - /services/website
  * - /services/pitch-deck
- * - /services/nft
+ * - /services/design-system
  * - /services/social-content
  */
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
@@ -48,7 +48,7 @@ const serviceContent: Record<string, {
 }> = {
   'brand-identity': {
     benefits: [
-      'Stand out in a sea of generic crypto projects',
+      'Stand out in a crowded market',
       'Build instant credibility with investors and users',
       'Create consistency across all touchpoints',
       'Establish a foundation for all future design work',
@@ -60,8 +60,8 @@ const serviceContent: Record<string, {
       { step: '04', title: 'Delivery', description: 'You receive complete brand assets, guidelines, and templates ready for use.' },
     ],
     ideal: [
-      'Launching a new protocol or token',
-      'Rebranding an established project',
+      'Launching a new product or platform',
+      'Rebranding an established company',
       'Preparing for a funding round',
       'Need professional credibility fast',
     ],
@@ -69,8 +69,8 @@ const serviceContent: Record<string, {
   'ui-ux': {
     benefits: [
       'Reduce user confusion and support tickets',
-      'Increase conversion rates and TVL',
-      'Make complex DeFi interactions feel simple',
+      'Increase conversion rates and engagement',
+      'Make complex interactions feel simple',
       'Ship faster with reusable design components',
     ],
     process: [
@@ -80,9 +80,9 @@ const serviceContent: Record<string, {
       { step: '04', title: 'Handoff', description: 'Developers receive specs, assets, and a component library for implementation.' },
     ],
     ideal: [
-      'Building a DeFi protocol or DEX',
-      'Creating an NFT marketplace',
-      'Designing a wallet or portfolio app',
+      'Building a fintech or payment platform',
+      'Creating a data-heavy SaaS product',
+      'Designing a dashboard or analytics app',
       'Need to improve an existing product',
     ],
   },
@@ -126,24 +126,24 @@ const serviceContent: Record<string, {
       'Need to present to partners',
     ],
   },
-  'nft': {
+  'design-system': {
     benefits: [
-      'Create art that collectors actually want',
-      'Build a cohesive collection with variety',
-      'Stand out in a crowded marketplace',
-      'Generate buzz on social media',
+      'Ship features faster with reusable components',
+      'Maintain consistency across your entire product',
+      'Reduce design-to-dev handoff friction',
+      'Scale your UI without scaling your design team',
     ],
     process: [
-      { step: '01', title: 'Concept', description: 'We develop the art style, theme, and trait system for your collection.' },
-      { step: '02', title: 'Creation', description: 'We design all base characters, traits, and variations.' },
-      { step: '03', title: 'Generation', description: 'We set up the generative system with proper rarity distribution.' },
-      { step: '04', title: 'Assets', description: 'We create marketplace assets, reveal animations, and promotional materials.' },
+      { step: '01', title: 'Audit', description: 'We audit your existing UI patterns, inconsistencies, and component needs.' },
+      { step: '02', title: 'Foundation', description: 'We establish design tokens, color scales, typography, and spacing systems.' },
+      { step: '03', title: 'Components', description: 'We design and document a comprehensive component library.' },
+      { step: '04', title: 'Handoff', description: 'Developers receive a documented system with specs, usage guidelines, and examples.' },
     ],
     ideal: [
-      'Launching a PFP collection',
-      'Creating utility NFTs',
-      'Building a gaming project',
-      'Want unique 1/1 artwork',
+      'Product growing beyond a few screens',
+      'Multiple designers or developers on the team',
+      'Inconsistencies creeping into the UI',
+      'Want to speed up your design-to-dev workflow',
     ],
   },
   'social-content': {

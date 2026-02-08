@@ -26,7 +26,7 @@ interface Props {
 
 const { 
   title, 
-  description = "Premium design studio for Web3. We create brand systems, websites, and products for funded protocols and DeFi projects.",
+  description = "Premium design studio for fintech and SaaS. We create brand systems, websites, and products for ambitious tech teams.",
   ogImage = "/images/og-image.jpg",
   canonicalUrl,
   noindex = false,
@@ -44,8 +44,8 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Primary Meta Tags -->
-    <title>Ninja Design Studio | {title}</title>
-    <meta name="title" content={`Ninja Design Studio | ${title}`}>
+    <title>{title} | Ninja Design Studio</title>
+    <meta name="title" content={`${title} | Ninja Design Studio`}>
     <meta name="description" content={description}>
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     
@@ -55,7 +55,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content={currentUrl}>
-    <meta property="og:title" content={`Ninja Design Studio | ${title}`}>
+    <meta property="og:title" content={`${title} | Ninja Design Studio`}>
     <meta property="og:description" content={description}>
     <meta property="og:image" content={fullOgImage}>
     <meta property="og:site_name" content="Ninja Design Studio">
@@ -63,7 +63,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content={currentUrl}>
-    <meta name="twitter:title" content={`Ninja Design Studio | ${title}`}>
+    <meta name="twitter:title" content={`${title} | Ninja Design Studio`}>
     <meta name="twitter:description" content={description}>
     <meta name="twitter:image" content={fullOgImage}>
     

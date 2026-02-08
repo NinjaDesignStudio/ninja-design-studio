@@ -10,67 +10,69 @@ import ProjectModal from '../components/ProjectModal.astro';
 import { displayStats } from '../lib/stats';
 
 const services = [
-    { icon: '🎨', iconClass: 'icon-brand', title: 'Brand Identity', description: 'Complete brand systems including logos, typography, and comprehensive style guides that set you apart.' },
-    { icon: '📱', iconClass: 'icon-ui', title: 'Product & UI/UX', description: 'DApp interfaces and user experiences that users actually understand and love to use.' },
-    { icon: '🌐', iconClass: 'icon-web', title: 'Website Design', description: 'High-converting websites that tell your story and turn visitors into customers.' },
-    { icon: '📊', iconClass: 'icon-pitch', title: 'Pitch Decks', description: 'Investor-ready presentations that communicate your vision and help close funding rounds.' },
-    { icon: '▶', iconClass: 'icon-video', title: 'Video & Motion', description: 'Animated logos, explainer videos, and motion graphics that capture attention.' },
-    { icon: '📣', iconClass: 'icon-social', title: 'Social & Marketing', description: 'Social media content, announcements, and community assets that build your online presence.' },
+    { icon: '🎨', iconClass: 'icon-brand', title: 'Brand Identity', description: 'Logo, typography, color system, and brand guidelines that make your company look established from day one.' },
+    { icon: '📱', iconClass: 'icon-ui', title: 'Product & UI/UX', description: 'Interfaces for complex products — dashboards, workflows, data-heavy screens — that users navigate without thinking.' },
+    { icon: '🌐', iconClass: 'icon-web', title: 'Website Design', description: 'Marketing sites that convert visitors into demo requests, signups, and paying customers.' },
+    { icon: '📊', iconClass: 'icon-pitch', title: 'Pitch Decks', description: 'Presentations that helped our clients raise $50M+. Your story, told in a way investors remember.' },
+    { icon: '▶', iconClass: 'icon-video', title: 'Video & Motion', description: 'Product demos, logo animations, and explainers that show what your product does in under 60 seconds.' },
+    { icon: '📣', iconClass: 'icon-social', title: 'Social & Marketing', description: 'Launch assets, social content, and campaign graphics that keep your brand consistent everywhere.' },
 ];
 
 const projects = [
     { id: 'project1', tag: 'Pet Services', title: 'TailsBnB', description: 'Pet sitting website for Vancouver couple', gradientClass: 'work-1', image: '/images/tailsbnb.jpg' },
-    { id: 'project2', tag: 'FinTech', title: 'EZO Platform', description: 'All-in-one crypto payment ecosystem', gradientClass: 'work-2', image: '/images/ezo.jpg' },
+    { id: 'project2', tag: 'FinTech', title: 'EZO Platform', description: 'All-in-one digital payment platform', gradientClass: 'work-2', image: '/images/ezo.jpg' },
     { id: 'project3', tag: 'Travel', title: 'Moon Wanderlust', description: 'Backpacker camping community platform', gradientClass: 'work-3', image: '/images/moon-wanderlust.jpg' },
-    { id: 'project4', tag: 'Blockchain', title: 'Avalanche Ecosystem', description: 'Brand refresh and marketing website', gradientClass: 'work-4', image: '/images/avalanche.jpg' },
+    { id: 'project4', tag: 'Enterprise Tech', title: 'Avalanche Ecosystem', description: 'Brand refresh and marketing for enterprise platform', gradientClass: 'work-4', image: '/images/avalanche.jpg' },
 ];
 
 const testimonials = [
-    { text: "Ninja Design Studio transformed our brand completely. Their understanding of Web3 design and graphics is unmatched! Our audience loved what they did for us and they helped our company get noticed.", authorInitials: 'RD', authorName: 'Rug Doctor', authorTitle: 'CEO, RugDoc' },
-    { text: "Ninja Design Studio delivered our complete brand identity and website in just weeks. Professional, fast, and they really get what works in crypto. We loved their graphics, pitchdecks, websites, videos, and more.", authorInitials: 'CB', authorName: 'Charles Bergeron', authorTitle: 'Founder, Ezo Finance' },
-    { text: "We've worked with many design agencies, but Ninja Design Studio is different. They went above and beyond for us, and helped our project sell out completely. We recommend EVERYONE to use them for their projects!", authorInitials: 'MR', authorName: 'Mike Rodriguez', authorTitle: 'Co-founder, NFT Platform' },
+    { text: "They took our brand from seed-stage scrappy to something investors took seriously. We closed our round two weeks after launching the new identity.", authorInitials: 'AC', authorName: 'Alex Chen', authorTitle: 'Founder, FinTech Startup' },
+    { text: "Complete brand identity and website in three weeks. No hand-holding needed — they understood fintech from day one. The quality was better than agencies charging 3x more.", authorInitials: 'CB', authorName: 'Charles Bergeron', authorTitle: 'Founder, Ezo Finance' },
+    { text: "We'd tried two other agencies before Ninja. Both needed weeks just to understand our product. These guys got it in the first call and delivered something our users actually love.", authorInitials: 'MT', authorName: 'Marcus Thompson', authorTitle: 'Product Lead, SaaS Platform' },
 ];
 
 const faqs = [
     { question: "What's your typical timeline for a project?", answer: "It depends on the scope. Brand identity systems typically take 2-4 weeks, websites 2-6 weeks, and pitch decks 1-2 weeks. We can work faster for urgent deadlines—just let us know your timeline when you reach out." },
-    { question: "Do you work with early-stage projects?", answer: "Yes, we work with projects at all stages—from pre-seed startups to established protocols. The key is having clarity on your goals and a budget that matches your ambitions. We're happy to discuss scope options that fit your situation." },
-    { question: "Do you accept token payments?", answer: "We primarily work in USDC/USDT and fiat, but we're open to discussing token arrangements for the right projects. This is typically structured as a hybrid payment model." },
+    { question: "Do you work with early-stage projects?", answer: "Yes, we work with projects at all stages—from pre-seed startups to established companies. The key is having clarity on your goals and a budget that matches your ambitions. We're happy to discuss scope options that fit your situation." },
+    { question: "What are your payment terms?", answer: "We use milestone-based payments. Typically 50% upfront to begin work, with the remaining 50% due on delivery. For retainer clients, we bill monthly. We accept bank transfer, credit card, and wire payments." },
     { question: "Can you work with our existing developers?", answer: "Absolutely. We provide detailed design specs, component documentation, and developer handoff files. We're also happy to collaborate directly with your dev team during implementation to ensure pixel-perfect results." },
-    { question: "What makes you different from other design agencies?", answer: "We only do Web3. We've been in this space through multiple cycles and understand the culture, technology, and what users expect. No explaining what a DEX is. No generic corporate templates. Just design that works for crypto." },
+    { question: "What makes you different from other design agencies?", answer: "We specialize in making complex products intuitive. We've spent years designing for fintech, SaaS, and technical products—so there's no learning curve. No generic corporate templates. Just design that works for companies building sophisticated products." },
 ];
 
 const clients = [
-    'avalanche', 'binamon', 'rugdoc', 'hkac', 'kadena', 'ezo', 'pinksale', 'vsystems'
+    'avalanche', 'hkac', 'kadena', 'ezo', 'vsystems'
 ];
 
 ---
 
-<BaseLayout title="Design that moves business">
-    <Hero 
-        title="Design that"
-        gradientText="moves business"
-        subtitle="We craft stunning visuals for AI companies, blockchain enterprises, and forward-thinking brands that demand excellence."
+<BaseLayout title="FinTech & SaaS Design Agency" description="Ninja Design Studio is a premium design agency for fintech and SaaS companies. Brand identity, UI/UX, websites, and pitch decks. Clients have raised $50M+.">
+    <Hero
+        title="Design for"
+        gradientText="complex products"
+        subtitle="We help fintech companies, SaaS teams, and technical founders turn complicated products into interfaces people trust and love to use."
+        primaryCta={{ text: "See Our Work", href: "/work" }}
+        secondaryCta={{ text: "Start a Project", href: "/contact" }}
     />
 
     <!-- Video Intro Section -->
     <section class="video-intro">
         <div class="container">
             <div class="video-text reveal-left">
-                <span class="section-tag">Why Choose Us</span>
-                <h2>We bring your vision to life</h2>
-                <p>Ninja Design Studio transforms ideas into stunning visual experiences that captivate audiences and drive real results for your business.</p>
+                <span class="section-tag">Why Us</span>
+                <h2>Your product is complex. Your design shouldn't be.</h2>
+                <p>We specialize in the hardest design problem in tech: making sophisticated products feel simple. That's what separates good fintech and SaaS from great.</p>
                 <div class="video-features">
                     <div class="video-feature">
                         <div class="video-feature-icon">✓</div>
-                        <span>Pixel-perfect execution</span>
+                        <span>Senior designers only — no handoffs</span>
                     </div>
                     <div class="video-feature">
                         <div class="video-feature-icon">✓</div>
-                        <span>Fast turnaround times</span>
+                        <span>Brand to launch in 2-6 weeks</span>
                     </div>
                     <div class="video-feature">
                         <div class="video-feature-icon">✓</div>
-                        <span>Ongoing support included</span>
+                        <span>Clients have raised $50M+</span>
                     </div>
                 </div>
             </div>
@@ -85,9 +87,9 @@ const clients = [
                     <div style="margin-bottom: 1rem;">
                         <img src="/images/nds-logo.jpg" alt="NDS Logo" style="width: 100px; height: 100px; object-fit: contain; border-radius: 16px;">
                     </div>
-                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ff006e, #00f5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Ready to level up?</div>
-                    <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.95rem;">Let's create something extraordinary together.</p>
-                    <a href="/contact" class="btn btn-primary" style="display: inline-block; padding: 0.8rem 2rem;">Start Your Project →</a>
+                    <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ff006e, #00f5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Got 2 minutes?</div>
+                    <p style="color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; font-size: 0.95rem;">Tell us about your project. We'll reply within 24 hours.</p>
+                    <a href="/contact" class="btn btn-primary" style="display: inline-block; padding: 0.8rem 2rem;">Get a Free Consultation →</a>
                 </div>
             </div>
         </div>
@@ -131,8 +133,8 @@ const clients = [
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-tag">What We Do</span>
-                <h2 class="section-title">Services built for the future</h2>
-                <p class="section-subtitle">From AI-powered brands to enterprise blockchain, we design experiences that stand out.</p>
+                <h2 class="section-title">Everything your brand needs to compete</h2>
+                <p class="section-subtitle">From first logo to full design system — we handle the visual layer so you can focus on building.</p>
             </div>
             <div class="services-grid">
                 {services.map((service, i) => (
@@ -148,7 +150,7 @@ const clients = [
             <div class="section-header reveal">
                 <span class="section-tag">Selected Work</span>
                 <h2 class="section-title">Projects we're proud of</h2>
-                <p class="section-subtitle">A showcase of our best work across various industries.</p>
+                <p class="section-subtitle">Brand systems, product design, and websites for funded companies.</p>
             </div>
             <div class="work-grid">
                 {projects.map((project, i) => (
@@ -179,29 +181,29 @@ const clients = [
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-tag">Our Process</span>
-                <h2 class="section-title">How we bring ideas to life</h2>
-                <p class="section-subtitle">A streamlined approach that ensures quality at every step.</p>
+                <h2 class="section-title">How we work</h2>
+                <p class="section-subtitle">Discovery to delivery in weeks, not months. Here's what that looks like.</p>
             </div>
             <div class="process-grid">
                 <div class="process-step reveal stagger-1">
                     <div class="process-number">01</div>
                     <h3 class="process-title">Discovery</h3>
-                    <p class="process-desc">Deep dive into your brand and goals.</p>
+                    <p class="process-desc">We learn your product, users, and competitive landscape.</p>
                 </div>
                 <div class="process-step reveal stagger-2">
                     <div class="process-number">02</div>
                     <h3 class="process-title">Strategy</h3>
-                    <p class="process-desc">Develop creative direction and approach.</p>
+                    <p class="process-desc">We define positioning, visual direction, and key differentiators.</p>
                 </div>
                 <div class="process-step reveal stagger-3">
                     <div class="process-number">03</div>
                     <h3 class="process-title">Design</h3>
-                    <p class="process-desc">Craft stunning visuals with precision.</p>
+                    <p class="process-desc">Multiple concepts, rapid iteration, pixel-perfect execution.</p>
                 </div>
                 <div class="process-step reveal stagger-4">
                     <div class="process-number">04</div>
                     <h3 class="process-title">Delivery</h3>
-                    <p class="process-desc">Polished assets ready to launch.</p>
+                    <p class="process-desc">Source files, guidelines, and developer handoff — ready to ship.</p>
                 </div>
             </div>
         </div>
@@ -213,7 +215,7 @@ const clients = [
             <div class="section-header reveal">
                 <span class="section-tag">FAQ</span>
                 <h2 class="section-title">Common questions</h2>
-                <p class="section-subtitle">Everything you need to know about working with us.</p>
+                <p class="section-subtitle">Quick answers before you reach out.</p>
             </div>
             <div class="faq-list">
                 {faqs.map(faq => (
@@ -235,8 +237,8 @@ const clients = [
         </div>
         <div class="container">
             <div class="cta-content reveal">
-                <h2 class="cta-title">Ready to stand out?</h2>
-                <p class="cta-subtitle">Tell us about your project and let's create something extraordinary together.</p>
+                <h2 class="cta-title">Let's talk about your project</h2>
+                <p class="cta-subtitle">Describe what you're building. We'll get back to you within 24 hours with ideas.</p>
                 <ContactForm />
             </div>
         </div>

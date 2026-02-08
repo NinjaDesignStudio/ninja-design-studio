@@ -67,9 +67,9 @@ export const projects: Project[] = [
     client: 'EZO',
     category: 'FinTech',
     tags: ['UI/UX', 'Web Design', 'Branding'],
-    shortDescription: 'All-in-one crypto payment ecosystem',
-    fullDescription: 'Complete design system for a DeFi payment platform. We created an intuitive interface that makes complex crypto transactions feel simple and secure.',
-    challenge: 'Design a platform that handles complex DeFi operations while remaining accessible to mainstream users.',
+    shortDescription: 'All-in-one digital payment platform',
+    fullDescription: 'Complete design system for a digital payment platform. We created an intuitive interface that makes complex financial transactions feel simple and secure.',
+    challenge: 'Design a platform that handles complex financial operations while remaining accessible to mainstream users.',
     solution: 'We developed a progressive disclosure interface that reveals complexity only when needed, with clear visual hierarchy and trust signals throughout.',
     results: [
       '$2M TVL within first month',
@@ -89,10 +89,10 @@ export const projects: Project[] = [
     title: 'Moon Wanderlust',
     client: 'Moon Wanderlust',
     category: 'Travel',
-    tags: ['Branding', 'Web Design', 'NFT'],
+    tags: ['Branding', 'Web Design', 'Community'],
     shortDescription: 'Backpacker camping community platform',
-    fullDescription: 'Brand identity and community platform for a Web3-native travel community. We created an adventurous visual language that captures the spirit of exploration.',
-    challenge: 'Build a brand that resonates with both crypto enthusiasts and traditional travelers.',
+    fullDescription: 'Brand identity and community platform for a travel community. We created an adventurous visual language that captures the spirit of exploration.',
+    challenge: 'Build a brand that resonates with both digital nomads and traditional travelers.',
     solution: 'We developed a bold, adventure-focused identity with earthy tones and cosmic elements that bridge the gap between nature and technology.',
     images: {
       thumbnail: '/images/moon-wanderlust.jpg',
@@ -106,11 +106,11 @@ export const projects: Project[] = [
     slug: 'avalanche',
     title: 'Avalanche Ecosystem',
     client: 'Avalanche',
-    category: 'Blockchain',
+    category: 'Enterprise Tech',
     tags: ['Branding', 'Marketing', 'Web Design'],
-    shortDescription: 'Brand refresh and marketing website',
+    shortDescription: 'Brand refresh and marketing for enterprise platform',
     fullDescription: 'Marketing support and visual assets for the Avalanche ecosystem. We created campaign materials that communicate speed, security, and innovation.',
-    challenge: 'Create marketing assets that stand out in the competitive L1 blockchain space.',
+    challenge: 'Create marketing assets that stand out in the competitive enterprise tech space.',
     solution: 'We developed a dynamic visual system with motion-forward design that emphasizes Avalanche\'s speed and efficiency.',
     images: {
       thumbnail: '/images/avalanche.jpg',
@@ -132,15 +132,10 @@ export interface ClientLogo {
 
 export const clientLogos: ClientLogo[] = [
   { name: 'Avalanche', logo: '/images/clients/avalanche.png' },
-  { name: 'Binamon', logo: '/images/clients/binamon.png' },
   { name: 'EZO', logo: '/images/clients/ezo.png' },
   { name: 'HKAC', logo: '/images/clients/hkac.png' },
-  { name: 'Kaddex', logo: '/images/clients/kaddex.png' },
   { name: 'Kadena', logo: '/images/clients/kadena.png' },
   { name: 'Naruto Sushi', logo: '/images/clients/narutosushi.png' },
-  { name: 'PinkSale', logo: '/images/clients/pinksale.png' },
-  { name: 'Pokemoon', logo: '/images/clients/pokemoon.png' },
-  { name: 'RugDoc', logo: '/images/clients/rugdoc.png' },
   { name: 'VSystems', logo: '/images/clients/vsystems.png' },
 ];
 
