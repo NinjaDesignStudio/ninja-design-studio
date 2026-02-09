@@ -89,12 +89,14 @@ body.menu-open {
     overflow: hidden;
 }
 
+/* TEMP DISABLED — diagnosing pink line at top of page
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--darker); }
-::-webkit-scrollbar-thumb { 
-    background: var(--gradient-pink); 
-    border-radius: 3px; 
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-pink);
+    border-radius: 3px;
 }
+*/
 
 ::selection {
     background: var(--neon-pink);
@@ -183,10 +185,13 @@ a {
     top: 0;
     left: 0;
     height: 3px;
-    background: var(--gradient-pink);
+    background: none;
     z-index: 1001;
     width: 0%;
     transition: width 0.1s linear;
+}
+.scroll-progress.active {
+    background: var(--gradient-pink);
 }
 
 /* =============================================

@@ -136,9 +136,6 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     <!-- Noise Texture -->
     {!noNoise && <NoiseTexture opacity={0.025} />}
     
-    <!-- Scroll Progress Indicator -->
-    <div class="scroll-progress" id="scrollProgress"></div>
-    
     <!-- Transparent Header for dark hero pages -->
     <HeaderTransparent />
     
@@ -158,15 +155,31 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     <slot name="scripts" />
     
     <script>
-        // Scroll Progress
-        const scrollProgress = document.getElementById('scrollProgress');
+        // Scroll Progress — created on first scroll to avoid subpixel flash
+        let scrollProgress: HTMLElement | null = null;
         let scrollTicking = false;
-        
+
+        function getScrollProgress() {
+            if (!scrollProgress) {
+                scrollProgress = document.createElement('div');
+                scrollProgress.className = 'scroll-progress active';
+                scrollProgress.id = 'scrollProgress';
+                document.body.prepend(scrollProgress);
+            }
+            return scrollProgress;
+        }
+
         function updateScrollProgress() {
             const scrollTop = window.pageYOffset;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (scrollTop / docHeight) * 100;
-            if (scrollProgress) scrollProgress.style.width = scrollPercent + '%';
+            if (scrollTop > 0) {
+                const el = getScrollProgress();
+                el.style.width = scrollPercent + '%';
+            } else if (scrollProgress) {
+                scrollProgress.remove();
+                scrollProgress = null;
+            }
             scrollTicking = false;
         }
 
@@ -266,10 +279,13 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
         top: 0;
         left: 0;
         height: 3px;
-        background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+        background: none;
         width: 0%;
         z-index: 10001;
         transition: width 0.1s linear;
+    }
+    .scroll-progress.active {
+        background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
     }
 
     /* Loading state */

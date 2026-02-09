@@ -100,9 +100,6 @@ const fullOgImage = ogImage?.startsWith('http') ? ogImage : new URL(ogImage || '
 </head>
 
 <body class="service-page">
-  <!-- Scroll Progress Indicator -->
-  <div class="scroll-progress" id="scrollProgress"></div>
-  
   <!-- Navigation -->
   <Header />
   
@@ -121,15 +118,31 @@ const fullOgImage = ogImage?.startsWith('http') ? ogImage : new URL(ogImage || '
   <slot name="scripts" />
   
   <script>
-    // Scroll Progress
-    const scrollProgress = document.getElementById('scrollProgress');
+    // Scroll Progress — created on first scroll to avoid subpixel flash
+    let scrollProgress: HTMLElement | null = null;
     let scrollTicking = false;
-    
+
+    function getScrollProgress() {
+        if (!scrollProgress) {
+            scrollProgress = document.createElement('div');
+            scrollProgress.className = 'scroll-progress active';
+            scrollProgress.id = 'scrollProgress';
+            document.body.prepend(scrollProgress);
+        }
+        return scrollProgress;
+    }
+
     function updateScrollProgress() {
       const scrollTop = window.pageYOffset;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = (scrollTop / docHeight) * 100;
-      if (scrollProgress) scrollProgress.style.width = scrollPercent + '%';
+      if (scrollTop > 0) {
+          const el = getScrollProgress();
+          el.style.width = scrollPercent + '%';
+      } else if (scrollProgress) {
+          scrollProgress.remove();
+          scrollProgress = null;
+      }
       scrollTicking = false;
     }
 

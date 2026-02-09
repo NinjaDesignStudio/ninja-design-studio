@@ -109,20 +109,13 @@ const clients = [
         </div>
     </section>
 
-    <!-- Clients Marquee -->
+    <!-- Clients -->
     <section class="clients">
         <p class="clients-label">Trusted by innovative companies</p>
-        <div class="clients-track">
-            <div class="clients-logos">
-                {clients.map(client => (
-                    <img src={`/images/clients/${client}.png`} alt={client} class="client-logo">
-                ))}
-            </div>
-            <div class="clients-logos">
-                {clients.map(client => (
-                    <img src={`/images/clients/${client}.png`} alt={client} class="client-logo">
-                ))}
-            </div>
+        <div class="clients-logos clients-logos--static">
+            {clients.map(client => (
+                <img src={`/images/clients/${client}.png`} alt={client} class="client-logo">
+            ))}
         </div>
     </section>
 
@@ -247,23 +240,3 @@ const clients = [
     <ProjectModal />
 </BaseLayout>
 
-<script>
-    // Clients marquee animation
-    const track = document.querySelector('.clients-track') as HTMLElement;
-    if (track) {
-        let position = 0;
-        const speed = 0.5;
-        
-        function animate() {
-            position -= speed;
-            const firstLogos = track.querySelector('.clients-logos') as HTMLElement;
-            if (firstLogos && Math.abs(position) >= firstLogos.offsetWidth) {
-                position = 0;
-            }
-            track.style.transform = `translateX(${position}px)`;
-            requestAnimationFrame(animate);
-        }
-        
-        animate();
-    }
-</script>

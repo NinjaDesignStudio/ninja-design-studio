@@ -90,10 +90,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <PageLoader />
-    
-    <!-- Scroll Progress Indicator -->
-    <div class="scroll-progress" id="scrollProgress"></div>
-    
+
     <!-- Header (can be overridden via slot) -->
     <slot name="header">
         <Header />
@@ -124,15 +121,32 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
             }, 1800);
         });
 
-        // Scroll Progress
-        const scrollProgress = document.getElementById('scrollProgress');
+
+        // Scroll Progress — created on first scroll to avoid subpixel flash
+        let scrollProgress: HTMLElement | null = null;
         let scrollTicking = false;
-        
+
+        function getScrollProgress() {
+            if (!scrollProgress) {
+                scrollProgress = document.createElement('div');
+                scrollProgress.className = 'scroll-progress active';
+                scrollProgress.id = 'scrollProgress';
+                document.body.prepend(scrollProgress);
+            }
+            return scrollProgress;
+        }
+
         function updateScrollProgress() {
             const scrollTop = window.pageYOffset;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (scrollTop / docHeight) * 100;
-            if (scrollProgress) scrollProgress.style.width = scrollPercent + '%';
+            if (scrollTop > 0) {
+                const el = getScrollProgress();
+                el.style.width = scrollPercent + '%';
+            } else if (scrollProgress) {
+                scrollProgress.remove();
+                scrollProgress = null;
+            }
             scrollTicking = false;
         }
 
@@ -241,25 +255,42 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, site
     @import '../styles/sections.css';
     @import '../styles/pages.css';
     
-    /* Skip link for accessibility */
+    /* Skip link for accessibility — visually hidden until focused */
     .skip-link {
         position: absolute;
-        top: -40px;
-        left: 0;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
         background: var(--neon-pink);
         color: white;
-        padding: 8px 16px;
         z-index: 100;
-        transition: top 0.3s;
     }
-    
+
     .skip-link:focus {
+        position: fixed;
         top: 0;
+        left: 0;
+        width: auto;
+        height: auto;
+        padding: 8px 16px;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        clip-path: none;
+        white-space: normal;
     }
     
     /* Custom cursor styles */
     .custom-cursor {
         position: fixed;
+        top: -100px;
+        left: -100px;
         width: 20px;
         height: 20px;
         border: 2px solid var(--neon-pink);

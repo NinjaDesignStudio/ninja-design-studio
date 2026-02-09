@@ -115,11 +115,10 @@
           stroke-dasharray="553"
           stroke-dashoffset="553"
           id="progressCircle"
-          filter="url(#glow)"
         />
 
         <!-- Shuriken body group -->
-        <g class="shuriken-body" filter="url(#dropShadow)">
+        <g class="shuriken-body">
           <!-- Main blades -->
           <g class="blades">
             <!-- Top blade -->
@@ -159,16 +158,16 @@
 
         <!-- Core energy (animated) -->
         <g class="core-energy">
-          <circle class="core-glow" cx="100" cy="100" r="20" fill="url(#coreGlow)" filter="url(#strongGlow)" />
-          <circle class="core-inner" cx="100" cy="100" r="6" fill="#ff006e" filter="url(#glow)" />
+          <circle class="core-glow" cx="100" cy="100" r="20" fill="url(#coreGlow)" />
+          <circle class="core-inner" cx="100" cy="100" r="6" fill="#ff006e" />
         </g>
 
         <!-- Rotating inner accent -->
         <g class="inner-spin">
-          <circle cx="100" cy="70" r="2" fill="#00f5ff" filter="url(#glow)" />
-          <circle cx="130" cy="100" r="2" fill="#ff006e" filter="url(#glow)" />
-          <circle cx="100" cy="130" r="2" fill="#00f5ff" filter="url(#glow)" />
-          <circle cx="70" cy="100" r="2" fill="#ff006e" filter="url(#glow)" />
+          <circle cx="100" cy="70" r="2" fill="#00f5ff" />
+          <circle cx="130" cy="100" r="2" fill="#ff006e" />
+          <circle cx="100" cy="130" r="2" fill="#00f5ff" />
+          <circle cx="70" cy="100" r="2" fill="#ff006e" />
         </g>
       </svg>
 
@@ -719,6 +718,10 @@
     display: none;
   }
 
+  /* Particles and slice-reveal disabled — caused compositing
+     artifacts in Safari (cyan/pink rectangles at top-left) */
+  .particles, .slice-reveal { display: none; }
+
   /* ===== Reduced Motion ===== */
   @media (prefers-reduced-motion: reduce) {
     .shuriken-body,
@@ -899,5 +902,6 @@
 
     // Fallback
     setTimeout(hideLoader, 7000);
+
   });
 </script>
