@@ -88,13 +88,12 @@ export const footerNavigation: FooterSection[] = [
 export interface SocialLink {
   name: string;
   href: string;
-  icon: 'instagram' | 'telegram' | 'twitter' | 'dribbble' | 'behance' | 'linkedin';
+  icon: 'instagram' | 'telegram' | 'twitter' | 'dribbble' | 'behance';
 }
 
 export const socialLinks: SocialLink[] = [
   { name: 'Instagram', href: 'https://www.instagram.com/ninjadesignstudio/', icon: 'instagram' },
   { name: 'Telegram', href: 'https://t.me/ninjaguy', icon: 'telegram' },
-  { name: 'LinkedIn', href: 'https://www.linkedin.com/company/ninjadesignstudio', icon: 'linkedin' },
 ];
 
 // =============================================================================
